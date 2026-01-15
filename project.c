@@ -89,6 +89,26 @@ int check_str_whitout_space(char string[])
     
     return 0;
 }
+int check_corect_pass_and_set_limit(char corect_pass[])
+{
+    // note: if corect --> return 0;  ||  if invalid --> return 1;
+    int i;
+    char pass[50];
+    for(i=0;i<3;i++)
+    {
+        printf("eneter your password: ");
+        gets(pass);
+        if (pass==corect_pass)
+            return 0;
+        else
+        {
+            if (i=2)
+                return 1;
+            printf("Invalid password!! you have %d times for enter password, carefull\n",2-i);
+        }
+    }
+}
+
 
 void main()
 {
