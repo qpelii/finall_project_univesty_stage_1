@@ -73,6 +73,7 @@ int menu_login_filter_selection()
                 continue;
             }
 
+            system("cls");
             return num;
         }
     } while (flag);
