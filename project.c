@@ -49,7 +49,35 @@ int check_str_was_int(char num[])
     
     return 0;
 }
+int menu_login_filter_selection()
+{
+    char number[3];
+    int num,flag;
+    do
+    {
+        flag=num=0;
+        gets(number);
+        flag=check_str_was_int(number);
+        if (flag)
+        {
+            printf("Invalid input Try agian: ");
+            continue;
+        }
+        else
+        {
+            num=atoi(number) ;
+            if (num>4 || num<1)
+            {
+                printf("Your input is out of range! Try agian: ");
+                flag++;
+                continue;
+            }
 
+            return num;
+        }
+    } while (flag);
+    
+}
 void main()
 {
 
