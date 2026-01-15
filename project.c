@@ -104,11 +104,17 @@ int check_corect_pass_and_set_limit(char corect_pass[])
         {
             if (i=2)
                 return 1;
-            printf("Invalid password!! you have %d times for enter password, carefull\n",2-i);
+            printf("Invalid password!! you have %d time's for enter password, carefull!\n",2-i);
         }
     }
 }
-
+long int make_limit_time()
+{
+    long int time,time_limited;
+    time=time(NULL);
+    time_limited=time+(5*60);
+    return time_limited;
+}
 
 void main()
 {
