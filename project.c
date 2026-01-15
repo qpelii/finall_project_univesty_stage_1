@@ -51,6 +51,14 @@ int check_str_was_int(char num[])
     
     return 0;
 }
+char str_to_lower(char text[])
+{
+    int len=strlen(text),i;
+    for (i=0; i<len; i++)
+        tolower(text[i]);
+    
+    return text[];
+}
 int menu_login_filter_selection()
 {
     char number[3];
@@ -92,9 +100,11 @@ int check_str_whitout_space(char string[])
 }
 int check_corect_pass_and_set_limit(char corect_pass[])
 {
-    // note: if corect --> return 0;  ||  if invalid --> return 1;
+    // note: if corect --> return 0;  ||  if invalid --> return 1;  ||  if have limit -->return 2;
     int i;
     char pass[50];
+    if (limit_time_admin>0)
+        return 2;
     for(i=0;i<3;i++)
     {
         printf("eneter your password: ");
