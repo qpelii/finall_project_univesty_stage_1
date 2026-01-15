@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<ctype.h>
 #include<string.h>
+#include<time.h>
 #define user_admin "admin"
 #define pass_admin "admin123456"
 
@@ -79,6 +80,16 @@ int menu_login_filter_selection()
     } while (flag);
     
 }
+int check_str_whitout_space(char string[])
+{
+    int len=strlen(string),i;
+    for (i=0;i<len;i++)
+        if (isspace(string[i]))
+            return 1;
+    
+    return 0;
+}
+
 void main()
 {
 
