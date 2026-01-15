@@ -51,13 +51,12 @@ int check_str_was_int(char num[])
     
     return 0;
 }
-char str_to_lower(char text[])
+void str_to_lower(char text[])
 {
     int len=strlen(text),i;
+    char result[len+2];
     for (i=0; i<len; i++)
-        tolower(text[i]);
-    
-    return text[];
+        text[i]=tolower(text[i]);
 }
 int menu_login_filter_selection()
 {
@@ -132,7 +131,53 @@ long int make_limit_time()
     time_limited=time+(5*60);
     return time_limited;
 }
-
+void change_form_time(int time_left)
+{
+    int min=time_left%60;
+    int houer=time_left/60;
+    printf("%.2d:%.2d",houer,min);
+}
+int get_check_user_pass(char user[],char corect_pass[], char user_corect[])
+{
+    // -------------------- just user_name
+    do{
+        printf("enter your User Name: ");
+        gets(user);
+        if (user!=user_corect)
+        {
+            printf("This user name is Invalid! Try agian\n");
+            continue;
+        }
+        else
+            break;
+    }while(1);
+    // -------------------- just password
+    // ------------------------------ note: corect--> return 0 else 1
+    // int time_left_limt=time_left_limt();
+    int flag_pass=check_corect_pass_and_set_limit(corect_pass);
+    if (flag_pass==0)
+    // ------------- dont have limit and pass is corcet!
+        return 0;
+    // else
+    if (flag_pass==1)
+    {
+        //now you give limit
+        long int time=make_limit_time();
+        limit_time=time_left_limt(time);
+        printf("You have been limited for ");
+        change_form_time(limit_time);
+    }
+    if (flag_pass==2)
+    {
+        //you have limit
+        long int time=make_limit_time();
+        limit_time=time_left_limt(time);
+        printf("Try agian after ");
+        change_form_time(limit_time);
+        printf("later");
+    }   
+    
+}
 
 void main()
 {
