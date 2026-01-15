@@ -40,7 +40,17 @@ void menu_login_print()
     printf("---------------------------\n\n");
     printf("select a option from menu: ");
 }
+int check_str_was_int(char num[])
+{
+    int len=strlen(num),i;
+    for (i=0;i<len;i++)
+        if (!isdigit(num[i]))
+            return 1;
+    
+    return 0;
+}
+
 void main()
 {
-    
+
 }
