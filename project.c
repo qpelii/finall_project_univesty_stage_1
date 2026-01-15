@@ -6,5 +6,5 @@
 #define pass_admin "admin123456"
 void main()
 {
-    printf("%s",user_admin);
+
 }
