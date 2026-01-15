@@ -5,6 +5,7 @@
 #include<time.h>
 #define user_admin "admin"
 #define pass_admin "admin123456"
+#define limit_time_admin 0
 
 void menu_login_print()
 {
@@ -108,6 +109,12 @@ int check_corect_pass_and_set_limit(char corect_pass[])
         }
     }
 }
+long int time_left_limt(long int limited)
+{
+    // ---------- note: if result is possetiv:= have limit; else limit done!
+    long int result=limited-time(NULL);
+    return result;
+}
 long int make_limit_time()
 {
     long int time,time_limited;
@@ -115,6 +122,7 @@ long int make_limit_time()
     time_limited=time+(5*60);
     return time_limited;
 }
+
 
 void main()
 {
