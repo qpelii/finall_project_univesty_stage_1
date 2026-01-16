@@ -26,7 +26,7 @@ void menu_login_print()
         strcpy(temp,"Academic Login page");
         break;
     case 3:
-        strcpy(temp,"Exit program");
+        strcpy(temp,"Exit Program");
         break;
     default:
         break;
@@ -124,9 +124,8 @@ int time_left_limt(long int limited)
 }
 long int make_limit_time()
 {
-    long int time,time_limited;
-    time=time(NULL);
-    time_limited=time+(5*60);
+    long int time_limited;
+    time_limited=time(NULL)+(5*60);
     return time_limited;
 }
 void change_form_time(int time_left)
