@@ -189,19 +189,29 @@ void main()
         printf("memory is not allow!");
         exit(1);
     }
-    char *pointer_Upass;
-    pointer_Upass=malloc(sizeof(pass_admin));
-    pointer_Upass=user_admin;
-    if (pointer_Upass==NULL)
+    char *pointer_Padmin;
+    pointer_Padmin=malloc(sizeof(pass_admin));
+    pointer_Padmin=user_admin;
+    if (pointer_Padmin==NULL)
     {
         printf("memory is not allow!");
         exit(1);
     }
-
-     menu_login_print();
-     int menu_type=menu_login_filter_selection();
-     char *user;
-     printf("%s",pointer_Uadmin);
-     
+    char user[30],password[50];
+    while(1)
+    {
+    menu_login_print();
+    int menu_type=menu_login_filter_selection();
+    switch (menu_type)
+    {
+    case 1:
+        user=pointer_Uadmin
+        password=pointer_Padmin
+        break;
+    
+    default:
+        break;
+    }
+    } 
 
 }
