@@ -3,8 +3,9 @@
 #include<ctype.h>
 #include<string.h>
 #include<time.h>
-static char user_admin[10]="admin",*pointer_Uadmin=user_admin;
-static char pass_admin[20]="admin123456",*pointer_Padmin=pass_admin;
+static char user_admin[10]="admin";
+static char pass_admin[20]="admin123456";
+
 
 void menu_login_print()
 {
@@ -180,5 +181,27 @@ int get_check_user_pass(char user[],char corect_pass[], char user_corect[],int l
 
 void main()
 {
+    char *pointer_Uadmin;
+    pointer_Uadmin=malloc(sizeof(user_admin));
+    pointer_Uadmin=user_admin;
+    if (pointer_Uadmin==NULL)
+    {
+        printf("memory is not allow!");
+        exit(1);
+    }
+    char *pointer_Upass;
+    pointer_Upass=malloc(sizeof(pass_admin));
+    pointer_Upass=user_admin;
+    if (pointer_Upass==NULL)
+    {
+        printf("memory is not allow!");
+        exit(1);
+    }
+
+     menu_login_print();
+     int menu_type=menu_login_filter_selection();
+     char *user;
+     printf("%s",pointer_Uadmin);
+     
 
 }
