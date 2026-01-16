@@ -143,6 +143,7 @@ int get_check_user_pass(char user[],char corect_pass[], char user_corect[],int l
     do{
         printf("enter your User Name: ");
         gets(user);
+        str_to_lower(user);
         if (user!=user_corect)
         {
             printf("This user name is Invalid! Try agian\n");
