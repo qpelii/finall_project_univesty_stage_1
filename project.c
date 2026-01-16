@@ -3,13 +3,8 @@
 #include<ctype.h>
 #include<string.h>
 #include<time.h>
-static char *user[10];
-user=malloc(sizeof(user));
-user = "admin";
-static char *pass_admin[20];
-pass_admin=malloc(sizeof(pass_admin));
-pass_admin = "admin123456";
-static int limit_time_admin=0;
+static char user_admin[10]="admin",*pointer_Uadmin=user_admin;
+static char pass_admin[20]="admin123456",*pointer_Padmin=pass_admin;
 
 void menu_login_print()
 {
