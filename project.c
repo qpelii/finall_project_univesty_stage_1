@@ -225,9 +225,11 @@ void main()
     {
     case 1:
         int login_flag=get_check_user_pass(pointer_Uadmin,pointer_Padmin,pointer_Limit_admin);// 1:= succces; 2:unsaccses
-
         break;
-    
+    case 4:
+        exit(1);
+        break;
+
     default:
         break;
     }
