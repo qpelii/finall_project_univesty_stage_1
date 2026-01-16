@@ -3,8 +3,12 @@
 #include<ctype.h>
 #include<string.h>
 #include<time.h>
-#define user_admin "admin"
-#define pass_admin "admin123456"
+static char *user[10]
+user=malloc(sizeof(user));
+user = "admin"
+static char *pass_admin[20];
+pass_admin=malloc(sizeof(pass_admin));
+pass_admin = "admin123456";
 static int limit_time_admin=0;
 
 void menu_login_print()
@@ -54,7 +58,6 @@ int check_str_was_int(char num[])
 void str_to_lower(char text[])
 {
     int len=strlen(text),i;
-    char result[len+2];
     for (i=0; i<len; i++)
         text[i]=tolower(text[i]);
 }
@@ -183,5 +186,13 @@ int get_check_user_pass(char user[],char corect_pass[], char user_corect[],int l
 
 void main()
 {
+    int menu_type;
+    while (1)
+    {
+        menu_login_print();
+        menu_type=menu_login_filter_selection();// 1 2 3 4 
 
+
+    }
+    
 }
