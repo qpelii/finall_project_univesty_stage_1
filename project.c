@@ -5,7 +5,7 @@
 #include<time.h>
 static char user_admin[10]="admin";
 static char pass_admin[20]="admin123456";
-
+static long int limit_admin=0;
 
 void menu_login_print()
 {
@@ -81,7 +81,7 @@ int menu_login_filter_selection()
                 continue;
             }
 
-            system("cls");
+            // system("cls");
             return num;
         }
     } while (flag);
@@ -101,17 +101,18 @@ int check_corect_pass_and_set_limit(char corect_pass[], int limit_time)
     // note: if corect --> return 0;  ||  if invalid --> return 1;  ||  if have limit -->return 2;
     int i;
     char pass[50];
-    if (limit_time>0)
+    if (limit_time-time(NULL)>0)
         return 2;
     for(i=0;i<3;i++)
     {
         printf("eneter your password: ");
         gets(pass);
-        if (pass==corect_pass)
+        int len_get_pass=strlen(pass),len_corect_pass=strlen(corect_pass);
+        if (strcmp(pass,corect_pass)==0 && len_corect_pass==len_get_pass)
             return 0;
         else
         {
-            if (i=2)
+            if (i==2)
                 return 1;
             printf("Invalid password!! you have %d time's for enter password, carefull!\n",2-i);
         }
@@ -135,14 +136,16 @@ void change_form_time(int time_left)
     int houer=time_left/60;
     printf("%.2d:%.2d",houer,min);
 }
-int get_check_user_pass(char user[],char corect_pass[], char user_corect[],int limit_time)
+int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_time)
 {
     // -------------------- just user_name
+    char user[30];
     do{
         printf("enter your User Name: ");
         gets(user);
+        int len_get_user=strlen(user),len_corect_user=strlen(user_corect);
         str_to_lower(user);
-        if (user!=user_corect)
+        if (strcmp(user,user_corect)!=0 && len_corect_user!=len_get_user)
         {
             printf("This user name is Invalid! Try agian\n");
             continue;
@@ -153,7 +156,8 @@ int get_check_user_pass(char user[],char corect_pass[], char user_corect[],int l
     // -------------------- just password
     // ------------------------------ note: corect--> return 0 else 1
     // int time_left_limt=time_left_limt();
-    int flag_pass=check_corect_pass_and_set_limit(corect_pass,limit_time);
+    int flag_pass=check_corect_pass_and_set_limit(corect_pass,*limit_time);
+
     if (flag_pass==0)
     // ------------- dont have limit and pass is corcet!
         return 0;
@@ -161,21 +165,26 @@ int get_check_user_pass(char user[],char corect_pass[], char user_corect[],int l
     if (flag_pass==1)
     {
         //now you give limit
-        long int time=make_limit_time();
-        limit_time=time_left_limt(time);
+        *limit_time=make_limit_time();
+        int time=time_left_limt(*limit_time);
         printf("You have been limited for ");
-        change_form_time(limit_time);
+        change_form_time(time);
+        printf("\n");
+        printf("prese enter to continue");
+        getchar();
     }
     if (flag_pass==2)
     {
-        //you have limit
-        long int time=make_limit_time();
-        limit_time=time_left_limt(time);
-        printf("Try agian after ");
-        change_form_time(limit_time);
-        printf("later");
-    }   
-    
+        //you alraredy have limit
+        long int time;
+        time=time_left_limt(*limit_time);
+        printf("You have been limited!! Try agian after ");
+        change_form_time(time);
+        printf(" later\n");
+        printf("prese enter to continue");
+        getchar();
+    }
+    return 1;
 }
 
 
@@ -191,27 +200,41 @@ void main()
     }
     char *pointer_Padmin;
     pointer_Padmin=malloc(sizeof(pass_admin));
-    pointer_Padmin=user_admin;
+    pointer_Padmin=pass_admin;
     if (pointer_Padmin==NULL)
     {
         printf("memory is not allow!");
         exit(1);
     }
+    long int *pointer_Limit_admin;
+    pointer_Limit_admin=malloc(sizeof(limit_admin));
+    *pointer_Limit_admin=limit_admin;
+    if (pointer_Limit_admin==NULL)
+    {
+        printf("memory is not allow!");
+        exit(1);
+    }
     char user[30],password[50];
+    long int *limit;
     while(1)
     {
     menu_login_print();
     int menu_type=menu_login_filter_selection();
+    // -------------------------------------------- rotation part
     switch (menu_type)
     {
     case 1:
-        user=pointer_Uadmin
-        password=pointer_Padmin
+        // strcpy(user,pointer_Uadmin);
+        // strcpy(password,pointer_Padmin);
+        // limit=&limit_admin;
+        int login_flag=get_check_user_pass(pointer_Uadmin,pointer_Padmin,pointer_Limit_admin);// 1:= succces; 2:unsaccses
+
         break;
     
     default:
         break;
     }
+    // int login_flag=get_check_user_pass(user,password,limit);// 1:= succces; 2:unsaccses
     } 
 
 }
