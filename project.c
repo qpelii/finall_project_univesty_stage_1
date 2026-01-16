@@ -159,8 +159,7 @@ int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_t
             break;
     }while(1);
     // -------------------- just password
-    // ------------------------------ note: corect--> return 0 else 1 || cancel login -1;
-    // int time_left_limt=time_left_limt();
+    // ------------------------------ note: corect--> return 0 else 1,2 || cancel login -1;
     int flag_pass=check_corect_pass_and_set_limit(corect_pass,*limit_time);
 
     if (flag_pass==-1)
@@ -194,7 +193,49 @@ int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_t
     }
     return 1;
 }
+void menu_admin_page_print()
+{
+    char temp[25],line_char='|';
+    printf("------------------------------\n");
+    for(int i=0; i<7; i++)
+    {
+    printf("%c%-2d%c",line_char,i+1,line_char);
+    switch (i)
+    {
+    case 0:
+        strcpy(temp,"Add new Departemant");// modir goorooh:)
+        break;
+    case 1:
+        strcpy(temp,"Add new Academic");
+        break;
+    case 2:
+        strcpy(temp,"Show lsit of user");
+        break;
+    case 3:
+        strcpy(temp,"Keck user from system");
+        break;
+    case 4:
+        strcpy(temp,"Grt Log");
+        break;
+    case 5:
+        strcpy(temp,"Get backup from Files");
+        break;
+    case 6:
+        strcpy(temp,"Exit from Admin User");
+        break;
+    default:
+        break;
+    }
 
+    printf("%-25s%c\n",temp,line_char);
+    if (i!=6)
+        printf("|--+-------------------------|\n");
+
+
+    }
+    printf("------------------------------\n\n");
+    printf("select a option from menu: ");
+}
 
 
 void main()
@@ -232,24 +273,19 @@ void main()
     // -------------------------------------------- rotation part
     switch (menu_type)
     {
-    case 1:
-        int login_flag=get_check_user_pass(pointer_Uadmin,pointer_Padmin,pointer_Limit_admin);
-        switch (login_flag)
-        {
-        // 1:= succces; 2:unsaccses; -1:cancel login;
-        case -1:
+        case 1:
+            int login_flag=get_check_user_pass(pointer_Uadmin,pointer_Padmin,pointer_Limit_admin);// 1:= succces; 2:unsaccses; -1:cancel login;
+            if (login_flag==0)
+            {
+                menu_admin_page_print();
+            }
             break;
-        
+        case 4:
+            exit(1);
+            break;
+
         default:
             break;
-        }
-        break;
-    case 4:
-        exit(1);
-        break;
-
-    default:
-        break;
     }
     } 
 
