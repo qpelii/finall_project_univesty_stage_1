@@ -98,7 +98,7 @@ int check_str_whitout_space(char string[])
 }
 int check_corect_pass_and_set_limit(char corect_pass[], int limit_time)
 {
-    // note: if corect --> return 0;  ||  if invalid --> return 1;  ||  if have limit -->return 2;
+    // note: if corect --> return 0;  ||  if invalid --> return 1;  ||  if have limit -->return 2; if want Exit -->return -1;
     int i;
     char pass[50];
     if (limit_time-time(NULL)>0)
@@ -107,6 +107,8 @@ int check_corect_pass_and_set_limit(char corect_pass[], int limit_time)
     {
         printf("eneter your password: ");
         gets(pass);
+        if (strlen(pass)==0)
+            return -1;
         int len_get_pass=strlen(pass),len_corect_pass=strlen(corect_pass);
         if (strcmp(pass,corect_pass)==0 && len_corect_pass==len_get_pass)
             return 0;
@@ -141,8 +143,11 @@ int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_t
     // -------------------- just user_name
     char user[30];
     do{
+        printf("note: if you want Exit from Admin Login page's, Just prsse enter\n");
         printf("enter your User Name: ");
         gets(user);
+        if (strlen(user)==0)
+            return -1;
         int len_get_user=strlen(user),len_corect_user=strlen(user_corect);
         str_to_lower(user);
         if (strcmp(user,user_corect)!=0 && len_corect_user!=len_get_user)
@@ -154,10 +159,13 @@ int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_t
             break;
     }while(1);
     // -------------------- just password
-    // ------------------------------ note: corect--> return 0 else 1
+    // ------------------------------ note: corect--> return 0 else 1 || cancel login -1;
     // int time_left_limt=time_left_limt();
     int flag_pass=check_corect_pass_and_set_limit(corect_pass,*limit_time);
 
+    if (flag_pass==-1)
+        // ---------- cancel login
+        return -1;
     if (flag_pass==0)
     // ------------- dont have limit and pass is corcet!
         return 0;
@@ -186,6 +194,7 @@ int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_t
     }
     return 1;
 }
+
 
 
 void main()
@@ -224,7 +233,16 @@ void main()
     switch (menu_type)
     {
     case 1:
-        int login_flag=get_check_user_pass(pointer_Uadmin,pointer_Padmin,pointer_Limit_admin);// 1:= succces; 2:unsaccses
+        int login_flag=get_check_user_pass(pointer_Uadmin,pointer_Padmin,pointer_Limit_admin);
+        switch (login_flag)
+        {
+        // 1:= succces; 2:unsaccses; -1:cancel login;
+        case -1:
+            break;
+        
+        default:
+            break;
+        }
         break;
     case 4:
         exit(1);
