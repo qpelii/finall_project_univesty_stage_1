@@ -186,13 +186,5 @@ int get_check_user_pass(char user[],char corect_pass[], char user_corect[],int l
 
 void main()
 {
-    int menu_type;
-    while (1)
-    {
-        menu_login_print();
-        menu_type=menu_login_filter_selection();// 1 2 3 4 
 
-
-    }
-    
 }
