@@ -97,12 +97,12 @@ int check_str_whitout_space(char string[])
     
     return 0;
 }
-int check_corect_pass_and_set_limit(char corect_pass[])
+int check_corect_pass_and_set_limit(char corect_pass[], int limit_time)
 {
     // note: if corect --> return 0;  ||  if invalid --> return 1;  ||  if have limit -->return 2;
     int i;
     char pass[50];
-    if (limit_time_admin>0)
+    if (limit_time>0)
         return 2;
     for(i=0;i<3;i++)
     {
@@ -137,7 +137,7 @@ void change_form_time(int time_left)
     int houer=time_left/60;
     printf("%.2d:%.2d",houer,min);
 }
-int get_check_user_pass(char user[],char corect_pass[], char user_corect[])
+int get_check_user_pass(char user[],char corect_pass[], char user_corect[],int limit_time)
 {
     // -------------------- just user_name
     do{
@@ -154,7 +154,7 @@ int get_check_user_pass(char user[],char corect_pass[], char user_corect[])
     // -------------------- just password
     // ------------------------------ note: corect--> return 0 else 1
     // int time_left_limt=time_left_limt();
-    int flag_pass=check_corect_pass_and_set_limit(corect_pass);
+    int flag_pass=check_corect_pass_and_set_limit(corect_pass,limit_time);
     if (flag_pass==0)
     // ------------- dont have limit and pass is corcet!
         return 0;
