@@ -224,9 +224,6 @@ void main()
     switch (menu_type)
     {
     case 1:
-        // strcpy(user,pointer_Uadmin);
-        // strcpy(password,pointer_Padmin);
-        // limit=&limit_admin;
         int login_flag=get_check_user_pass(pointer_Uadmin,pointer_Padmin,pointer_Limit_admin);// 1:= succces; 2:unsaccses
 
         break;
@@ -234,7 +231,6 @@ void main()
     default:
         break;
     }
-    // int login_flag=get_check_user_pass(user,password,limit);// 1:= succces; 2:unsaccses
     } 
 
 }
