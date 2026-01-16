@@ -3,9 +3,9 @@
 #include<ctype.h>
 #include<string.h>
 #include<time.h>
-static char *user[10]
+static char *user[10];
 user=malloc(sizeof(user));
-user = "admin"
+user = "admin";
 static char *pass_admin[20];
 pass_admin=malloc(sizeof(pass_admin));
 pass_admin = "admin123456";
