@@ -328,7 +328,8 @@ int check_str_date(char date[])
 void set_new_departemant(FILE file_departemant)
 {
     char name[20],family[30],date_start[15],name_of_group[20],ID_code[15],phone_num[15],email[40],user_Name[20];
-    printf("Please enter this information about Departemant\n")
+    char pass1[50],pass2[50];
+    printf("Please enter this information about Departemant\n");
 
     printf("Enter name: ");
     do{
@@ -355,7 +356,7 @@ void set_new_departemant(FILE file_departemant)
             printf("Invalid input! Try again: ");
         else
             break;
-    }while(1)
+    }while(1);
 
     printf("Enter name of Departiment group: ");
     do{
@@ -364,16 +365,16 @@ void set_new_departemant(FILE file_departemant)
             printf("Invalid input! Try again: ");
         else
             break;
-    }while(1)
+    }while(1);
 
     printf("Enter ID: ");
     do{
         gets(ID_code);
-        if (check_str_was_int(ID_code))
+        if (check_str_was_int(ID_code) || strlen(ID_code)!=10)
             printf("Invalid input! Try again: ");
         else
             break;
-    }while(1)
+    }while(1);
 
     printf("Enter Phone number(whit this form 09123456789): ");
     do{
@@ -382,12 +383,69 @@ void set_new_departemant(FILE file_departemant)
             printf("Invalid input! Try again: ");
         else
             break;
-    }while(1)
+    }while(1);
 
     printf("Enter Email: ");
-    gets(email);
+    do{
+        gets(email);
+        if (check_email(email))
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+    
     printf("Enter User name of Departemant: ");
-    gets(user_Name);
+    do{
+        gets(user_Name);    // ----------------------------- need edit for duplicated user_name
+        if (check_str_whitout_space)
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+
+    printf("Set Password for Departemant: ");
+    do
+    {
+        gets(pass1);
+        if (check_str_whitout_space)
+        {
+           printf("Invalid input! Try again: ");
+            continue;
+        }
+        switch (check_strong_password(pass1))
+        {
+        case 1:
+            printf("too few character! Try again: ");
+            break;
+        case 2:
+            printf("Your password for security must have number! Try again: ");
+            break;
+        case 3:
+            printf("Your password must have Capital and Small letters! Try again: ");
+            break;
+        case 4:
+            printf("Your password must have punct(!@#$%^) character! Try again: ");
+            break;
+        case 5:
+            printf("Your password must have Capital and Small letters! Try again: ");
+            break;
+        default:
+            break;
+        }
+        if (check_strong_password(pass1))
+            continue;
+        
+        printf("Please repeat password: ");
+        gets(pass2);
+        if (strcmp(pass1,pass2)!=0)
+        {
+            printf("your password is not corect! Try agian");
+            continue;
+        }
+        break;
+    } while (1);
+    
+
     
 }
 int check_email(char email[])
@@ -438,6 +496,36 @@ int check_email(char email[])
             return 1;
     }
     return 0;
+}
+int check_strong_password(char pass[])
+{
+    // note: 1==tow meny few char|2==not digit|3==not alpha upper|4== not !@#$| 5== not char lower| 0==corect
+    int len=strlen(pass),i;
+    int flag_upper=0,flag_lower=0,flag_punct=0,flag_digit=0;
+    if (len<8)
+        return 1;
+    for(i=0;i<len;i++)
+    {
+        if (isupper(pass[i]))
+            flag_upper++;
+        else if (islower(pass[i]))
+            flag_lower++;
+        else if (ispunct(pass[i]))
+            flag_punct++;
+        else if (isdigit(pass[i]))
+            flag_digit++;
+    }
+    if (flag_digit==0)
+        return 2;
+    else if (flag_upper==0)
+        return 3;
+    else if (flag_punct==0)
+        return 4;
+    else if (flag_lower==0)
+        return 5;
+
+    return 0;
+
 }
 
 void main()
@@ -490,12 +578,13 @@ void main()
                 case 1:
                     // set new modir gorooh
                     // ----------------------------------------------- file opening
-                    file_departemant=fopen("file_departemant","a");
+                    file_departemant=fopen("file_departemant.txt","a");
                     if (file_departemant==NULL)
                     {
                         printf("memory is not allowed!");
                         exit(1);
                     }
+                    set_new_departemant(file_departemant);
 
                     break;
                 
