@@ -4,7 +4,7 @@
 #include<string.h>
 #include<time.h>
 static char user_admin[10]="admin";
-static char pass_admin[20]="admin123456";
+static char pass_admin[20]="dgplq456789";// hashed
 static long int limit_admin=0;
 
 void menu_login_print()
@@ -273,7 +273,7 @@ void password_to_hash(char password[])
     for (int i=0; i<len; i++)
     {
         temp_ASCII=password[i];
-        temp_ASCII= temp_ASCII+26;
+        temp_ASCII= temp_ASCII+3;
         password[i]=temp_ASCII;
     }
 }
@@ -284,7 +284,7 @@ void unti_hash_to_password(char password[])
     for (int i=0; i<len; i++)
     {
         temp_ASCII=password[i];
-        temp_ASCII= (temp_ASCII-26);
+        temp_ASCII= (temp_ASCII-3);
         password[i]=temp_ASCII;
     }
 }
@@ -326,6 +326,7 @@ void main()
     switch (menu_type)
     {
         case 1:
+            unti_hash_to_password(pointer_Padmin);
             int login_flag=get_check_user_pass(pointer_Uadmin,pointer_Padmin,pointer_Limit_admin);// 1:= succces; 2:unsaccses; -1:cancel login;
             if (login_flag==0)
             {
