@@ -142,15 +142,15 @@ int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_t
 {
     // -------------------- just user_name
     char user[30];
+        printf("note: if you want Exit from Login page's, Just prsse enter\n");
     do{
-        printf("note: if you want Exit from Admin Login page's, Just prsse enter\n");
         printf("enter your User Name: ");
         gets(user);
         if (strlen(user)==0)
             return -1;
         int len_get_user=strlen(user),len_corect_user=strlen(user_corect);
         str_to_lower(user);
-        if (strcmp(user,user_corect)!=0 && len_corect_user!=len_get_user)
+        if (strcmp(user,user_corect)!=0 || len_corect_user!=len_get_user)
         {
             printf("This user name is Invalid! Try agian\n");
             continue;
@@ -330,6 +330,16 @@ void main()
             if (login_flag==0)
             {
                 menu_admin_page_print();
+                menu_type=menu_admin_page_filter_selection();
+                switch (menu_type)
+                {
+                case 1:
+                    // set new modir gorooh
+                    break;
+                
+                default:
+                    break;
+                }
             }
             break;
         case 4:
