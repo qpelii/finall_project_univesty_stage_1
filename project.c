@@ -266,11 +266,6 @@ int menu_admin_page_filter_selection()
     } while (flag);
     
 }
-#include<stdio.h>
-#include<stdlib.h>
-#include<time.h>
-#include<ctype.h>
-#include<string.h>
 void password_to_hash(char password[])
 {
     int len=strlen(password);
