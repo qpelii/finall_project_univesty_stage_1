@@ -7,6 +7,7 @@ static char user_admin[10]="admin";
 static char pass_admin[20]="dgplq456789";// hashed
 static long int limit_admin=0;
 
+
 void menu_login_print()
 {
     char temp[25],line_char='|';
@@ -48,7 +49,7 @@ int check_str_was_int(char num[])
     for (i=0;i<len;i++)
         if (!isdigit(num[i]))
             return 1;
-    
+
     return 0;
 }
 void str_to_lower(char text[])
@@ -85,7 +86,7 @@ int menu_login_filter_selection()
             return num;
         }
     } while (flag);
-    
+
 }
 int check_str_whitout_space(char string[])
 {
@@ -93,7 +94,7 @@ int check_str_whitout_space(char string[])
     for (i=0;i<len;i++)
         if (isspace(string[i]))
             return 1;
-    
+
     return 0;
 }
 int check_str_full_alpha_whit_space(char string[])
@@ -105,7 +106,7 @@ int check_str_full_alpha_whit_space(char string[])
                 continue;
             else
                 return 1;
-    
+
     return 0;
 }
 int check_str_full_alpha_whitout_space(char string[])
@@ -114,7 +115,7 @@ int check_str_full_alpha_whitout_space(char string[])
     for (i=0;i<len;i++)
         if (!isalpha(string[i]))
                 return 1;
-    
+
     return 0;
 }
 int check_corect_pass_and_set_limit(char corect_pass[], int limit_time)
@@ -171,7 +172,7 @@ int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_t
             return -1;
         int len_get_user=strlen(user),len_corect_user=strlen(user_corect);
         str_to_lower(user);
-        if (strcmp(user,user_corect)!=0 || len_corect_user!=len_get_user || check_str_whitout_space)
+        if (strcmp(user,user_corect)!=0 || len_corect_user!=len_get_user || check_str_whitout_space(user))
         {
             printf("This user name is Invalid! Try agian\n");
             continue;
@@ -285,7 +286,7 @@ int menu_admin_page_filter_selection()
             return num;
         }
     } while (flag);
-    
+
 }
 void password_to_hash(char password[])
 {
@@ -316,14 +317,25 @@ int check_str_date(char date[])
     for(i=0;i<len;i++)
         if (date[i]=='/')
             slash_flag++;
-    if (slash_flag!=3)
+    if (slash_flag!=2)
         return 1;
+    // len years =4
     sscanf(date,"%d/%d/%d",&year,&mounth,&day);
+    int counter;
+    i=year;
+    for (counter=0;;counter++)
+    {
+        if (i==0)
+            break;
+        i/=10;
+    }
+    if (counter!=4)
+        return 1;
     if (year<0 || mounth<1 || mounth>12 || day<1 || day>31)
         return 1;
-        
+
     return 0;
-    
+
 }
 void set_new_departemant(FILE file_departemant)
 {
@@ -334,7 +346,7 @@ void set_new_departemant(FILE file_departemant)
     printf("Enter name: ");
     do{
         gets(name);
-        if (check_str_full_alpha_whit_space(name))
+        if (check_str_full_alpha_whit_space(name) || strlen(name)==0)
             printf("Invalid input! Try again: ");
         else
             break;
@@ -343,7 +355,7 @@ void set_new_departemant(FILE file_departemant)
     printf("Enter family: ");
     do{
         gets(family);
-        if (check_str_full_alpha_whit_space(family))
+        if (check_str_full_alpha_whit_space(family) || strlen(family)==0)
             printf("Invalid input! Try again: ");
         else
             break;
@@ -352,7 +364,7 @@ void set_new_departemant(FILE file_departemant)
     printf("Enter date start Departemant\n(hint:enter whit this form YYYY/MM/DD): ");
     do{
         gets(date_start);
-        if (check_str_date(date_start))
+        if (check_str_date(date_start) || strlen(date_start)==0)
             printf("Invalid input! Try again: ");
         else
             break;
@@ -361,7 +373,7 @@ void set_new_departemant(FILE file_departemant)
     printf("Enter name of Departiment group: ");
     do{
         gets(name_of_group);
-        if (check_str_full_alpha_whit_space(name_of_group))
+        if (check_str_full_alpha_whit_space(name_of_group) || strlen(name_of_group)==0)
             printf("Invalid input! Try again: ");
         else
             break;
@@ -379,7 +391,7 @@ void set_new_departemant(FILE file_departemant)
     printf("Enter Phone number(whit this form 09123456789): ");
     do{
         gets(phone_num);
-        if (check_str_was_int(phone_num) || phone_num[0]!='0' || phone_num[1]!='9')
+        if (check_str_was_int(phone_num) || phone_num[0]!='0' || phone_num[1]!='9' || strlen(phone_num)!=11)
             printf("Invalid input! Try again: ");
         else
             break;
@@ -393,11 +405,11 @@ void set_new_departemant(FILE file_departemant)
         else
             break;
     }while(1);
-    
+
     printf("Enter User name of Departemant: ");
     do{
         gets(user_Name);    // ----------------------------- need edit for duplicated user_name
-        if (check_str_whitout_space)
+        if (check_str_whitout_space(user_Name))
             printf("Invalid input! Try again: ");
         else
             break;
@@ -407,7 +419,7 @@ void set_new_departemant(FILE file_departemant)
     do
     {
         gets(pass1);
-        if (check_str_whitout_space)
+        if (check_str_whitout_space(pass1))
         {
            printf("Invalid input! Try again: ");
             continue;
@@ -434,7 +446,7 @@ void set_new_departemant(FILE file_departemant)
         }
         if (check_strong_password(pass1))
             continue;
-        
+
         printf("Please repeat password: ");
         gets(pass2);
         if (strcmp(pass1,pass2)!=0)
@@ -444,9 +456,9 @@ void set_new_departemant(FILE file_departemant)
         }
         break;
     } while (1);
-    
 
-    
+
+
 }
 int check_email(char email[])
 {
@@ -455,16 +467,16 @@ int check_email(char email[])
     char name_email[45]="",domain[30]="";
     for(counter=0;counter<len;counter++)
     {
-        if (word_input[counter]=='@')
+        if (email[counter]=='@')
             atsing_flag++;
         else if (atsing_flag==0)
-            name_email[counter]=word_input[counter];
+            name_email[counter]=email[counter];
         else if (atsing_flag==1)
-            domain[counter_2++]=word_input[counter];
+            domain[counter_2++]=email[counter];
     }
     if (atsing_flag!=1)
         return 1;
-    
+
     // ---------------------------------------------- checker name mail
     len=strlen(name_email);
     for(counter=0;counter<len;counter++)
@@ -479,10 +491,11 @@ int check_email(char email[])
         }
         else if (ispunct(name_email[counter]))
             return 1;
-        
+
     }
-    // ---------------------------------------------- checker name mail
+    // ---------------------------------------------- checker domain
     len=strlen(domain);
+    int flag_dot=0;
     for(counter=0;counter<len;counter++)
     {
         if (isspace(domain[counter]))
@@ -491,10 +504,15 @@ int check_email(char email[])
         {
             if (counter==0 || counter==len-1 || domain[counter+1]=='.' || domain[counter+1]=='-')
                 return 1;
+            else if (domain[counter]=='.')
+                flag_dot++;
         }
         else if (ispunct(domain[counter]))
             return 1;
     }
+    if (flag_dot==0)
+        return 1;
+
     return 0;
 }
 int check_strong_password(char pass[])
@@ -584,10 +602,10 @@ void main()
                         printf("memory is not allowed!");
                         exit(1);
                     }
-                    set_new_departemant(file_departemant);
+                    set_new_departemant(*file_departemant);
 
                     break;
-                
+
                 default:
                     break;
                 }
@@ -600,6 +618,6 @@ void main()
         default:
             break;
     }
-    } 
+    }
 
 }
