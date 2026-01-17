@@ -288,10 +288,13 @@ void unti_hash_to_password(char password[])
         password[i]=temp_ASCII;
     }
 }
-
+ 
 
 void main()
 {
+    FILE *file_departemant;
+    FILE *file_academic;
+
     char *pointer_Uadmin;
     pointer_Uadmin=malloc(sizeof(user_admin));
     pointer_Uadmin=user_admin;
@@ -336,6 +339,14 @@ void main()
                 {
                 case 1:
                     // set new modir gorooh
+                    // ----------------------------------------------- file opening
+                    file_departemant=fopen("file_departemant","a");
+                    if (file_departemant==NULL)
+                    {
+                        printf("memory is not allowed!");
+                        exit(1);
+                    }
+
                     break;
                 
                 default:
