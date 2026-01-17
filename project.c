@@ -236,7 +236,36 @@ void menu_admin_page_print()
     printf("------------------------------\n\n");
     printf("select a option from menu: ");
 }
+int menu_admin_page_filter_selection()
+{
+    char number[3];
+    int num,flag;
+    do
+    {
+        flag=num=0;
+        gets(number);
+        flag=check_str_was_int(number);
+        if (flag)
+        {
+            printf("Invalid input Try agian: ");
+            continue;
+        }
+        else
+        {
+            num=atoi(number) ;
+            if (num>7 || num<1)
+            {
+                printf("Your input is out of range! Try agian: ");
+                flag++;
+                continue;
+            }
 
+            // system("cls");
+            return num;
+        }
+    } while (flag);
+    
+}
 
 void main()
 {
