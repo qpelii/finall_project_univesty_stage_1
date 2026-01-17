@@ -309,14 +309,42 @@ void unti_hash_to_password(char password[])
         password[i]=temp_ASCII;
     }
 }
+int check_str_date(char date[])
+{
+    int len=strlen(date),i,slash_flag=0;
+    int year,mounth,day;
+    for(i=0;i<len;i++)
+        if (date[i]=='/')
+            slash_flag++;
+    if (slash_flag!=3)
+        return 1;
+    sscanf(date,"%d/%d/%d",&year,&mounth,&day);
+    if (year<0 || mounth<1 || mounth>12 || day<1 || day>31)
+        return 1;
+        
+    return 0;
+    
+}
 void set_new_departemant(FILE file_departemant)
 {
     char name[20],famly[30],date_start[15],name_of_group[20],ID_code[15],phone_num[15],email[40],user_Name[20];
     printf("Please enter this information about Departemant\n")
     printf("Enter name: ");
-    gets(name);
+    do{
+        gets(name);
+        if (check_str_full_alpha_whit_space)
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
     printf("Enter famly: ");
-    gets(famly);
+    do{
+        gets(famly);
+        if (check_str_full_alpha_whit_space)
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
     printf("Enter date start Departemant: ");
     gets(date_start);
     printf("Enter name of Departiment group: ");
