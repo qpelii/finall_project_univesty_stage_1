@@ -96,6 +96,27 @@ int check_str_whitout_space(char string[])
     
     return 0;
 }
+int check_str_full_alpha_whit_space(char string[])
+{
+    int len=strlen(string),i;
+    for (i=0;i<len;i++)
+        if (!isalpha(string[i]))
+            if (isspace(string[i]))
+                continue;
+            else
+                return 1;
+    
+    return 0;
+}
+int check_str_full_alpha_whitout_space(char string[])
+{
+    int len=strlen(string),i;
+    for (i=0;i<len;i++)
+        if (!isalpha(string[i]))
+                return 1;
+    
+    return 0;
+}
 int check_corect_pass_and_set_limit(char corect_pass[], int limit_time)
 {
     // note: if corect --> return 0;  ||  if invalid --> return 1;  ||  if have limit -->return 2; if want Exit -->return -1;
@@ -288,7 +309,28 @@ void unti_hash_to_password(char password[])
         password[i]=temp_ASCII;
     }
 }
- 
+void set_new_departemant(FILE file_departemant)
+{
+    char name[20],famly[30],date_start[15],name_of_group[20],ID_code[15],phone_num[15],email[40],user_Name[20];
+    printf("Please enter this information about Departemant\n")
+    printf("Enter name: ");
+    gets(name);
+    printf("Enter famly: ");
+    gets(famly);
+    printf("Enter date start Departemant: ");
+    gets(date_start);
+    printf("Enter name of Departiment group: ");
+    gets(name_of_group);
+    printf("Enter ID: ");
+    gets(ID_code);
+    printf("Enter Phone number: ");
+    gets(phone_num);
+    printf("Enter Email: ");
+    gets(email);
+    printf("Enter User name of Departemant: ");
+    gets(user_Name);
+    
+}
 
 void main()
 {
