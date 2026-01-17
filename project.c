@@ -171,7 +171,7 @@ int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_t
             return -1;
         int len_get_user=strlen(user),len_corect_user=strlen(user_corect);
         str_to_lower(user);
-        if (strcmp(user,user_corect)!=0 || len_corect_user!=len_get_user)
+        if (strcmp(user,user_corect)!=0 || len_corect_user!=len_get_user || check_str_whitout_space)
         {
             printf("This user name is Invalid! Try agian\n");
             continue;
@@ -327,37 +327,117 @@ int check_str_date(char date[])
 }
 void set_new_departemant(FILE file_departemant)
 {
-    char name[20],famly[30],date_start[15],name_of_group[20],ID_code[15],phone_num[15],email[40],user_Name[20];
+    char name[20],family[30],date_start[15],name_of_group[20],ID_code[15],phone_num[15],email[40],user_Name[20];
     printf("Please enter this information about Departemant\n")
+
     printf("Enter name: ");
     do{
         gets(name);
-        if (check_str_full_alpha_whit_space)
+        if (check_str_full_alpha_whit_space(name))
             printf("Invalid input! Try again: ");
         else
             break;
     }while(1);
-    printf("Enter famly: ");
+
+    printf("Enter family: ");
     do{
-        gets(famly);
-        if (check_str_full_alpha_whit_space)
+        gets(family);
+        if (check_str_full_alpha_whit_space(family))
             printf("Invalid input! Try again: ");
         else
             break;
     }while(1);
-    printf("Enter date start Departemant: ");
-    gets(date_start);
+
+    printf("Enter date start Departemant\n(hint:enter whit this form YYYY/MM/DD): ");
+    do{
+        gets(date_start);
+        if (check_str_date(date_start))
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1)
+
     printf("Enter name of Departiment group: ");
-    gets(name_of_group);
+    do{
+        gets(name_of_group);
+        if (check_str_full_alpha_whit_space(name_of_group))
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1)
+
     printf("Enter ID: ");
-    gets(ID_code);
-    printf("Enter Phone number: ");
-    gets(phone_num);
+    do{
+        gets(ID_code);
+        if (check_str_was_int(ID_code))
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1)
+
+    printf("Enter Phone number(whit this form 09123456789): ");
+    do{
+        gets(phone_num);
+        if (check_str_was_int(phone_num) || phone_num[0]!='0' || phone_num[1]!='9')
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1)
+
     printf("Enter Email: ");
     gets(email);
     printf("Enter User name of Departemant: ");
     gets(user_Name);
     
+}
+int check_email(char email[])
+{
+    // if corect -> 0 else 1;
+    int counter,counter_2=0,len=strlen(email),atsing_flag=0;
+    char name_email[45]="",domain[30]="";
+    for(counter=0;counter<len;counter++)
+    {
+        if (word_input[counter]=='@')
+            atsing_flag++;
+        else if (atsing_flag==0)
+            name_email[counter]=word_input[counter];
+        else if (atsing_flag==1)
+            domain[counter_2++]=word_input[counter];
+    }
+    if (atsing_flag!=1)
+        return 1;
+    
+    // ---------------------------------------------- checker name mail
+    len=strlen(name_email);
+    for(counter=0;counter<len;counter++)
+    {
+        if (isspace(name_email[counter]))
+            return 1;
+
+        if (name_email[counter]=='-' || name_email[counter]=='_' || name_email[counter]=='+' || name_email[counter]=='.')
+        {
+            if (counter==0 || counter==len-1)
+            return 1;
+        }
+        else if (ispunct(name_email[counter]))
+            return 1;
+        
+    }
+    // ---------------------------------------------- checker name mail
+    len=strlen(domain);
+    for(counter=0;counter<len;counter++)
+    {
+        if (isspace(domain[counter]))
+            return 1;
+        if (domain[counter]=='-' || domain[counter]=='.')
+        {
+            if (counter==0 || counter==len-1 || domain[counter+1]=='.' || domain[counter+1]=='-')
+                return 1;
+        }
+        else if (ispunct(domain[counter]))
+            return 1;
+    }
+    return 0;
 }
 
 void main()
