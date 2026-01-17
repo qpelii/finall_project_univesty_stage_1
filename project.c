@@ -266,6 +266,34 @@ int menu_admin_page_filter_selection()
     } while (flag);
     
 }
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+#include<ctype.h>
+#include<string.h>
+void password_to_hash(char password[])
+{
+    int len=strlen(password);
+    int temp_ASCII;
+    for (int i=0; i<len; i++)
+    {
+        temp_ASCII=password[i];
+        temp_ASCII= temp_ASCII+26;
+        password[i]=temp_ASCII;
+    }
+}
+void unti_hash_to_password(char password[])
+{
+    int len=strlen(password);
+    int temp_ASCII;
+    for (int i=0; i<len; i++)
+    {
+        temp_ASCII=password[i];
+        temp_ASCII= (temp_ASCII-26);
+        password[i]=temp_ASCII;
+    }
+}
+
 
 void main()
 {
