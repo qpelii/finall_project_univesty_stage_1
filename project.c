@@ -337,6 +337,92 @@ int check_str_date(char date[])
     return 0;
 
 }
+
+int check_email(char email[])
+{
+    // if corect -> 0 else 1;
+    int counter,counter_2=0,len=strlen(email),atsing_flag=0;
+    char name_email[45]="",domain[30]="";
+    for(counter=0;counter<len;counter++)
+    {
+        if (email[counter]=='@')
+            atsing_flag++;
+        else if (atsing_flag==0)
+            name_email[counter]=email[counter];
+        else if (atsing_flag==1)
+            domain[counter_2++]=email[counter];
+    }
+    if (atsing_flag!=1)
+        return 1;
+
+    // ---------------------------------------------- checker name mail
+    len=strlen(name_email);
+    for(counter=0;counter<len;counter++)
+    {
+        if (isspace(name_email[counter]))
+            return 1;
+
+        if (name_email[counter]=='-' || name_email[counter]=='_' || name_email[counter]=='+' || name_email[counter]=='.')
+        {
+            if (counter==0 || counter==len-1)
+            return 1;
+        }
+        else if (ispunct(name_email[counter]))
+            return 1;
+
+    }
+    // ---------------------------------------------- checker domain
+    len=strlen(domain);
+    int flag_dot=0;
+    for(counter=0;counter<len;counter++)
+    {
+        if (isspace(domain[counter]))
+            return 1;
+        if (domain[counter]=='-' || domain[counter]=='.')
+        {
+            if (counter==0 || counter==len-1 || domain[counter+1]=='.' || domain[counter+1]=='-')
+                return 1;
+            else if (domain[counter]=='.')
+                flag_dot++;
+        }
+        else if (ispunct(domain[counter]))
+            return 1;
+    }
+    if (flag_dot==0)
+        return 1;
+
+    return 0;
+}
+int check_strong_password(char pass[])
+{
+    // note: 1==tow meny few char|2==not digit|3==not alpha upper|4== not !@#$| 5== not char lower| 0==corect
+    int len=strlen(pass),i;
+    int flag_upper=0,flag_lower=0,flag_punct=0,flag_digit=0;
+    if (len<8)
+        return 1;
+    for(i=0;i<len;i++)
+    {
+        if (isupper(pass[i]))
+            flag_upper++;
+        else if (islower(pass[i]))
+            flag_lower++;
+        else if (ispunct(pass[i]))
+            flag_punct++;
+        else if (isdigit(pass[i]))
+            flag_digit++;
+    }
+    if (flag_digit==0)
+        return 2;
+    else if (flag_upper==0)
+        return 3;
+    else if (flag_punct==0)
+        return 4;
+    else if (flag_lower==0)
+        return 5;
+
+    return 0;
+
+}
 void set_new_departemant(FILE file_departemant)
 {
     char name[20],family[30],date_start[15],name_of_group[20],ID_code[15],phone_num[15],email[40],user_Name[20];
@@ -451,7 +537,7 @@ void set_new_departemant(FILE file_departemant)
         gets(pass2);
         if (strcmp(pass1,pass2)!=0)
         {
-            printf("your password is not corect! Try agian");
+            printf("your password is not corect! Try agian: ");
             continue;
         }
         break;
@@ -460,91 +546,7 @@ void set_new_departemant(FILE file_departemant)
 
 
 }
-int check_email(char email[])
-{
-    // if corect -> 0 else 1;
-    int counter,counter_2=0,len=strlen(email),atsing_flag=0;
-    char name_email[45]="",domain[30]="";
-    for(counter=0;counter<len;counter++)
-    {
-        if (email[counter]=='@')
-            atsing_flag++;
-        else if (atsing_flag==0)
-            name_email[counter]=email[counter];
-        else if (atsing_flag==1)
-            domain[counter_2++]=email[counter];
-    }
-    if (atsing_flag!=1)
-        return 1;
 
-    // ---------------------------------------------- checker name mail
-    len=strlen(name_email);
-    for(counter=0;counter<len;counter++)
-    {
-        if (isspace(name_email[counter]))
-            return 1;
-
-        if (name_email[counter]=='-' || name_email[counter]=='_' || name_email[counter]=='+' || name_email[counter]=='.')
-        {
-            if (counter==0 || counter==len-1)
-            return 1;
-        }
-        else if (ispunct(name_email[counter]))
-            return 1;
-
-    }
-    // ---------------------------------------------- checker domain
-    len=strlen(domain);
-    int flag_dot=0;
-    for(counter=0;counter<len;counter++)
-    {
-        if (isspace(domain[counter]))
-            return 1;
-        if (domain[counter]=='-' || domain[counter]=='.')
-        {
-            if (counter==0 || counter==len-1 || domain[counter+1]=='.' || domain[counter+1]=='-')
-                return 1;
-            else if (domain[counter]=='.')
-                flag_dot++;
-        }
-        else if (ispunct(domain[counter]))
-            return 1;
-    }
-    if (flag_dot==0)
-        return 1;
-
-    return 0;
-}
-int check_strong_password(char pass[])
-{
-    // note: 1==tow meny few char|2==not digit|3==not alpha upper|4== not !@#$| 5== not char lower| 0==corect
-    int len=strlen(pass),i;
-    int flag_upper=0,flag_lower=0,flag_punct=0,flag_digit=0;
-    if (len<8)
-        return 1;
-    for(i=0;i<len;i++)
-    {
-        if (isupper(pass[i]))
-            flag_upper++;
-        else if (islower(pass[i]))
-            flag_lower++;
-        else if (ispunct(pass[i]))
-            flag_punct++;
-        else if (isdigit(pass[i]))
-            flag_digit++;
-    }
-    if (flag_digit==0)
-        return 2;
-    else if (flag_upper==0)
-        return 3;
-    else if (flag_punct==0)
-        return 4;
-    else if (flag_lower==0)
-        return 5;
-
-    return 0;
-
-}
 
 void main()
 {
@@ -589,26 +591,30 @@ void main()
             int login_flag=get_check_user_pass(pointer_Uadmin,pointer_Padmin,pointer_Limit_admin);// 1:= succces; 2:unsaccses; -1:cancel login;
             if (login_flag==0)
             {
-                menu_admin_page_print();
-                menu_type=menu_admin_page_filter_selection();
-                switch (menu_type)
-                {
-                case 1:
-                    // set new modir gorooh
-                    // ----------------------------------------------- file opening
-                    file_departemant=fopen("file_departemant.txt","a");
-                    if (file_departemant==NULL)
+                do{
+                    menu_admin_page_print();
+                    menu_type=menu_admin_page_filter_selection();
+                    switch (menu_type)
                     {
-                        printf("memory is not allowed!");
-                        exit(1);
+                    case 1:
+                        // set new modir gorooh
+                        // ----------------------------------------------- file opening
+                        file_departemant=fopen("file_departemant.txt","a");
+                        if (file_departemant==NULL)
+                        {
+                            printf("memory is not allowed!");
+                            exit(1);
+                        }
+                        set_new_departemant(*file_departemant);
+                        break;
+                        
+                        case 7:
+                            break;
+
+                    default:
+                        break;
                     }
-                    set_new_departemant(*file_departemant);
-
-                    break;
-
-                default:
-                    break;
-                }
+                }while(menu_type!=7);
             }
             break;
         case 4:
