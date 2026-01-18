@@ -227,7 +227,11 @@ int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_t
         change_form_time(time);
         printf("\n");
         printf("prese enter to continue");
-        getchar();
+        char temp;
+        do
+        {
+            temp=getch();
+        } while (temp!=13);
     }
     if (flag_pass==2)
     {
@@ -237,8 +241,13 @@ int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_t
         printf("You have been limited!! Try agian after ");
         change_form_time(time);
         printf(" later\n");
-        printf("prese enter to continue");
-        getchar();
+        printf("prese Enter to continue");
+        char temp;
+        do
+        {
+            temp=getch();
+        } while (temp!=13);
+        
     }
     return 1;
 }
@@ -480,7 +489,7 @@ void set_new_departemant()
             break;
     }while(1);
 
-    printf("Enter date start Departemant\n(hint:enter whit this form YYYY/MM/DD): ");
+    printf("Enter date start Departemant\n(hint:enter whith this form YYYY/MM/DD): ");
     do{
         gets(date_start);
         if (check_str_date(date_start) || strlen(date_start)==0)
