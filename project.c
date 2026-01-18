@@ -167,7 +167,7 @@ int check_corect_pass_and_set_limit(char corect_pass[], int limit_time)
         return 2;
     for(i=0;i<3;i++)
     {
-        printf("eneter your password: ");
+        printf("eneter your password:\n");
         password_to_star(pass);
         if (strlen(pass)==0)
             return -1;
@@ -796,11 +796,13 @@ int set_departemants_as_link_list()
         printf("Error! program need fierst set Departemant!\n");
     char temp[225],info[50]={0};
     int i=0,j=0,flag_info=1;
-    for(i=0;;i++)
+    fgets(temp,225,departemant);
+    int len=strlen(temp);
+    for(i=0;i<len;i++)
     {
-        fgets(temp,225,departemant);
-        if (temp[i]==',' && temp[i+1]==' ')
+        if ((temp[i]==',' && temp[i+1]==' ') || temp[i]=='\n')
         {
+            info[j]='\0';
             switch (flag_info)
             {
             case 1:
@@ -845,15 +847,19 @@ int set_departemants_as_link_list()
     }   
     start_struct_departemant->link=NULL;
     
-    while (feof(departemant)==0)
+    while (1)
     {
         temp_struct_separtemant=malloc(sizeof(struct struct_departeman));
+        temp[0]='\0';
         fgets(temp,225,departemant);
-        flag_info=0,i=0,j=0;
-        while(flag_info!=9)
+        if (strlen(temp)==0)
+            break;
+        flag_info=1,i=0,j=0;
+        while(flag_info!=10)
         {
-            if (temp[i]==',' && temp[i+1]==' ')
+            if ((temp[i]==',' && temp[i+1]==' ') || temp[i]=='\n')
             {
+                info[j]='\0';
                 switch (flag_info)
                 {
                 case 1:
@@ -895,6 +901,7 @@ int set_departemants_as_link_list()
                 info[j]=temp[i];
                 j++;
             }
+            i++;
         }
         temp_struct_separtemant->link=NULL;
         end_struct_departemant->link=temp_struct_separtemant;
@@ -935,7 +942,7 @@ void main()
     start_struct_departemant=malloc(sizeof(struct struct_departeman));
     
     
-    
+    int temp_flag=0;
     while(1)
     {
     menu_login_print();
@@ -961,7 +968,10 @@ void main()
                         set_new_academic();
                         break;
                     case 3:
-                        set_departemants_as_link_list();
+                        temp_flag=set_departemants_as_link_list();
+                        if (temp_flag==1)
+                            break;
+                        
                         break;
                     case 7:
                         break;
