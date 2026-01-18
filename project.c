@@ -528,7 +528,7 @@ void set_new_departemant()
     printf("Enter User name of Departemant: ");
     do{
         gets(user_Name);    // ----------------------------- need edit for duplicated user_name
-        if (check_str_whitout_space(user_Name))
+        if (check_str_whitout_space(user_Name) || strlen(user_Name)==0)
             printf("Invalid input! Try again: ");
         else
         {
@@ -541,11 +541,12 @@ void set_new_departemant()
     do
     {
         gets(pass1);
-        if (check_str_whitout_space(pass1))
+        if (check_str_whitout_space(pass1) || strlen(pass1)==0)
         {
            printf("Invalid input! Try again: ");
             continue;
         }
+        // ----- show why eror
         switch (check_strong_password(pass1))
         {
         case 1:
@@ -571,7 +572,7 @@ void set_new_departemant()
 
         printf("Please repeat password: ");
         gets(pass2);
-        if (strcmp(pass1,pass2)!=0)
+        if (strcmp(pass1,pass2)!=0 || strlen(pass1)!=strlen(pass2))
         {
             printf("your password is not corect! Try agian: ");
             continue;
@@ -597,11 +598,164 @@ void set_new_departemant()
     fputs(", ",file_departemant);
     fputs(pass1,file_departemant);
     fputc('\n',file_departemant);
-    printf("Successfully added!");
+    printf("Successfully added!\npreas Enter to continue");
     fclose(file_departemant);
+    char temp;
+    do
+    {
+        temp=getch();
+    } while (temp!=13);
+    
 
 }
+void set_new_academic()
+{
+    FILE *file_academic;
+    file_academic=fopen("file_academic.txt","a");
+    if (file_academic==NULL)
+    {
+        printf("memory is not allowed!");
+        exit(1);
+    }
+    char name[20],family[30],date_start[15],rate[10],phone_num[15],email[40],user_Name[20];
+    char pass1[50],pass2[50];
+    printf("Please enter this information about Academic\n");
 
+    printf("Enter name: ");
+    do{
+        gets(name);
+        if (check_str_full_alpha_whit_space(name) || strlen(name)==0)
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+
+    printf("Enter family: ");
+    do{
+        gets(family);
+        if (check_str_full_alpha_whit_space(family) || strlen(family)==0)
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+
+    printf("Enter date start Academic\n(hint:enter whit this form YYYY/MM/DD): ");
+    do{
+        gets(date_start);
+        if (check_str_date(date_start) || strlen(date_start)==0)
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+
+    printf("Enter Rated of Academic : ");
+    do{
+        gets(rate);
+        if (check_str_full_alpha_whit_space(rate) || strlen(rate)==0)
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+
+    printf("Enter Phone number(whit this form 09123456789): ");
+    do{
+        gets(phone_num);
+        if (check_str_was_int(phone_num) || phone_num[0]!='0' || phone_num[1]!='9' || strlen(phone_num)!=11)
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+
+    printf("Enter Email: ");
+    do{
+        gets(email);
+        if (check_email(email))
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+
+    printf("Enter User name of Academic: ");
+    do{
+        gets(user_Name);    // ----------------------------- need edit for duplicated user_name
+        if (check_str_whitout_space(user_Name) || strlen(user_Name)==0)
+            printf("Invalid input! Try again: ");
+        else
+        {
+            str_to_lower(user_Name);
+            break;
+        }
+    }while(1);
+
+    printf("Set Password for Academic: ");
+    do
+    {
+        gets(pass1);
+        if (check_str_whitout_space(pass1) || strlen(pass1)==0)
+        {
+           printf("Invalid input! Try again: ");
+            continue;
+        }
+        // ----- show why eror
+        switch (check_strong_password(pass1))
+        {
+        case 1:
+            printf("too few character! Try again: ");
+            break;
+        case 2:
+            printf("Your password for security must have number! Try again: ");
+            break;
+        case 3:
+            printf("Your password must have Capital and Small letters! Try again: ");
+            break;
+        case 4:
+            printf("Your password must have punct(!@#$%^) character! Try again: ");
+            break;
+        case 5:
+            printf("Your password must have Capital and Small letters! Try again: ");
+            break;
+        default:
+            break;
+        }
+        if (check_strong_password(pass1))
+            continue;
+
+        printf("Please repeat password: ");
+        gets(pass2);
+        if (strcmp(pass1,pass2)!=0 || strlen(pass1)!=strlen(pass2))
+        {
+            printf("your password is not corect! Try agian: ");
+            continue;
+        }
+        break;
+    } while (1);
+    // ----------------------------------file apend
+    fputs(name,file_academic);
+    fputs(", ",file_academic);
+    fputs(family,file_academic);
+    fputs(", ",file_academic);
+    fputs(date_start,file_academic);
+    fputs(", ",file_academic);
+    fputs(rate,file_academic);
+    fputs(", ",file_academic);
+    fputs(phone_num,file_academic);
+    fputs(", ",file_academic);
+    fputs(email,file_academic);
+    fputs(", ",file_academic);
+    fputs(user_Name,file_academic);
+    fputs(", ",file_academic);
+    fputs(pass1,file_academic);
+    fputc('\n',file_academic);
+    printf("Successfully added!\npreas Enter to continue");
+    fclose(file_academic);
+    char temp;
+    do
+    {
+        temp=getch(); 
+    } while (temp!=13);
+    
+
+}
 
 void main()
 {
@@ -652,9 +806,10 @@ void main()
                     case 1:
                         set_new_departemant();
                         break;
-
-                        case 7:
-                            break;
+                    case 2:
+                        set_new_academic();
+                    case 7:
+                        break;
 
                     default:
                         break;
