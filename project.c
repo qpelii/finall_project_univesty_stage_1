@@ -3,6 +3,7 @@
 #include<ctype.h>
 #include<string.h>
 #include<time.h>
+#include<conio.h>
 static char user_admin[10]="admin";
 static char pass_admin[20]="dgplq456789";// hashed
 static long int limit_admin=0;
@@ -57,6 +58,32 @@ void str_to_lower(char text[])
     int len=strlen(text),i;
     for (i=0; i<len; i++)
         text[i]=tolower(text[i]);
+}
+void password_to_star(char pass_pointer[])
+{
+    char pass[50];
+    int i=0;
+    do{
+        pass[i]=getch();
+        switch (pass[i])
+        {
+        case 8:
+            printf("\b \b");
+            pass[i-1]='\0';
+            pass[i]='\0';
+            i=i-1;
+            break;
+        case 13:
+            printf("\n");
+            break;
+        default:
+            printf("*");
+            i++;
+            break;
+        }
+    }while(pass[i]!=13);
+    pass[i]='\0';
+    strcpy(pass_pointer,pass);
 }
 int menu_login_filter_selection()
 {
@@ -122,13 +149,13 @@ int check_corect_pass_and_set_limit(char corect_pass[], int limit_time)
 {
     // note: if corect --> return 0;  ||  if invalid --> return 1;  ||  if have limit -->return 2; if want Exit -->return -1;
     int i;
-    char pass[50];
+    char pass[50]={0};
     if (limit_time-time(NULL)>0)
         return 2;
     for(i=0;i<3;i++)
     {
         printf("eneter your password: ");
-        gets(pass);
+        password_to_star(pass);
         if (strlen(pass)==0)
             return -1;
         int len_get_pass=strlen(pass),len_corect_pass=strlen(corect_pass);
