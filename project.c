@@ -422,8 +422,15 @@ int check_strong_password(char pass[])
     return 0;
 
 }
-void set_new_departemant(FILE file_departemant)
+void set_new_departemant()
 {
+    FILE *file_departemant;
+    file_departemant=fopen("file_departemant.txt","a");
+    if (file_departemant==NULL)
+    {
+        printf("memory is not allowed!");
+        exit(1);
+    }
     char name[20],family[30],date_start[15],name_of_group[20],ID_code[15],phone_num[15],email[40],user_Name[20];
     char pass1[50],pass2[50];
     printf("Please enter this information about Departemant\n");
@@ -497,7 +504,10 @@ void set_new_departemant(FILE file_departemant)
         if (check_str_whitout_space(user_Name))
             printf("Invalid input! Try again: ");
         else
+        {
+            str_to_lower(user_Name);
             break;
+        }
     }while(1);
 
     printf("Set Password for Departemant: ");
@@ -541,17 +551,34 @@ void set_new_departemant(FILE file_departemant)
         }
         break;
     } while (1);
-
-
+    // ----------------------------------file apend
+    fputs(name,file_departemant);
+    fputs(", ",file_departemant);
+    fputs(family,file_departemant);
+    fputs(", ",file_departemant);
+    fputs(date_start,file_departemant);
+    fputs(", ",file_departemant);
+    fputs(name_of_group,file_departemant);
+    fputs(", ",file_departemant);
+    fputs(ID_code,file_departemant);
+    fputs(", ",file_departemant);
+    fputs(phone_num,file_departemant);
+    fputs(", ",file_departemant);
+    fputs(email,file_departemant);
+    fputs(", ",file_departemant);
+    fputs(user_Name,file_departemant);
+    fputs(", ",file_departemant);
+    fputs(pass1,file_departemant);
+    fputc('\n',file_departemant);
+    printf("Successfully added!");
+    fclose(file_departemant);
 
 }
 
 
 void main()
 {
-    FILE *file_departemant;
     FILE *file_academic;
-
     char *pointer_Uadmin;
     pointer_Uadmin=malloc(sizeof(user_admin));
     pointer_Uadmin=user_admin;
@@ -596,15 +623,7 @@ void main()
                     switch (menu_type)
                     {
                     case 1:
-                        // set new modir gorooh
-                        // ----------------------------------------------- file opening
-                        file_departemant=fopen("file_departemant.txt","a");
-                        if (file_departemant==NULL)
-                        {
-                            printf("memory is not allowed!");
-                            exit(1);
-                        }
-                        set_new_departemant(*file_departemant);
+                        set_new_departemant();
                         break;
 
                         case 7:
