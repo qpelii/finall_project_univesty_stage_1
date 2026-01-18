@@ -7,7 +7,7 @@
 static char user_admin[10]="admin";
 static char pass_admin[20]="dgplq456789";// hashed
 static long int limit_admin=0;
-struct struct_departeman
+struct struct_departemant
 {
     char name[20];
     char family[30];
@@ -18,9 +18,22 @@ struct struct_departeman
     char email[40];
     char user_Name[20];
     char pass1[50];
-    struct struct_departeman *link;
+    struct struct_departemant *link;
 };
-struct struct_departeman *start_struct_departemant, *end_struct_departemant, *temp_struct_separtemant;
+struct struct_departemant *start_struct_departemant, *end_struct_departemant, *temp_struct_departemant;
+struct struct_academic
+{
+    char name[20];
+    char family[30];
+    char date_start[15];
+    char rate[15];
+    char phone_num[15];
+    char email[40];
+    char user_Name[20];
+    char pass1[50];
+    struct struct_academic *link;
+};
+struct struct_academic *start_struct_academic, *end_struct_academic, *temp_struct_academic;
 
 void menu_login_print()
 {
@@ -782,7 +795,7 @@ void set_new_academic()
 }
 int set_departemants_as_link_list()
 {
-    start_struct_departemant=malloc(sizeof(struct struct_departeman));
+    start_struct_departemant=malloc(sizeof(struct struct_departemant));
     if (start_struct_departemant==NULL)
     {
         printf("memory is not allowed!");
@@ -796,7 +809,10 @@ int set_departemants_as_link_list()
         printf("Error! program need fierst set Departemant!\n");
     char temp[225],info[50]={0};
     int i=0,j=0,flag_info=1;
+    temp[0]='\0';
     fgets(temp,225,departemant);
+    if (strlen(temp)==0)
+            return 1;
     int len=strlen(temp);
     for(i=0;i<len;i++)
     {
@@ -849,7 +865,7 @@ int set_departemants_as_link_list()
     
     while (1)
     {
-        temp_struct_separtemant=malloc(sizeof(struct struct_departeman));
+        temp_struct_departemant=malloc(sizeof(struct struct_departemant));
         temp[0]='\0';
         fgets(temp,225,departemant);
         if (strlen(temp)==0)
@@ -863,31 +879,31 @@ int set_departemants_as_link_list()
                 switch (flag_info)
                 {
                 case 1:
-                    strcpy(temp_struct_separtemant->name,info);
+                    strcpy(temp_struct_departemant->name,info);
                     break;
                 case 2:
-                    strcpy(temp_struct_separtemant->family,info);
+                    strcpy(temp_struct_departemant->family,info);
                     break;
                 case 3:
-                    strcpy(temp_struct_separtemant->date_start,info);
+                    strcpy(temp_struct_departemant->date_start,info);
                     break;
                 case 4:
-                    strcpy(temp_struct_separtemant->name_of_group,info);
+                    strcpy(temp_struct_departemant->name_of_group,info);
                     break;
                 case 5:
-                    strcpy(temp_struct_separtemant->ID_code,info);
+                    strcpy(temp_struct_departemant->ID_code,info);
                     break;
                 case 6:
-                    strcpy(temp_struct_separtemant->phone_num,info);
+                    strcpy(temp_struct_departemant->phone_num,info);
                     break;
                 case 7:
-                    strcpy(temp_struct_separtemant->email,info);
+                    strcpy(temp_struct_departemant->email,info);
                     break;
                 case 8:
-                    strcpy(temp_struct_separtemant->user_Name,info);
+                    strcpy(temp_struct_departemant->user_Name,info);
                     break;
                 case 9:
-                    strcpy(temp_struct_separtemant->pass1,info);
+                    strcpy(temp_struct_departemant->pass1,info);
                     break;
                 default:
                     break;
@@ -903,10 +919,140 @@ int set_departemants_as_link_list()
             }
             i++;
         }
-        temp_struct_separtemant->link=NULL;
-        end_struct_departemant->link=temp_struct_separtemant;
-        end_struct_departemant=temp_struct_separtemant;
+        temp_struct_departemant->link=NULL;
+        end_struct_departemant->link=temp_struct_departemant;
+        end_struct_departemant=temp_struct_departemant;
     }
+    fclose(departemant);
+    free(temp_struct_departemant);
+    return 0;
+}
+int set_academic_as_link_list()
+{
+    start_struct_academic=malloc(sizeof(struct struct_academic));
+    if (start_struct_academic==NULL)
+    {
+        printf("memory is not allowed!");
+        return 1;
+    }
+    end_struct_academic=start_struct_academic;
+
+    FILE *academic;
+    academic=fopen("file_academic.txt", "r");
+    if (academic==NULL)
+        printf("Error! program need fierst set Departemant!\n");
+    char temp[225],info[50]={0};
+    int i=0,j=0,flag_info=1;
+    temp[0]='\0';
+    fgets(temp,225,academic);
+    if (strlen(temp)==0)
+            return 1;
+    int len=strlen(temp);
+    for(i=0;i<len;i++)
+    {
+        if ((temp[i]==',' && temp[i+1]==' ') || temp[i]=='\n')
+        {
+            info[j]='\0';
+            switch (flag_info)
+            {
+            case 1:
+                strcpy(start_struct_academic->name,info);
+                break;
+            case 2:
+                strcpy(start_struct_academic->family,info);
+                break;
+            case 3:
+                strcpy(start_struct_academic->date_start,info);
+                break;
+            case 4:
+                strcpy(start_struct_academic->rate,info);
+                break;
+            case 5:
+                strcpy(start_struct_academic->phone_num,info);
+                break;
+            case 6:
+                strcpy(start_struct_academic->email,info);
+                break;
+            case 7:
+                strcpy(start_struct_academic->user_Name,info);
+                break;
+            case 8:
+                strcpy(start_struct_academic->pass1,info);
+                break;
+            default:
+                break;
+            }
+            flag_info++;
+            j=0;
+            i++;
+        }
+        else
+        {
+            info[j]=temp[i];
+            j++;
+        }
+    }   
+    start_struct_academic->link=NULL;
+    
+    while (1)
+    {
+        temp_struct_academic=malloc(sizeof(struct struct_academic));
+        temp[0]='\0';
+        fgets(temp,225,academic);
+        if (strlen(temp)==0)
+            break;
+        flag_info=1,i=0,j=0;
+        while(flag_info!=9)
+        {
+            if ((temp[i]==',' && temp[i+1]==' ') || temp[i]=='\n')
+            {
+                info[j]='\0';
+                switch (flag_info)
+                {
+                case 1:
+                    strcpy(temp_struct_academic->name,info);
+                    break;
+                case 2:
+                    strcpy(temp_struct_academic->family,info);
+                    break;
+                case 3:
+                    strcpy(temp_struct_academic->date_start,info);
+                    break;
+                case 4:
+                    strcpy(temp_struct_academic->rate,info);
+                    break;
+                case 5:
+                    strcpy(temp_struct_academic->phone_num,info);
+                    break;
+                case 6:
+                    strcpy(temp_struct_academic->email,info);
+                    break;
+                case 7:
+                    strcpy(temp_struct_academic->user_Name,info);
+                    break;
+                case 8:
+                    strcpy(temp_struct_academic->pass1,info);
+                    break;
+                default:
+                    break;
+                }
+                flag_info++;
+                j=0;
+                i++;
+            }
+            else
+            {
+                info[j]=temp[i];
+                j++;
+            }
+            i++;
+        }
+        temp_struct_academic->link=NULL;
+        end_struct_academic->link=temp_struct_academic;
+        end_struct_academic=temp_struct_academic;
+    }
+    fclose(academic);
+    free(temp_struct_academic);
     return 0;
 }
 
@@ -939,7 +1085,6 @@ void main()
     }
     long int *limit;
     
-    start_struct_departemant=malloc(sizeof(struct struct_departeman));
     
     
     int temp_flag=0;
@@ -957,6 +1102,7 @@ void main()
             if (login_flag==0)
             {
                 do{
+                    start_struct_departemant=malloc(sizeof(struct struct_departemant));
                     menu_admin_page_print();
                     menu_type=menu_admin_page_filter_selection();
                     switch (menu_type)
