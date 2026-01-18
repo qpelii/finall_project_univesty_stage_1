@@ -337,7 +337,6 @@ int check_str_date(char date[])
     return 0;
 
 }
-
 int check_email(char email[])
 {
     // if corect -> 0 else 1;
@@ -558,7 +557,7 @@ void main()
     pointer_Uadmin=user_admin;
     if (pointer_Uadmin==NULL)
     {
-        printf("memory is not allow!");
+        printf("memory is not allow! Try later");
         exit(1);
     }
     char *pointer_Padmin;
@@ -566,7 +565,7 @@ void main()
     pointer_Padmin=pass_admin;
     if (pointer_Padmin==NULL)
     {
-        printf("memory is not allow!");
+        printf("memory is not allow! Try later");
         exit(1);
     }
     long int *pointer_Limit_admin;
@@ -574,10 +573,9 @@ void main()
     *pointer_Limit_admin=limit_admin;
     if (pointer_Limit_admin==NULL)
     {
-        printf("memory is not allow!");
+        printf("memory is not allow! Try later");
         exit(1);
     }
-    char user[30],password[50];
     long int *limit;
     while(1)
     {
@@ -588,7 +586,8 @@ void main()
     {
         case 1:
             unti_hash_to_password(pointer_Padmin);
-            int login_flag=get_check_user_pass(pointer_Uadmin,pointer_Padmin,pointer_Limit_admin);// 1:= succces; 2:unsaccses; -1:cancel login;
+            int login_flag=get_check_user_pass(pointer_Uadmin,pointer_Padmin,pointer_Limit_admin);// 0:= succces; 1,2:unsaccses; -1:cancel login;
+            password_to_hash(pointer_Padmin);
             if (login_flag==0)
             {
                 do{
@@ -607,7 +606,7 @@ void main()
                         }
                         set_new_departemant(*file_departemant);
                         break;
-                        
+
                         case 7:
                             break;
 
