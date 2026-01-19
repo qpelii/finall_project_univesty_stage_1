@@ -302,7 +302,7 @@ void menu_admin_page_print()
         strcpy(temp,"Keck user from system");
         break;
     case 4:
-        strcpy(temp,"Grt Log");
+        strcpy(temp,"Get Log");
         break;
     case 5:
         strcpy(temp,"Get backup from Files");
@@ -1255,13 +1255,24 @@ void kick_user()
         str_to_lower(user_name);
         if (strlen(user_name)==0)
         {
-            flag=2;
-            break;
+            system("cls");
+            return ;
         }
         flag=search_user_name_academic(user_name);
         if (flag==1)
             printf("user not found!! Try agian: ");
     } while (flag);
+    if (temp_struct_academic->ekhraj[0]!='N')
+    {
+        printf("This user already kicked from program!\n");
+        printf("Preas Enter to back menu\n");
+        do
+        {
+            user_name[0]=getch();
+        } while (user_name[0]!=13);
+        system("cls");
+        return ;
+    }    
     if (flag==0)
     {
         char date[20];
@@ -1272,8 +1283,80 @@ void kick_user()
 }
 void list_of_log_print()
 {
-    
+    char temp[25],line_char='|';
+    printf("\n---------------------------\n");
+    for(int i=0; i<4; i++)
+    {
+    printf("%c%-2d%c",line_char,i+1,line_char);
+    switch (i)
+    {
+    case 0:
+        strcpy(temp,"List info Academic");
+        break;
+    case 1:
+        strcpy(temp,"List Departemant");
+        break;
+    case 2:
+        strcpy(temp,"List User Dismissed");
+        break;
+    case 3:
+        strcpy(temp,"Back to Menu");
+        break;
+    default:
+        break;
+    }
+
+    printf("%-22s%c\n",temp,line_char);
+    if (i!=3)
+        printf("|--+----------------------|\n");
+
+
+    }
+    printf("---------------------------\n\n");
+    printf("select a option from menu: ");
 }
+void list_of_log_academic()
+{
+    system("cls");
+    printf("list of Departemant\n_______________________________________\n\n");
+    temp_struct_departemant=malloc(sizeof(struct struct_departemant));
+    temp_struct_departemant=start_struct_departemant;
+    int i=1;
+    char temp[25];
+    do
+    {
+        printf("Departemant's %d\n",i++);
+        printf("-----------------------------------\n");
+        strcpy(temp,"Name: ");
+        printf("%s%s\n",temp,temp_struct_departemant->name);
+        strcpy(temp,"Family name: ");
+        printf("%s%s\n",temp,temp_struct_departemant->family);
+        strcpy(temp,"Date start: ");
+        printf("%s%s\n",temp,temp_struct_departemant->date_start);
+        strcpy(temp,"Name Group: ");
+        printf("%s%s\n",temp,temp_struct_departemant->name_of_group);
+        strcpy(temp,"ID code: ");
+        printf("%s%s\n",temp,temp_struct_departemant->ID_code);
+        strcpy(temp,"Phone number: ");
+        printf("%s%s\n",temp,temp_struct_departemant->phone_num);
+        strcpy(temp,"Email: ");
+        printf("%s%s\n",temp,temp_struct_departemant->email);
+        strcpy(temp,"User Name: ");
+        printf("%s%s\n",temp,temp_struct_departemant->user_Name);
+        strcpy(temp,"Password: ");
+        printf("%s%s\n",temp,temp_struct_departemant->pass1);
+        printf("-----------------------------------\n");
+        temp_struct_departemant=temp_struct_departemant->link;
+    }while(temp_struct_departemant!=NULL);
+    printf("Preas Enter to back list");
+    free(temp_struct_departemant);
+    do
+    {
+        temp[0]=getch();
+    } while (temp[0]!=13);
+}
+
+
 
 void main()
 {
@@ -1305,11 +1388,11 @@ void main()
 
 
 
-    int temp_flag=0;
+    int temp_flag=0,menu_type,type_list_log=0;
     while(1)
     {
     menu_login_print();
-    int menu_type=menu_login_filter_selection();
+    menu_type=menu_login_filter_selection();
     // -------------------------------------------- rotation part
     switch (menu_type)
     {
@@ -1317,14 +1400,16 @@ void main()
             unti_hash_to_password(pointer_Padmin);
             int login_flag=get_check_user_pass(pointer_Uadmin,pointer_Padmin,pointer_Limit_admin);// 0:= succces; 1,2:unsaccses; -1:cancel login;
             password_to_hash(pointer_Padmin);
+            system("cls");
             if (login_flag==0)
             {
                 do{
-                    start_struct_departemant=malloc(sizeof(struct struct_departemant));
+                    // start_struct_departemant=malloc(sizeof(struct struct_departemant));
                     menu_admin_page_print();
                     set_departemants_as_link_list();
                     set_academic_as_link_list();
                     menu_type=menu_admin_page_filter_selection();
+                    system("cls");
                     switch (menu_type)
                     {
                     case 1:
@@ -1340,7 +1425,24 @@ void main()
                         kick_user();
                         break;
                     case 5:
-                        //def
+                        do{
+                            list_of_log_print();
+                            type_list_log=menu_login_filter_selection();
+                            system("cls");
+                            switch (type_list_log)
+                            {
+                            case 1:
+                                system("cls");
+                                list_of_log_academic();
+                                system("cls");
+                                break;
+                            case 2:
+                                //def
+                                break;
+                            default:
+                                break;
+                            }
+                        }while(type_list_log!=4);
                         break;
                     case 7:
                         break;
@@ -1352,6 +1454,8 @@ void main()
             }
             break;
         case 4:
+            free(start_struct_academic);
+            free(start_struct_departemant);
             exit(1);
             break;
 
