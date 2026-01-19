@@ -33,7 +33,7 @@ struct struct_academic
     char user_Name[20];
     char pass1[50];
     char limit_time[10];
-    char ekhraj;
+    char ekhraj[20];
     struct struct_academic *link;
 };
 struct struct_academic *start_struct_academic, *end_struct_academic, *temp_struct_academic;
@@ -487,6 +487,12 @@ int check_strong_password(char pass[])
     return 0;
 
 }
+void get_now_time(char result[])
+{
+    time_t now = time(NULL);
+    struct tm *time = localtime(&now);
+    strftime(result, 20, "%Y/%m/%d|%H:%M:%S", time);
+}
 void set_new_departemant()
 {
     FILE *file_departemant;
@@ -790,7 +796,7 @@ void set_new_academic()
     fputs(", ",file_academic);
     fputc('N',file_academic);// date exit
     fputc('\n',file_academic);
-    printf("Successfully added!\npreas Enter to continue");
+    printf("Successfully added!\npreas Enter to continue\n");
     fclose(file_academic);
     char temp;
     do
@@ -1053,10 +1059,10 @@ int set_academic_as_link_list()
                     strcpy(temp_struct_academic->pass1,info);
                     break;
                 case 9:
-                    strcpy(start_struct_academic->limit_time,info);
+                    strcpy(temp_struct_academic->limit_time,info);
                     break;
                 case 10:
-                    strcpy(start_struct_academic->ekhraj,info);
+                    strcpy(temp_struct_academic->ekhraj,info);
                     break;
                 default:
                     break;
@@ -1150,7 +1156,104 @@ void show_list_users()
     {
         temp[0]=getch();
     } while (temp[0]!=13);
+    free(temp_struct_academic);
     system("cls");
+}
+int search_user_name_academic(char user_name[])
+{
+    temp_struct_academic=start_struct_academic;
+    do
+    {
+        if (strcmp(temp_struct_academic->user_Name,user_name)==0 && strlen(temp_struct_academic->user_Name)==strlen(user_name))
+            return 0;
+        temp_struct_academic=temp_struct_academic->link;
+    }while(temp_struct_academic!=NULL);
+    free(temp_struct_academic);
+    return 1;// 0:= fine | 1:=not found
+}
+void add_linked_list_academi_to_notpadd()
+{
+    FILE *Academic;
+    Academic=fopen("file_academic.txt","w");
+    temp_struct_academic=malloc(sizeof(struct struct_academic));
+    if (temp_struct_academic==NULL)
+    {
+        printf("memory is not Allow!! Try later.");
+        return ;
+    }
+    temp_struct_academic=start_struct_academic;
+    char final[225]={0},temp[50];
+    do
+    {
+        strcpy(temp,temp_struct_academic->name);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_academic->family);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_academic->date_start);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_academic->rate);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_academic->phone_num);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_academic->email);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_academic->user_Name);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_academic->pass1);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_academic->limit_time);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_academic->ekhraj);
+        strcat(final,temp);
+        strcat(final,"\n");
+        fputs(final,Academic);
+        strcpy(final,"\0");
+        temp_struct_academic=temp_struct_academic->link;
+
+    } while (temp_struct_academic!=NULL);
+    free(temp_struct_academic);
+    printf("Successfully! preas Enter to Back menu\n");
+    fclose(Academic);
+    do
+    {
+        temp[0]=getch();
+    } while (temp[0]!=13);
+}
+void kick_user()
+{
+    char user_name[20];
+    int flag;
+    printf("Enter user name that you want kick\n");
+    printf("if you ceed of opreation preas Enter: ");
+    do
+    {
+        gets(user_name);
+        str_to_lower(user_name);
+        if (strlen(user_name)==0)
+        {
+            flag=2;
+            break;
+        }
+        flag=search_user_name_academic(user_name);
+        if (flag==1)
+            printf("user not found!! Try agian: ");
+    } while (flag);
+    if (flag==0)
+    {
+        char date[20];
+        get_now_time(date);
+        strcpy(temp_struct_academic->ekhraj,date);
+        add_linked_list_academi_to_notpadd();
+    }
 }
 
 
@@ -1201,9 +1304,9 @@ void main()
                 do{
                     start_struct_departemant=malloc(sizeof(struct struct_departemant));
                     menu_admin_page_print();
-                    menu_type=menu_admin_page_filter_selection();
                     set_departemants_as_link_list();
                     set_academic_as_link_list();
+                    menu_type=menu_admin_page_filter_selection();
                     switch (menu_type)
                     {
                     case 1:
@@ -1215,8 +1318,11 @@ void main()
                     case 3:
                         show_list_users();
                         break;
-
-
+                    case 4:
+                        kick_user();
+                        break;
+                    case 5:
+                        //def
                         break;
                     case 7:
                         break;
@@ -1237,4 +1343,3 @@ void main()
     }
 
 }
-;
