@@ -273,7 +273,7 @@ int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_t
         {
             temp=getch();
         } while (temp!=13);
-        
+
     }
     return 1;
 }
@@ -640,7 +640,7 @@ void set_new_departemant()
     {
         temp=getch();
     } while (temp!=13);
-    
+
 
 }
 void set_new_academic()
@@ -788,9 +788,9 @@ void set_new_academic()
     char temp;
     do
     {
-        temp=getch(); 
+        temp=getch();
     } while (temp!=13);
-    
+
 
 }
 int set_departemants_as_link_list()
@@ -860,9 +860,9 @@ int set_departemants_as_link_list()
             info[j]=temp[i];
             j++;
         }
-    }   
+    }
     start_struct_departemant->link=NULL;
-    
+
     while (1)
     {
         temp_struct_departemant=malloc(sizeof(struct struct_departemant));
@@ -991,9 +991,9 @@ int set_academic_as_link_list()
             info[j]=temp[i];
             j++;
         }
-    }   
+    }
     start_struct_academic->link=NULL;
-    
+
     while (1)
     {
         temp_struct_academic=malloc(sizeof(struct struct_academic));
@@ -1055,6 +1055,78 @@ int set_academic_as_link_list()
     free(temp_struct_academic);
     return 0;
 }
+void show_list_users()
+{
+    system("cls");
+    printf("list of Departemant\n_______________________________________\n\n");
+    temp_struct_departemant=malloc(sizeof(struct struct_departemant));
+    temp_struct_departemant=start_struct_departemant;
+    int i=1;
+    char temp[25];
+    do
+    {
+        printf("Departemant's %d\n",i++);
+        printf("-----------------------------------\n");
+        strcpy(temp,"Name: ");
+        printf("%s%s\n",temp,temp_struct_departemant->name);
+        strcpy(temp,"Family name: ");
+        printf("%s%s\n",temp,temp_struct_departemant->family);
+        strcpy(temp,"Date start: ");
+        printf("%s%s\n",temp,temp_struct_departemant->date_start);
+        strcpy(temp,"Name Group: ");
+        printf("%s%s\n",temp,temp_struct_departemant->name_of_group);
+        strcpy(temp,"ID code: ");
+        printf("%s%s\n",temp,temp_struct_departemant->ID_code);
+        strcpy(temp,"Phone number: ");
+        printf("%s%s\n",temp,temp_struct_departemant->phone_num);
+        strcpy(temp,"Email: ");
+        printf("%s%s\n",temp,temp_struct_departemant->email);
+        strcpy(temp,"User Name: ");
+        printf("%s%s\n",temp,temp_struct_departemant->user_Name);
+        strcpy(temp,"Password: ");
+        printf("%s%s\n",temp,temp_struct_departemant->pass1);
+        printf("-----------------------------------\n");
+        temp_struct_departemant=temp_struct_departemant->link;
+    }while(temp_struct_departemant!=NULL);
+    printf("Preas Enter to show list of Academic");
+    free(temp_struct_departemant);
+    do
+    {
+        temp[0]=getch();
+    } while (temp[0]!=13);
+    temp_struct_academic=malloc(sizeof(struct struct_academic));
+    temp_struct_academic=start_struct_academic;
+    i=1;
+    do
+    {
+        printf("Academic's %d\n",i++);
+        printf("-----------------------------------\n");
+        strcpy(temp,"Name: ");
+        printf("%s%s\n",temp,temp_struct_academic->name);
+        strcpy(temp,"Family name: ");
+        printf("%s%s\n",temp,temp_struct_academic->family);
+        strcpy(temp,"Date start: ");
+        printf("%s%s\n",temp,temp_struct_academic->date_start);
+        strcpy(temp,"Rate of Academic: ");
+        printf("%s%s\n",temp,temp_struct_academic->rate);
+        strcpy(temp,"Phone number: ");
+        printf("%s%s\n",temp,temp_struct_academic->phone_num);
+        strcpy(temp,"Email: ");
+        printf("%s%s\n",temp,temp_struct_academic->email);
+        strcpy(temp,"User Name: ");
+        printf("%s%s\n",temp,temp_struct_academic->user_Name);
+        strcpy(temp,"Password: ");
+        printf("%s%s\n",temp,temp_struct_academic->pass1);
+        printf("-----------------------------------\n");
+        temp_struct_academic=temp_struct_academic->link;
+    }while(temp_struct_academic!=NULL);
+    printf("Preas enter to back menu\n");
+    do
+    {
+        temp[0]=getch();
+    } while (temp[0]!=13);
+    system("cls");
+}
 
 
 void main()
@@ -1084,9 +1156,9 @@ void main()
         exit(1);
     }
     long int *limit;
-    
-    
-    
+
+
+
     int temp_flag=0;
     while(1)
     {
@@ -1105,6 +1177,8 @@ void main()
                     start_struct_departemant=malloc(sizeof(struct struct_departemant));
                     menu_admin_page_print();
                     menu_type=menu_admin_page_filter_selection();
+                    set_departemants_as_link_list();
+                    set_academic_as_link_list();
                     switch (menu_type)
                     {
                     case 1:
@@ -1114,10 +1188,10 @@ void main()
                         set_new_academic();
                         break;
                     case 3:
-                        temp_flag=set_departemants_as_link_list();
-                        if (temp_flag==1)
-                            break;
-                        
+                        show_list_users();
+                        break;
+
+
                         break;
                     case 7:
                         break;
@@ -1138,3 +1212,4 @@ void main()
     }
 
 }
+;
