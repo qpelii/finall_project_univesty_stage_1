@@ -487,6 +487,30 @@ int check_strong_password(char pass[])
     return 0;
 
 }
+int search_user_name_academic(char user_name[])
+{
+    temp_struct_academic=start_struct_academic;
+    do
+    {
+        if (strcmp(temp_struct_academic->user_Name,user_name)==0 && strlen(temp_struct_academic->user_Name)==strlen(user_name))
+            return 0;
+        temp_struct_academic=temp_struct_academic->link;
+    }while(temp_struct_academic!=NULL);
+    free(temp_struct_academic);
+    return 1;// 0:= fine | 1:=not found
+}
+int search_user_name_departemant(char user_name[])
+{
+    temp_struct_departemant=start_struct_departemant;
+    do
+    {
+        if (strcmp(temp_struct_departemant->user_Name,user_name)==0 && strlen(temp_struct_departemant->user_Name)==strlen(user_name))
+            return 0;
+        temp_struct_departemant=temp_struct_departemant->link;
+    }while(temp_struct_departemant!=NULL);
+    free(temp_struct_departemant);
+    return 1;// 0:= fine | 1:=not found
+}
 void get_now_time(char result[])
 {
     time_t now = time(NULL);
@@ -572,13 +596,13 @@ void set_new_departemant()
     printf("Enter User name of Departemant: ");
     do{
         gets(user_Name);    // ----------------------------- need edit for duplicated user_name
+        str_to_lower(user_Name);
         if (check_str_whitout_space(user_Name) || strlen(user_Name)==0)
             printf("Invalid input! Try again: ");
+        else if (search_user_name_academic(user_Name)==0 || search_user_name_departemant(user_Name)==0 || strcmp(user_Name,user_admin)==0)
+            printf("this user name is duplicated!! Try again: ");
         else
-        {
-            str_to_lower(user_Name);
             break;
-        }
     }while(1);
 
     printf("Set Password for Departemant: ");
@@ -708,6 +732,8 @@ void set_new_academic()
         gets(phone_num);
         if (check_str_was_int(phone_num) || phone_num[0]!='0' || phone_num[1]!='9' || strlen(phone_num)!=11)
             printf("Invalid input! Try again: ");
+        else if (search_user_name_academic(user_Name)==0 || search_user_name_departemant(user_Name)==0 || strcmp(user_Name,user_admin)==0)
+            printf("this user name is duplicated!! Try again: ");
         else
             break;
     }while(1);
@@ -1159,18 +1185,7 @@ void show_list_users()
     free(temp_struct_academic);
     system("cls");
 }
-int search_user_name_academic(char user_name[])
-{
-    temp_struct_academic=start_struct_academic;
-    do
-    {
-        if (strcmp(temp_struct_academic->user_Name,user_name)==0 && strlen(temp_struct_academic->user_Name)==strlen(user_name))
-            return 0;
-        temp_struct_academic=temp_struct_academic->link;
-    }while(temp_struct_academic!=NULL);
-    free(temp_struct_academic);
-    return 1;// 0:= fine | 1:=not found
-}
+
 void add_linked_list_academi_to_notpadd()
 {
     FILE *Academic;
@@ -1255,7 +1270,10 @@ void kick_user()
         add_linked_list_academi_to_notpadd();
     }
 }
-
+void list_of_log_print()
+{
+    
+}
 
 void main()
 {
