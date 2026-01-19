@@ -97,6 +97,9 @@ void password_to_star(char pass_pointer[])
         switch (pass[i])
         {
         case 8:
+            if (i==0)
+                continue;
+            
             printf("\b \b");
             pass[i-1]='\0';
             pass[i]='\0';
@@ -183,7 +186,7 @@ int check_corect_pass_and_set_limit(char corect_pass[], int limit_time)
         return 2;
     for(i=0;i<3;i++)
     {
-        printf("eneter your password:\n");
+        printf("eneter your password:");
         password_to_star(pass);
         if (strlen(pass)==0)
             return -1;
@@ -1112,45 +1115,57 @@ int set_academic_as_link_list()
     free(temp_struct_academic);
     return 0;
 }
-void show_list_users()
+void show_list_users(int status)//eit bayad bokhore bara vaghti ke karbari voojood nadare
 {
-    system("cls");
-    printf("list of Departemant\n_______________________________________\n\n");
-    temp_struct_departemant=malloc(sizeof(struct struct_departemant));
-    temp_struct_departemant=start_struct_departemant;
-    int i=1;
     char temp[25];
-    do
+    int i=1;
+    if (status==0 || status==1)
     {
-        printf("Departemant's %d\n",i++);
-        printf("-----------------------------------\n");
-        strcpy(temp,"Name: ");
-        printf("%s%s\n",temp,temp_struct_departemant->name);
-        strcpy(temp,"Family name: ");
-        printf("%s%s\n",temp,temp_struct_departemant->family);
-        strcpy(temp,"Date start: ");
-        printf("%s%s\n",temp,temp_struct_departemant->date_start);
-        strcpy(temp,"Name Group: ");
-        printf("%s%s\n",temp,temp_struct_departemant->name_of_group);
-        strcpy(temp,"ID code: ");
-        printf("%s%s\n",temp,temp_struct_departemant->ID_code);
-        strcpy(temp,"Phone number: ");
-        printf("%s%s\n",temp,temp_struct_departemant->phone_num);
-        strcpy(temp,"Email: ");
-        printf("%s%s\n",temp,temp_struct_departemant->email);
-        strcpy(temp,"User Name: ");
-        printf("%s%s\n",temp,temp_struct_departemant->user_Name);
-        strcpy(temp,"Password: ");
-        printf("%s%s\n",temp,temp_struct_departemant->pass1);
-        printf("-----------------------------------\n");
-        temp_struct_departemant=temp_struct_departemant->link;
-    }while(temp_struct_departemant!=NULL);
-    printf("Preas Enter to show list of Academic");
-    free(temp_struct_departemant);
+        system("cls");
+        printf("list of Departemant\n_______________________________________\n\n");
+        temp_struct_departemant=malloc(sizeof(struct struct_departemant));
+        temp_struct_departemant=start_struct_departemant;
+        do
+        {
+            printf("Departemant's %d\n",i++);
+            printf("-----------------------------------\n");
+            strcpy(temp,"Name: ");
+            printf("%s%s\n",temp,temp_struct_departemant->name);
+            strcpy(temp,"Family name: ");
+            printf("%s%s\n",temp,temp_struct_departemant->family);
+            strcpy(temp,"Date start: ");
+            printf("%s%s\n",temp,temp_struct_departemant->date_start);
+            strcpy(temp,"Name Group: ");
+            printf("%s%s\n",temp,temp_struct_departemant->name_of_group);
+            strcpy(temp,"ID code: ");
+            printf("%s%s\n",temp,temp_struct_departemant->ID_code);
+            strcpy(temp,"Phone number: ");
+            printf("%s%s\n",temp,temp_struct_departemant->phone_num);
+            strcpy(temp,"Email: ");
+            printf("%s%s\n",temp,temp_struct_departemant->email);
+            strcpy(temp,"User Name: ");
+            printf("%s%s\n",temp,temp_struct_departemant->user_Name);
+            strcpy(temp,"Password: ");
+            printf("%s%s\n",temp,temp_struct_departemant->pass1);
+            printf("-----------------------------------\n");
+            temp_struct_departemant=temp_struct_departemant->link;
+        }while(temp_struct_departemant!=NULL);
+        free(temp_struct_departemant);
+        if (status==1)
+        {
+            printf("Preas Enter to back list");
+            do
+            {
+                temp[0]=getch();
+            } while (temp[0]!=13);
+            return ;
+        }
+    }
+    printf("Preas Enter to show list of Academic\n");
     do
     {
         temp[0]=getch();
-    } while (temp[0]!=13);
+    }while (temp[0]!=13);
     temp_struct_academic=malloc(sizeof(struct struct_academic));
     temp_struct_academic=start_struct_academic;
     i=1;
@@ -1318,44 +1333,101 @@ void list_of_log_print()
 void list_of_log_academic()
 {
     system("cls");
-    printf("list of Departemant\n_______________________________________\n\n");
-    temp_struct_departemant=malloc(sizeof(struct struct_departemant));
-    temp_struct_departemant=start_struct_departemant;
+    printf("list of Academic\n_______________________________________\n\n");
+    temp_struct_academic=malloc(sizeof(struct struct_academic));
+    temp_struct_academic=start_struct_academic;
+    if (!isdigit(temp_struct_academic->limit_time[0]))
+    {
+        printf("Whitout Academic for lsit!");
+        return ;
+    }
     int i=1;
     char temp[25];
     do
     {
-        printf("Departemant's %d\n",i++);
+        printf("Academic's %d\n",i++);
         printf("-----------------------------------\n");
         strcpy(temp,"Name: ");
-        printf("%s%s\n",temp,temp_struct_departemant->name);
+        printf("%s%s\n",temp,temp_struct_academic->name);
         strcpy(temp,"Family name: ");
-        printf("%s%s\n",temp,temp_struct_departemant->family);
+        printf("%s%s\n",temp,temp_struct_academic->family);
         strcpy(temp,"Date start: ");
-        printf("%s%s\n",temp,temp_struct_departemant->date_start);
-        strcpy(temp,"Name Group: ");
-        printf("%s%s\n",temp,temp_struct_departemant->name_of_group);
-        strcpy(temp,"ID code: ");
-        printf("%s%s\n",temp,temp_struct_departemant->ID_code);
+        printf("%s%s\n",temp,temp_struct_academic->date_start);
+        strcpy(temp,"Rate of Academic: ");
+        printf("%s%s\n",temp,temp_struct_academic->rate);
         strcpy(temp,"Phone number: ");
-        printf("%s%s\n",temp,temp_struct_departemant->phone_num);
+        printf("%s%s\n",temp,temp_struct_academic->phone_num);
         strcpy(temp,"Email: ");
-        printf("%s%s\n",temp,temp_struct_departemant->email);
+        printf("%s%s\n",temp,temp_struct_academic->email);
         strcpy(temp,"User Name: ");
-        printf("%s%s\n",temp,temp_struct_departemant->user_Name);
+        printf("%s%s\n",temp,temp_struct_academic->user_Name);
         strcpy(temp,"Password: ");
-        printf("%s%s\n",temp,temp_struct_departemant->pass1);
+        printf("%s%s\n",temp,temp_struct_academic->pass1);
+        strcpy(temp,"Status: ");
+        if (temp_struct_academic->ekhraj[0]=='N')
+            printf("%sin Work\n",temp);
+        else
+            printf("%sDismissed at %s\n",temp,temp_struct_academic->ekhraj);
         printf("-----------------------------------\n");
-        temp_struct_departemant=temp_struct_departemant->link;
-    }while(temp_struct_departemant!=NULL);
+        temp_struct_academic=temp_struct_academic->link;
+    }while(temp_struct_academic!=NULL);
     printf("Preas Enter to back list");
-    free(temp_struct_departemant);
+    free(temp_struct_academic);
     do
     {
         temp[0]=getch();
     } while (temp[0]!=13);
 }
-
+void list_of_log_dismissed()
+{
+system("cls");
+    printf("list of Academic\n_______________________________________\n\n");
+    temp_struct_academic=malloc(sizeof(struct struct_academic));
+    temp_struct_academic=start_struct_academic;
+    if (!isdigit(temp_struct_academic->limit_time[0]))
+    {
+        printf("Whitout Academic for lsit!");
+        return ;
+    }
+    int i=1;
+    char temp[25];
+    do
+    {
+        if (temp_struct_academic->ekhraj[0]!='N')
+        {
+            printf("Academic's %d\n",i++);
+            printf("-----------------------------------\n");
+            strcpy(temp,"Name: ");
+            printf("%s%s\n",temp,temp_struct_academic->name);
+            strcpy(temp,"Family name: ");
+            printf("%s%s\n",temp,temp_struct_academic->family);
+            strcpy(temp,"Date start: ");
+            printf("%s%s\n",temp,temp_struct_academic->date_start);
+            strcpy(temp,"Rate of Academic: ");
+            printf("%s%s\n",temp,temp_struct_academic->rate);
+            strcpy(temp,"Phone number: ");
+            printf("%s%s\n",temp,temp_struct_academic->phone_num);
+            strcpy(temp,"Email: ");
+            printf("%s%s\n",temp,temp_struct_academic->email);
+            strcpy(temp,"User Name: ");
+            printf("%s%s\n",temp,temp_struct_academic->user_Name);
+            strcpy(temp,"Password: ");
+            printf("%s%s\n",temp,temp_struct_academic->pass1);
+            strcpy(temp,"Status: ");
+            printf("%sDismissed at %s\n",temp,temp_struct_academic->ekhraj);
+            printf("-----------------------------------\n");
+        }
+        temp_struct_academic=temp_struct_academic->link;
+    }while(temp_struct_academic!=NULL);
+    if (i==1)
+        printf("No one of Academic has't dismissed!\n");
+    printf("Preas Enter to back list\n");
+    free(temp_struct_academic);
+    do
+    {
+        temp[0]=getch();
+    } while (temp[0]!=13);
+}
 
 
 void main()
@@ -1404,7 +1476,6 @@ void main()
             if (login_flag==0)
             {
                 do{
-                    // start_struct_departemant=malloc(sizeof(struct struct_departemant));
                     menu_admin_page_print();
                     set_departemants_as_link_list();
                     set_academic_as_link_list();
@@ -1419,7 +1490,7 @@ void main()
                         set_new_academic();
                         break;
                     case 3:
-                        show_list_users();
+                        show_list_users(0);
                         break;
                     case 4:
                         kick_user();
@@ -1437,7 +1508,12 @@ void main()
                                 system("cls");
                                 break;
                             case 2:
-                                //def
+                                show_list_users(1);
+                                system("cls");
+                                break;
+                            case 3:
+                                list_of_log_dismissed();
+                                system("cls");
                                 break;
                             default:
                                 break;
