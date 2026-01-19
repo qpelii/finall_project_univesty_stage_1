@@ -18,6 +18,7 @@ struct struct_departemant
     char email[40];
     char user_Name[20];
     char pass1[50];
+    char limit_time[10];
     struct struct_departemant *link;
 };
 struct struct_departemant *start_struct_departemant, *end_struct_departemant, *temp_struct_departemant;
@@ -31,6 +32,8 @@ struct struct_academic
     char email[40];
     char user_Name[20];
     char pass1[50];
+    char limit_time[10];
+    char ekhraj;
     struct struct_academic *link;
 };
 struct struct_academic *start_struct_academic, *end_struct_academic, *temp_struct_academic;
@@ -632,6 +635,8 @@ void set_new_departemant()
     fputs(user_Name,file_departemant);
     fputs(", ",file_departemant);
     fputs(pass1,file_departemant);
+    fputs(", ",file_departemant);
+    fputs("0",file_departemant);
     fputc('\n',file_departemant);
     printf("Successfully added!\npreas Enter to continue");
     fclose(file_departemant);
@@ -781,6 +786,8 @@ void set_new_academic()
     fputs(", ",file_academic);
     fputs(pass1,file_academic);
     fputs(", ",file_academic);
+    fputs("0",file_academic);
+    fputs(", ",file_academic);
     fputc('N',file_academic);// date exit
     fputc('\n',file_academic);
     printf("Successfully added!\npreas Enter to continue");
@@ -848,6 +855,9 @@ int set_departemants_as_link_list()
             case 9:
                 strcpy(start_struct_departemant->pass1,info);
                 break;
+            case 10:
+                strcpy(start_struct_departemant->limit_time,info);
+                break;
             default:
                 break;
             }
@@ -871,7 +881,7 @@ int set_departemants_as_link_list()
         if (strlen(temp)==0)
             break;
         flag_info=1,i=0,j=0;
-        while(flag_info!=10)
+        while(flag_info!=11)
         {
             if ((temp[i]==',' && temp[i+1]==' ') || temp[i]=='\n')
             {
@@ -904,6 +914,9 @@ int set_departemants_as_link_list()
                     break;
                 case 9:
                     strcpy(temp_struct_departemant->pass1,info);
+                    break;
+                case 10:
+                    strcpy(start_struct_departemant->limit_time,info);
                     break;
                 default:
                     break;
@@ -979,6 +992,12 @@ int set_academic_as_link_list()
             case 8:
                 strcpy(start_struct_academic->pass1,info);
                 break;
+            case 9:
+                strcpy(start_struct_academic->limit_time,info);
+                break;
+            case 10:
+                strcpy(start_struct_academic->ekhraj,info);
+                break;
             default:
                 break;
             }
@@ -1002,7 +1021,7 @@ int set_academic_as_link_list()
         if (strlen(temp)==0)
             break;
         flag_info=1,i=0,j=0;
-        while(flag_info!=9)
+        while(flag_info!=11)
         {
             if ((temp[i]==',' && temp[i+1]==' ') || temp[i]=='\n')
             {
@@ -1032,6 +1051,12 @@ int set_academic_as_link_list()
                     break;
                 case 8:
                     strcpy(temp_struct_academic->pass1,info);
+                    break;
+                case 9:
+                    strcpy(start_struct_academic->limit_time,info);
+                    break;
+                case 10:
+                    strcpy(start_struct_academic->ekhraj,info);
                     break;
                 default:
                     break;
