@@ -141,7 +141,7 @@ int menu_login_filter_selection()
                 continue;
             }
 
-            // system("cls");
+            // // system("cls");;
             return num;
         }
     } while (flag);
@@ -218,6 +218,24 @@ void change_form_time(int time_left)
     int min=time_left%60;
     int houer=time_left/60;
     printf("%.2d:%.2d",houer,min);
+}
+void free_academic()
+{
+    do
+    {
+        temp_struct_academic=temp_struct_academic->link;
+        continue;
+    } while (temp_struct_academic!=NULL);
+    free(temp_struct_academic);
+}
+void free_departemant()
+{
+    do
+    {
+        temp_struct_departemant=temp_struct_departemant->link;
+        continue;
+    } while (temp_struct_departemant!=NULL);
+    free(temp_struct_departemant);
 }
 int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_time)
 {
@@ -350,7 +368,7 @@ int menu_admin_page_filter_selection()
                 continue;
             }
 
-            // system("cls");
+            // // system("cls");;
             return num;
         }
     } while (flag);
@@ -492,6 +510,7 @@ int check_strong_password(char pass[])
 }
 int search_user_name_academic(char user_name[])
 {
+    temp_struct_academic=malloc(sizeof(struct struct_academic));
     temp_struct_academic=start_struct_academic;
     do
     {
@@ -1121,7 +1140,7 @@ void show_list_users(int status)//eit bayad bokhore bara vaghti ke karbari voojo
     int i=1;
     if (status==0 || status==1)
     {
-        system("cls");
+        // system("cls");;
         printf("list of Departemant\n_______________________________________\n\n");
         temp_struct_departemant=malloc(sizeof(struct struct_departemant));
         temp_struct_departemant=start_struct_departemant;
@@ -1171,26 +1190,29 @@ void show_list_users(int status)//eit bayad bokhore bara vaghti ke karbari voojo
     i=1;
     do
     {
-        printf("Academic's %d\n",i++);
-        printf("-----------------------------------\n");
-        strcpy(temp,"Name: ");
-        printf("%s%s\n",temp,temp_struct_academic->name);
-        strcpy(temp,"Family name: ");
-        printf("%s%s\n",temp,temp_struct_academic->family);
-        strcpy(temp,"Date start: ");
-        printf("%s%s\n",temp,temp_struct_academic->date_start);
-        strcpy(temp,"Rate of Academic: ");
-        printf("%s%s\n",temp,temp_struct_academic->rate);
-        strcpy(temp,"Phone number: ");
-        printf("%s%s\n",temp,temp_struct_academic->phone_num);
-        strcpy(temp,"Email: ");
-        printf("%s%s\n",temp,temp_struct_academic->email);
-        strcpy(temp,"User Name: ");
-        printf("%s%s\n",temp,temp_struct_academic->user_Name);
-        strcpy(temp,"Password: ");
-        printf("%s%s\n",temp,temp_struct_academic->pass1);
-        printf("-----------------------------------\n");
-        temp_struct_academic=temp_struct_academic->link;
+        if (temp_struct_academic->ekhraj[0]=='N')
+        {
+            printf("Academic's %d\n",i++);
+            printf("-----------------------------------\n");
+            strcpy(temp,"Name: ");
+            printf("%s%s\n",temp,temp_struct_academic->name);
+            strcpy(temp,"Family name: ");
+            printf("%s%s\n",temp,temp_struct_academic->family);
+            strcpy(temp,"Date start: ");
+            printf("%s%s\n",temp,temp_struct_academic->date_start);
+            strcpy(temp,"Rate of Academic: ");
+            printf("%s%s\n",temp,temp_struct_academic->rate);
+            strcpy(temp,"Phone number: ");
+            printf("%s%s\n",temp,temp_struct_academic->phone_num);
+            strcpy(temp,"Email: ");
+            printf("%s%s\n",temp,temp_struct_academic->email);
+            strcpy(temp,"User Name: ");
+            printf("%s%s\n",temp,temp_struct_academic->user_Name);
+            strcpy(temp,"Password: ");
+            printf("%s%s\n",temp,temp_struct_academic->pass1);
+            printf("-----------------------------------\n");
+        }
+            temp_struct_academic=temp_struct_academic->link;
     }while(temp_struct_academic!=NULL);
     printf("Preas enter to back menu\n");
     do
@@ -1198,7 +1220,7 @@ void show_list_users(int status)//eit bayad bokhore bara vaghti ke karbari voojo
         temp[0]=getch();
     } while (temp[0]!=13);
     free(temp_struct_academic);
-    system("cls");
+    // system("cls");;
 }
 
 void add_linked_list_academi_to_notpadd()
@@ -1270,7 +1292,7 @@ void kick_user()
         str_to_lower(user_name);
         if (strlen(user_name)==0)
         {
-            system("cls");
+            // system("cls");
             return ;
         }
         flag=search_user_name_academic(user_name);
@@ -1285,7 +1307,7 @@ void kick_user()
         {
             user_name[0]=getch();
         } while (user_name[0]!=13);
-        system("cls");
+        // system("cls");;
         return ;
     }    
     if (flag==0)
@@ -1293,6 +1315,7 @@ void kick_user()
         char date[20];
         get_now_time(date);
         strcpy(temp_struct_academic->ekhraj,date);
+        free_academic();
         add_linked_list_academi_to_notpadd();
     }
 }
@@ -1332,7 +1355,7 @@ void list_of_log_print()
 }
 void list_of_log_academic()
 {
-    system("cls");
+    // system("cls");;
     printf("list of Academic\n_______________________________________\n\n");
     temp_struct_academic=malloc(sizeof(struct struct_academic));
     temp_struct_academic=start_struct_academic;
@@ -1380,7 +1403,7 @@ void list_of_log_academic()
 }
 void list_of_log_dismissed()
 {
-system("cls");
+// system("cls");;
     printf("list of Academic\n_______________________________________\n\n");
     temp_struct_academic=malloc(sizeof(struct struct_academic));
     temp_struct_academic=start_struct_academic;
@@ -1472,7 +1495,7 @@ void main()
             unti_hash_to_password(pointer_Padmin);
             int login_flag=get_check_user_pass(pointer_Uadmin,pointer_Padmin,pointer_Limit_admin);// 0:= succces; 1,2:unsaccses; -1:cancel login;
             password_to_hash(pointer_Padmin);
-            system("cls");
+            // system("cls");;
             if (login_flag==0)
             {
                 do{
@@ -1480,7 +1503,7 @@ void main()
                     set_departemants_as_link_list();
                     set_academic_as_link_list();
                     menu_type=menu_admin_page_filter_selection();
-                    system("cls");
+                    // system("cls");;
                     switch (menu_type)
                     {
                     case 1:
@@ -1499,21 +1522,21 @@ void main()
                         do{
                             list_of_log_print();
                             type_list_log=menu_login_filter_selection();
-                            system("cls");
+                            // system("cls");;
                             switch (type_list_log)
                             {
                             case 1:
-                                system("cls");
+                                // system("cls");;
                                 list_of_log_academic();
-                                system("cls");
+                                // system("cls");;
                                 break;
                             case 2:
                                 show_list_users(1);
-                                system("cls");
+                                // system("cls");;
                                 break;
                             case 3:
                                 list_of_log_dismissed();
-                                system("cls");
+                                // system("cls");;
                                 break;
                             default:
                                 break;
