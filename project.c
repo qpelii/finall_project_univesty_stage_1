@@ -221,6 +221,11 @@ void change_form_time(int time_left)
 }
 void free_academic()
 {
+    if (temp_struct_academic==NULL)
+    {
+        free(temp_struct_academic);
+        return ;
+    }
     do
     {
         temp_struct_academic=temp_struct_academic->link;
@@ -230,6 +235,11 @@ void free_academic()
 }
 void free_departemant()
 {
+    if (temp_struct_departemant==NULL)
+    {
+        free(temp_struct_departemant);
+        return ;
+    }
     do
     {
         temp_struct_departemant=temp_struct_departemant->link;
@@ -546,7 +556,7 @@ void set_new_departemant()
     if (file_departemant==NULL)
     {
         printf("memory is not allowed!");
-        exit(1);
+        return ;
     }
     char name[20],family[30],date_start[15],name_of_group[20],ID_code[15],phone_num[15],email[40],user_Name[20];
     char pass1[50],pass2[50];
@@ -707,7 +717,7 @@ void set_new_academic()
     if (file_academic==NULL)
     {
         printf("memory is not allowed!");
-        exit(1);
+        return ;
     }
     char name[20],family[30],date_start[15],rate[10],phone_num[15],email[40],user_Name[20];
     char pass1[50],pass2[50];
@@ -743,7 +753,7 @@ void set_new_academic()
     printf("Enter Rated of Academic : ");
     do{
         gets(rate);
-        if (check_str_full_alpha_whit_space(rate) || strlen(rate)==0)
+        if (check_str_whitout_space(rate) || strlen(rate)==0)
             printf("Invalid input! Try again: ");
         else
             break;
@@ -867,13 +877,24 @@ int set_departemants_as_link_list()
     FILE *departemant;
     departemant=fopen("file_departemant.txt", "r");
     if (departemant==NULL)
-        printf("Error! program need fierst set Departemant!\n");
+    {
+        fclose(departemant);
+        start_struct_departemant->name[0]='0';// if file was NULL
+        start_struct_departemant->link=NULL;
+        return 1;
+        }
+        
     char temp[225],info[50]={0};
     int i=0,j=0,flag_info=1;
     temp[0]='\0';
     fgets(temp,225,departemant);
     if (strlen(temp)==0)
-            return 1;
+    {
+        fclose(departemant);
+        start_struct_departemant->name[0]='0';// if file was NULL
+        start_struct_departemant->link=NULL;
+        return 1;
+    } 
     int len=strlen(temp);
     for(i=0;i<len;i++)
     {
@@ -1007,13 +1028,23 @@ int set_academic_as_link_list()
     FILE *academic;
     academic=fopen("file_academic.txt", "r");
     if (academic==NULL)
-        printf("Error! program need fierst set Departemant!\n");
+    {
+        fclose(academic);
+        start_struct_academic->name[0]='0';// if file was NULL
+        start_struct_academic->link=NULL;
+        return 1;
+    } 
     char temp[225],info[50]={0};
     int i=0,j=0,flag_info=1;
     temp[0]='\0';
     fgets(temp,225,academic);
     if (strlen(temp)==0)
-            return 1;
+    {
+        fclose(academic);
+        start_struct_academic->name[0]='0';// if file was NULL
+        start_struct_academic->link=NULL;
+        return 1;
+    }        
     int len=strlen(temp);
     for(i=0;i<len;i++)
     {
@@ -1066,7 +1097,7 @@ int set_academic_as_link_list()
         }
     }
     start_struct_academic->link=NULL;
-
+    
     while (1)
     {
         temp_struct_academic=malloc(sizeof(struct struct_academic));
@@ -1146,6 +1177,13 @@ void show_list_users(int status)//eit bayad bokhore bara vaghti ke karbari voojo
         temp_struct_departemant=start_struct_departemant;
         do
         {
+            if (temp_struct_departemant->name[0]=='0')//file is NULL
+            {
+                printf("-----------------------------------\n");
+                printf("No result to show!\n");
+                printf("-----------------------------------\n");
+                break;
+            }
             printf("Departemant's %d\n",i++);
             printf("-----------------------------------\n");
             strcpy(temp,"Name: ");
@@ -1169,7 +1207,7 @@ void show_list_users(int status)//eit bayad bokhore bara vaghti ke karbari voojo
             printf("-----------------------------------\n");
             temp_struct_departemant=temp_struct_departemant->link;
         }while(temp_struct_departemant!=NULL);
-        free(temp_struct_departemant);
+        free_departemant();
         if (status==1)
         {
             printf("Preas Enter to back list");
@@ -1190,6 +1228,11 @@ void show_list_users(int status)//eit bayad bokhore bara vaghti ke karbari voojo
     i=1;
     do
     {
+        if (temp_struct_academic->name[0]=='0')//file is NULL
+            {
+                printf("No result to show!\n");
+                break;
+            }
         if (temp_struct_academic->ekhraj[0]=='N')
         {
             printf("Academic's %d\n",i++);
@@ -1212,14 +1255,16 @@ void show_list_users(int status)//eit bayad bokhore bara vaghti ke karbari voojo
             printf("%s%s\n",temp,temp_struct_academic->pass1);
             printf("-----------------------------------\n");
         }
-            temp_struct_academic=temp_struct_academic->link;
+        temp_struct_academic=temp_struct_academic->link;
     }while(temp_struct_academic!=NULL);
+    
+
     printf("Preas enter to back menu\n");
     do
     {
         temp[0]=getch();
     } while (temp[0]!=13);
-    free(temp_struct_academic);
+    free_academic();
     // system("cls");;
 }
 
@@ -1359,15 +1404,17 @@ void list_of_log_academic()
     printf("list of Academic\n_______________________________________\n\n");
     temp_struct_academic=malloc(sizeof(struct struct_academic));
     temp_struct_academic=start_struct_academic;
-    if (!isdigit(temp_struct_academic->limit_time[0]))
-    {
-        printf("Whitout Academic for lsit!");
-        return ;
-    }
     int i=1;
     char temp[25];
     do
     {
+    if (temp_struct_academic->name[0]=='0')//file is NULL
+        {
+            printf("-----------------------------------\n");
+            printf("No result to show!\n");
+            printf("-----------------------------------\n");
+            break;
+        }
         printf("Academic's %d\n",i++);
         printf("-----------------------------------\n");
         strcpy(temp,"Name: ");
@@ -1395,7 +1442,7 @@ void list_of_log_academic()
         temp_struct_academic=temp_struct_academic->link;
     }while(temp_struct_academic!=NULL);
     printf("Preas Enter to back list");
-    free(temp_struct_academic);
+    free_academic();
     do
     {
         temp[0]=getch();
@@ -1407,15 +1454,17 @@ void list_of_log_dismissed()
     printf("list of Academic\n_______________________________________\n\n");
     temp_struct_academic=malloc(sizeof(struct struct_academic));
     temp_struct_academic=start_struct_academic;
-    if (!isdigit(temp_struct_academic->limit_time[0]))
-    {
-        printf("Whitout Academic for lsit!");
-        return ;
-    }
     int i=1;
     char temp[25];
     do
     {
+        if (temp_struct_academic->name[0]=='0')//file is NULL
+            {
+                printf("-----------------------------------\n");
+                printf("No result to show!\n");
+                printf("-----------------------------------\n");
+                break;
+            }
         if (temp_struct_academic->ekhraj[0]!='N')
         {
             printf("Academic's %d\n",i++);
@@ -1442,10 +1491,10 @@ void list_of_log_dismissed()
         }
         temp_struct_academic=temp_struct_academic->link;
     }while(temp_struct_academic!=NULL);
-    if (i==1)
+    if (i==1 && temp_struct_academic->name[0]!='0')
         printf("No one of Academic has't dismissed!\n");
     printf("Preas Enter to back list\n");
-    free(temp_struct_academic);
+    free_academic();
     do
     {
         temp[0]=getch();
@@ -1461,7 +1510,7 @@ void main()
     if (pointer_Uadmin==NULL)
     {
         printf("memory is not allow! Try later");
-        exit(1);
+        return ;
     }
     char *pointer_Padmin;
     pointer_Padmin=malloc(sizeof(pass_admin));
@@ -1469,7 +1518,7 @@ void main()
     if (pointer_Padmin==NULL)
     {
         printf("memory is not allow! Try later");
-        exit(1);
+        return ;
     }
     long int *pointer_Limit_admin;
     pointer_Limit_admin=malloc(sizeof(limit_admin));
@@ -1477,7 +1526,7 @@ void main()
     if (pointer_Limit_admin==NULL)
     {
         printf("memory is not allow! Try later");
-        exit(1);
+        return ;
     }
     long int *limit;
 
@@ -1555,7 +1604,7 @@ void main()
         case 4:
             free(start_struct_academic);
             free(start_struct_departemant);
-            exit(1);
+            return ;
             break;
 
         default:
