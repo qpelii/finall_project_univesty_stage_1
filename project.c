@@ -316,7 +316,7 @@ void menu_admin_page_print()
 {
     char temp[25],line_char='|';
     printf("------------------------------\n");
-    for(int i=0; i<7; i++)
+    for(int i=0; i<8; i++)
     {
     printf("%c%-2d%c",line_char,i+1,line_char);
     switch (i)
@@ -340,6 +340,9 @@ void menu_admin_page_print()
         strcpy(temp,"Get backup from Files");
         break;
     case 6:
+        strcpy(temp,"Load Backup");
+        break;
+    case 7:
         strcpy(temp,"Exit from Admin User");
         break;
     default:
@@ -347,7 +350,7 @@ void menu_admin_page_print()
     }
 
     printf("%-25s%c\n",temp,line_char);
-    if (i!=6)
+    if (i!=7)
         printf("|--+-------------------------|\n");
 
 
@@ -372,7 +375,7 @@ int menu_admin_page_filter_selection()
         else
         {
             num=atoi(number) ;
-            if (num>7 || num<1)
+            if (num>8 || num<1)
             {
                 printf("Your input is out of range! Try agian: ");
                 flag++;
@@ -1592,13 +1595,13 @@ void get_backup()
             if (file_location[i]=='\\' || (file_location[i]==':' && i!=1)|| file_location[i]=='*' || file_location[i]=='?' || file_location[i]=='\"' 
             || file_location[i]=='>' || file_location[i]=='<' || file_location[i]=='|' || (file_location[i]=='/' && file_location[i+1]=='/'))
             {
-                printf("Invalid file locatin!! Tey agian\n");
+                printf("Invalid file locatin!! Try agian\n");
                 flag_whlie++;
                 break;
             }
             if (!isalpha(file_location[0]) || file_location[1]!=':' || file_location[2]!='/')
             {
-                printf("Invalid file locatin!! Tey agian\n");
+                printf("Invalid file locatin!! Try agian\n");
                 flag_whlie++;
             }   
     }while(flag_whlie);
@@ -1624,6 +1627,7 @@ void get_backup()
     mkdir(file_location);
     char location_departemant[150];
     char read_line[225];
+    flag_whlie=0;
     strcpy(location_departemant,file_location);
     strcat(location_departemant,"/file_departemant.txt");
     int flag_file=0;
@@ -1663,6 +1667,83 @@ void get_backup()
     fclose(backup_academic);
 
     printf("backup_complit!\nprease Enter to continue\n");
+    char temp;
+    do
+    {
+        temp=getch();
+    } while (temp!=13);
+    // system("cls");
+}
+void load_backup()
+{
+    char file_location[100];
+    int len,i,flag_whlie;
+    printf("Please Enter location file that you want save backup\n");
+    printf("note:you must enter name file whit this form: C:/New folder/Backup_Manage_university_2026_01_21\n");
+    do{
+        flag_whlie=0;
+        gets(file_location);
+        //---------- checkt addres
+        len=strlen(file_location);
+        for (i=0; i<len; i++)
+            if (file_location[i]=='\\' || (file_location[i]==':' && i!=1)|| file_location[i]=='*' || file_location[i]=='?' || file_location[i]=='\"' 
+            || file_location[i]=='>' || file_location[i]=='<' || file_location[i]=='|' || (file_location[i]=='/' && file_location[i+1]=='/'))
+            {
+                printf("Invalid file locatin!! Try agian\n");
+                flag_whlie++;
+                break;
+            }
+            if (!isalpha(file_location[0]) || file_location[1]!=':' || file_location[2]!='/')
+            {
+                printf("Invalid file locatin!! Try agian\n");
+                flag_whlie++;
+            }   
+    }while(flag_whlie);
+    if (file_location[len-1]=='/')
+        file_location[len-1]='\0';
+    
+    char location_departemant[150];
+    char read_line[225];
+    flag_whlie=0;
+    strcpy(location_departemant,file_location);
+    strcat(location_departemant,"/file_departemant.txt");
+    int flag_file=0;
+    FILE *backup_departemant;
+    FILE *departemant_main;
+    backup_departemant=fopen(location_departemant,"r");
+    departemant_main=fopen("file_departemant.txt","w");
+    if (backup_departemant==NULL)
+        flag_file++;
+    while(flag_file==0)
+    {
+        fgets(read_line, 225, backup_departemant);
+        if (feof(backup_departemant)==1)
+            break;
+        fputs(read_line,departemant_main);
+    }
+    fclose(departemant_main);
+    fclose(backup_departemant);
+
+    char location_academic[150];
+    strcpy(location_academic,file_location);
+    strcat(location_academic,"/file_academic.txt");
+    FILE *backup_academic;
+    FILE *academic_main;
+    backup_academic=fopen(location_academic,"r");
+    academic_main=fopen("file_academic.txt","w");
+    if (backup_academic==NULL)
+        flag_file++;
+    while(flag_file==0)
+    {
+        fgets(read_line, 225, backup_academic);
+        if (feof(backup_academic)==1)
+            break;
+        fputs(read_line,academic_main);
+    }
+    fclose(academic_main);
+    fclose(backup_academic);
+
+    printf("Backup restor compllit!\nprease Enter to continue\n");
     char temp;
     do
     {
@@ -1766,12 +1847,14 @@ void main()
                         get_backup();
                         break;
                     case 7:
+                        load_backup();
                         break;
-
+                    case 8:
+                        break;
                     default:
                         break;
                     }
-                }while(menu_type!=7);
+                }while(menu_type!=8);
             }
             break;
         case 4:
