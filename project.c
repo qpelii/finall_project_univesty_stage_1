@@ -678,7 +678,7 @@ int search_user_name_academic(char user_name[])
 }
 int search_user_name_departemant(char user_name[])
 {
-    temp_struct_departemant=malloc(sizeof(struct struct_academic));
+    temp_struct_departemant=malloc(sizeof(struct struct_departemant));
     temp_struct_departemant=start_struct_departemant;
     do
     {
@@ -700,6 +700,19 @@ int search_lesson_code(char code[])
         temp_struct_lesson=temp_struct_lesson->link;
     }while(temp_struct_lesson!=NULL);
     free(temp_struct_lesson);
+    return 1;// 0:= fine | 1:=not found
+}
+int search_user_name_student(char ID_uni[])
+{
+    temp_struct_student=malloc(sizeof(struct struct_student));
+    temp_struct_student=start_struct_student;
+    do
+    {
+        if (strcmp(temp_struct_student->ID_uni,ID_uni)==0 && strlen(temp_struct_student->ID_uni)==strlen(ID_uni))
+            return 0;
+        temp_struct_student=temp_struct_student->link;
+    }while(temp_struct_student!=NULL);
+    free(temp_struct_student);
     return 1;// 0:= fine | 1:=not found
 }
 int get_user_pass_user_academics()
@@ -1166,6 +1179,8 @@ void set_new_student()
         gets(ID_uni);
         if (check_str_was_int(ID_uni) || strlen(ID_uni)!=10)
             printf("Invalid input! Try again: ");
+        else if (search_user_name_student(ID_uni)==0)
+            printf("this ID of university is duplicated! Tyr agian: ");
         else
             break;
     }while(1);
