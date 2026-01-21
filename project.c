@@ -6,7 +6,7 @@
 #include<conio.h>
 #include<direct.h>
 static char user_admin[10]="admin";
-static char pass_admin[20]="dgplq456789";// hashed
+static char pass_admin[20]="5v8a6079zqn";// hashed
 static long int limit_admin=0;
 struct struct_departemant
 {
@@ -387,14 +387,10 @@ int menu_admin_page_filter_selection()
 }
 void password_to_hash(char password[])
 {
-    int len=strlen(password);
-    int temp_ASCII;
-    //swap (ayne)
     char temp;
     int len,i=0;
-    printf("enter a Name: ");
-    gets(password);
     len=strlen(password);
+    //swap (ayne)
     for (i=0; i<len/2; i++)
     {
         temp=password[i];
@@ -415,11 +411,23 @@ void password_to_hash(char password[])
         password[5]=password[0];
         password[0]=temp;
     }
-    for (i=0; i<len; i++)
+    //swap in self domain
+    for (int i=0; i<len; i++)
     {
-        temp_ASCII=password[i];
-        temp_ASCII= temp_ASCII+3;
-        password[i]=temp_ASCII;
+        if (password[i] >= 'a' && password[i] <= 'z')
+            password[i] = 'a' + (password[i] - 'a' + 13) % 26;
+
+        else if (password[i] >= 'A' && password[i] <= 'Z')
+            password[i] = 'A' + (password[i] - 'A' + 52) % 26;
+
+        else if (password[i] >= '0' && password[i] <= '9')
+            password[i] = '0' + (password[i] - '0' + 14) % 10;
+
+        else if (password[i] >= '!' && password[i] <= '/')
+            password[i] = '!' + (password[i] - '!' + 17) % 15;
+
+        else if (password[i] >= ':' && password[i] <= '@')
+            password[i] = ':' + (password[i] - ':' + 21) % 7;
     }
 }
 void unti_hash_to_password(char password[])
@@ -427,12 +435,23 @@ void unti_hash_to_password(char password[])
     char temp;
     int len,i=0;
     len=strlen(password);
-    //swap (ayne)
-    for (i=0; i<len/2; i++)
+    //swap to delf domain
+    for (i = 0; i < len; i++)
     {
-        temp=password[i];
-        password[i]=password[len-i-1];
-        password[len-i-1]=temp;
+        if (password[i] >= 'a' && password[i] <= 'z')
+            password[i] = 'a' + (password[i] -'a'-13+26) %26;
+
+        else if (password[i] >= 'A' && password[i] <= 'Z')
+            password[i] = 'A' + (password[i]-'A'-52+78) %26;
+
+        else if (password[i] >= '0' && password[i] <= '9')
+            password[i] = '0' + (password[i]-'0'-14+20) %10;
+
+        else if (password[i] >= '!' && password[i] <= '/')
+            password[i] = '!' + (password[i] -'!'-17+30) %15;
+
+        else if (password[i] >= ':' && password[i] <= '@')
+            password[i] = ':' + (password[i] -':'-21+28)%7;
     }
     //swap random note:min pass==8
     {
@@ -448,11 +467,12 @@ void unti_hash_to_password(char password[])
         password[5]=password[0];
         password[0]=temp;
     }
-    for (int i=0; i<len; i++)
+    //swap (ayne)
+    for (i=0; i<len/2; i++)
     {
         temp=password[i];
-        temp= (temp-3);
-        password[i]=temp;
+        password[i]=password[len-i-1];
+        password[len-i-1]=temp;
     }
 }
 int check_str_date(char date[])
@@ -731,6 +751,7 @@ void set_new_departemant()
         break;
     } while (1);
     // ----------------------------------file apend
+    password_to_hash(pass1);
     fputs(name,file_departemant);
     fputs(", ",file_departemant);
     fputs(family,file_departemant);
@@ -885,6 +906,7 @@ void set_new_academic()
         break;
     } while (1);
     // ----------------------------------file apend
+    password_to_hash(pass1);
     fputs(name,file_academic);
     fputs(", ",file_academic);
     fputs(family,file_academic);
@@ -1254,6 +1276,7 @@ void show_list_users(int status)//eit bayad bokhore bara vaghti ke karbari voojo
             strcpy(temp,"User Name: ");
             printf("%s%s\n",temp,temp_struct_departemant->user_Name);
             strcpy(temp,"Password: ");
+            unti_hash_to_password(temp_struct_departemant->pass1);
             printf("%s%s\n",temp,temp_struct_departemant->pass1);
             printf("-----------------------------------\n");
             temp_struct_departemant=temp_struct_departemant->link;
@@ -1303,6 +1326,7 @@ void show_list_users(int status)//eit bayad bokhore bara vaghti ke karbari voojo
             strcpy(temp,"User Name: ");
             printf("%s%s\n",temp,temp_struct_academic->user_Name);
             strcpy(temp,"Password: ");
+            unti_hash_to_password(temp_struct_academic->pass1);
             printf("%s%s\n",temp,temp_struct_academic->pass1);
             printf("-----------------------------------\n");
         }
@@ -1483,6 +1507,7 @@ void list_of_log_academic()
         strcpy(temp,"User Name: ");
         printf("%s%s\n",temp,temp_struct_academic->user_Name);
         strcpy(temp,"Password: ");
+        unti_hash_to_password(temp_struct_academic->pass1);
         printf("%s%s\n",temp,temp_struct_academic->pass1);
         strcpy(temp,"Status: ");
         if (temp_struct_academic->ekhraj[0]=='N')
@@ -1535,6 +1560,7 @@ void list_of_log_dismissed()
             strcpy(temp,"User Name: ");
             printf("%s%s\n",temp,temp_struct_academic->user_Name);
             strcpy(temp,"Password: ");
+            unti_hash_to_password(temp_struct_academic->pass1);
             printf("%s%s\n",temp,temp_struct_academic->pass1);
             strcpy(temp,"Status: ");
             printf("%sDismissed at %s\n",temp,temp_struct_academic->ekhraj);
