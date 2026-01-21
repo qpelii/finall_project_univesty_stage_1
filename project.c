@@ -4,6 +4,7 @@
 #include<string.h>
 #include<time.h>
 #include<conio.h>
+#include<direct.h>
 static char user_admin[10]="admin";
 static char pass_admin[20]="dgplq456789";// hashed
 static long int limit_admin=0;
@@ -633,6 +634,8 @@ void set_new_departemant()
             printf("Invalid input! Try again: ");
         else if (search_user_name_academic(user_Name)==0 || search_user_name_departemant(user_Name)==0 || strcmp(user_Name,user_admin)==0)
             printf("this user name is duplicated!! Try again: ");
+        else if (strlen(user_Name)<6)
+            printf("too few charachter! Try again: ");
         else
             break;
     }while(1);
@@ -700,7 +703,7 @@ void set_new_departemant()
     fputs(", ",file_departemant);
     fputs("0",file_departemant);
     fputc('\n',file_departemant);
-    printf("Successfully added!\npreas Enter to continue");
+    printf("Successfully added!\npreas Enter to continue\n");
     fclose(file_departemant);
     char temp;
     do
@@ -1500,7 +1503,99 @@ void list_of_log_dismissed()
         temp[0]=getch();
     } while (temp[0]!=13);
 }
+void get_backup()
+{
+    char file_location[100];
+    int len,i,flag_whlie;
+    printf("Please Enter location file that you want save backup\n");
+    printf("note:you must enter name file whit this form: c:/blau blau/name file\n");
+    do{
+        flag_whlie=0;
+        gets(file_location);
+        //---------- checkt addres
+        len=strlen(file_location);
+        for (i=0; i<len; i++)
+            if (file_location[i]=='\\' || (file_location[i]==':' && i!=1)|| file_location[i]=='*' || file_location[i]=='?' || file_location[i]=='\"' 
+            || file_location[i]=='>' || file_location[i]=='<' || file_location[i]=='|' || (file_location[i]=='/' && file_location[i+1]=='/'))
+            {
+                printf("Invalid file locatin!! Tey agian\n");
+                flag_whlie++;
+                break;
+            }
+            if (!isalpha(file_location[0]) || file_location[1]!=':' || file_location[2]!='/')
+            {
+                printf("Invalid file locatin!! Tey agian\n");
+                flag_whlie++;
+            }   
+    }while(flag_whlie);
+    if (file_location[len-1]=='/')
+        file_location[len-1]='\0';
 
+    char time[20];
+    get_now_time(time);
+    
+    //------------------ change format time
+    len=strlen(time);
+    
+    for (i=0;i<len;i++)
+        if (time[i]=='/')
+            time[i]='_';
+        else if (time[i]=='|')
+        {
+            time[i]='\0';
+            break;
+        }
+    strcat(file_location,"/Backup_Manage_university_");
+    strcat(file_location,time);
+    mkdir(file_location);
+    char location_departemant[150];
+    char read_line[225];
+    strcpy(location_departemant,file_location);
+    strcat(location_departemant,"/file_departemant.txt");
+    int flag_file=0;
+    FILE *backup_departemant;
+    FILE *departemant_main;
+    departemant_main=fopen("file_departemant.txt","r");
+    if (departemant_main==NULL)
+        flag_file++;
+    backup_departemant=fopen(location_departemant,"w");
+    while(flag_file==0)
+    {
+        fgets(read_line, 225, departemant_main);
+        if (feof(departemant_main)==1)
+            break;
+        fputs(read_line,backup_departemant);
+    }
+    fclose(departemant_main);
+    fclose(backup_departemant);
+
+    char location_academic[150];
+    strcpy(location_academic,file_location);
+    strcat(location_academic,"/file_academic.txt");
+    FILE *backup_academic;
+    FILE *academic_main;
+    academic_main=fopen("file_academic.txt","r");
+    if (academic_main==NULL)
+        flag_file++;
+    backup_academic=fopen(location_academic,"w");
+    while(1)
+    {
+        fgets(read_line, 225, academic_main);
+        if (feof(academic_main)==1)
+            break;
+        fputs(read_line,backup_academic);
+    }
+    fclose(academic_main);
+    fclose(backup_academic);
+
+    printf("backup_complit!\nprease Enter to continue\n");
+    char temp;
+    do
+    {
+        temp=getch();
+    } while (temp!=13);
+    // system("cls");
+}
 
 void main()
 {
@@ -1568,6 +1663,7 @@ void main()
                         kick_user();
                         break;
                     case 5:
+                        //lsit of Log
                         do{
                             list_of_log_print();
                             type_list_log=menu_login_filter_selection();
@@ -1591,6 +1687,9 @@ void main()
                                 break;
                             }
                         }while(type_list_log!=4);
+                        break;
+                    case 6:
+                        get_backup();
                         break;
                     case 7:
                         break;
