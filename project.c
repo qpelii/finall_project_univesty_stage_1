@@ -44,8 +44,9 @@ struct struct_lesson
     char vahed[3];
     char type_lessom[3];
     char code_lesson[15];
+    struct struct_lesson *link;
 };
-struct struct_academic *start_struct_lesson, *end_struct_lesson, *temp_struct_lesson;
+struct struct_lesson *start_struct_lesson, *end_struct_lesson, *temp_struct_lesson;
 
 void menu_login_print()
 {
@@ -1997,7 +1998,7 @@ void add_new_lesson()//check code class dont repited
     printf("selcet number of type: ");
     do{
         gets(type);
-        if (check_str_was_int(type) || strlen(type)==0 || (type[0]<'1' %% type[0]>4))
+        if (check_str_was_int(type) || strlen(type)==0 || (type[0]<'1' && type[0]>4))
             printf("Invalid input! Try again: ");
         else
             break;
@@ -2028,6 +2029,120 @@ void add_new_lesson()//check code class dont repited
     {
         temp=getch();
     } while (temp!=13);
+}
+int set_lesson_as_link_list()
+{
+    start_struct_lesson=malloc(sizeof(struct struct_academic));
+    if (start_struct_lesson==NULL)
+    {
+        printf("memory is not allowed!");
+        return 1;
+    }
+    end_struct_lesson=start_struct_lesson;
+
+    FILE *lesson;
+    lesson=fopen("file_lesson.txt", "r");
+    if (lesson==NULL)
+    {
+        fclose(lesson);
+        start_struct_lesson->name_lessom[0]='0';// if file was NULL
+        start_struct_lesson->link=NULL;
+        return 1;
+    } 
+    char temp[225],info[50]={0};
+    int i=0,j=0,flag_info=1;
+    temp[0]='\0';
+    fgets(temp,225,lesson);
+    if (strlen(temp)==0)
+    {
+        fclose(lesson);
+        start_struct_lesson->name_lessom[0]='0';// if file was NULL
+        start_struct_lesson->link=NULL;
+        return 1;
+    }        
+    int len=strlen(temp);
+    for(i=0;i<len;i++)
+    {
+        if ((temp[i]==',' && temp[i+1]==' ') || temp[i]=='\n')
+        {
+            info[j]='\0';
+            switch (flag_info)
+            {
+            case 1:
+                strcpy(temp_struct_lesson->name_lessom,info);
+                break;
+            case 2:
+                strcpy(temp_struct_lesson->vahed,info);
+                break;
+            case 3:
+                strcpy(temp_struct_lesson->type_lessom,info);
+                break;
+            case 4:
+                strcpy(temp_struct_lesson->code_lesson,info);
+                break;
+            default:
+                break;
+            }
+            flag_info++;
+            j=0;
+            i++;
+        }
+        else
+        {
+            info[j]=temp[i];
+            j++;
+        }
+    }
+    start_struct_lesson->link=NULL;
+    
+    while (1)
+    {
+        temp_struct_lesson=malloc(sizeof(struct struct_lesson));
+        temp[0]='\0';
+        fgets(temp,225,lesson);
+        if (strlen(temp)==0)
+            break;
+        flag_info=1,i=0,j=0;
+        while(flag_info!=5)
+        {
+            if ((temp[i]==',' && temp[i+1]==' ') || temp[i]=='\n')
+            {
+                info[j]='\0';
+                switch (flag_info)
+                {
+                case 1:
+                    strcpy(temp_struct_lesson->name_lessom,info);
+                    break;
+                case 2:
+                    strcpy(temp_struct_lesson->vahed,info);
+                    break;
+                case 3:
+                    strcpy(temp_struct_lesson->type_lessom,info);
+                    break;
+                case 4:
+                    strcpy(temp_struct_lesson->code_lesson,info);
+                    break;
+                default:
+                    break;
+                }
+                flag_info++;
+                j=0;
+                i++;
+            }
+            else
+            {
+                info[j]=temp[i];
+                j++;
+            }
+            i++;
+        }
+        temp_struct_lesson->link=NULL;
+        end_struct_lesson->link=temp_struct_lesson;
+        end_struct_lesson=temp_struct_lesson;
+    }
+    fclose(lesson);
+    free(temp_struct_lesson);
+    return 0;
 }
 
 
@@ -2150,7 +2265,8 @@ void main()
                         switch (menu_type)
                         {
                         case 1:
-                            //def
+                            add_new_lesson();
+                            set_lesson_as_link_list();
                             break;
                         
                         default:
