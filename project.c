@@ -385,6 +385,36 @@ void menu_admin_page_print()
     printf("------------------------------\n\n");
     printf("select a option from menu: ");
 }
+int menu_selection_1_6()
+{
+    char number[3];
+    int num,flag;
+    do
+    {
+        flag=num=0;
+        gets(number);
+        flag=check_str_was_int(number);
+        if (flag)
+        {
+            printf("Invalid input Try agian: ");
+            continue;
+        }
+        else
+        {
+            num=atoi(number) ;
+            if (num>6 || num<1)
+            {
+                printf("Your input is out of range! Try agian: ");
+                flag++;
+                continue;
+            }
+
+            // // system("cls");;
+            return num;
+        }
+    } while (flag);
+
+}
 int menu_selection_1_8()
 {
     char number[3];
@@ -1040,6 +1070,129 @@ void set_new_academic()
     fputc('\n',file_academic);
     printf("Successfully added!\npreas Enter to continue\n");
     fclose(file_academic);
+    char temp;
+    do
+    {
+        temp=getch();
+    } while (temp!=13);
+
+
+}
+void set_new_student()
+{
+    FILE *file_student;
+    file_student=fopen("file_student.txt","a");
+    if (file_student==NULL)
+    {
+        printf("memory is not allowed!");
+        return ;
+    }
+    char name[20],family[30],date_birthday[15],location_born[20],ID_code[15],phone_num[15],email[40],major[20];
+    char ID_uni[30];
+    printf("Please enter this information about Student\n");
+
+    printf("Enter name: ");
+    do{
+        gets(name);
+        if (check_str_full_alpha_whit_space(name) || strlen(name)==0)
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+
+    printf("Enter family: ");
+    do{
+        gets(family);
+        if (check_str_full_alpha_whit_space(family) || strlen(family)==0)
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+
+    printf("Enter ID: ");
+    do{
+        gets(ID_code);
+        if (check_str_was_int(ID_code) || strlen(ID_code)!=10)
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+
+    printf("Enter date Birthday Student\n(hint:enter whith this form YYYY/MM/DD): ");
+    do{
+        gets(date_birthday);
+        if (check_str_date(date_birthday) || strlen(date_birthday)==0)
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+
+    printf("Enter Location that student born: ");
+    do{
+        gets(location_born);
+        if (check_str_full_alpha_whit_space(location_born) || strlen(location_born)==0)
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+
+    printf("Enter Major: ");
+    do{
+        gets(major);
+        if (check_str_whit_space(major))
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+
+    printf("Enter ID of university: ");
+    do{
+        gets(ID_uni);
+        if (check_str_was_int(ID_uni) || strlen(ID_uni)!=10)
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+
+    printf("Enter Phone number(whit this form 09123456789): ");
+    do{
+        gets(phone_num);
+        if (check_str_was_int(phone_num) || phone_num[0]!='0' || phone_num[1]!='9' || strlen(phone_num)!=11)
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+
+    printf("Enter Email: ");
+    do{
+        gets(email);
+        if (check_email(email))
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+
+    // ----------------------------------file apend
+    fputs(name,file_student);
+    fputs(", ",file_student);
+    fputs(family,file_student);
+    fputs(", ",file_student);
+    fputs(ID_code,file_student);
+    fputs(", ",file_student);
+    fputs(date_birthday,file_student);
+    fputs(", ",file_student);
+    fputs(location_born,file_student);
+    fputs(", ",file_student);
+    fputs(major,file_student);
+    fputs(", ",file_student);
+    fputs(ID_uni,file_student);
+    fputs(", ",file_student);
+    fputs(phone_num,file_student);
+    fputs(", ",file_student);
+    fputs(email,file_student);
+    fputc('\n',file_student);
+    printf("Successfully added!\npreas Enter to continue\n");
+    fclose(file_student);
     char temp;
     do
     {
@@ -2036,6 +2189,11 @@ void add_new_lesson()//check code class dont repited
         gets(code_lesson);
         if (check_str_was_int(code_lesson) || strlen(code_lesson)==0)
             printf("Invalid input! Try again: ");
+        else if (search_lesson_code(code_lesson)==0)
+        {
+            printf("this code Lesson is duplicate! Try agian: ");
+            free_lesson();
+        }
         else
             break;
     }while(1);
@@ -2171,7 +2329,46 @@ int set_lesson_as_link_list()
     free(temp_struct_lesson);
     return 0;
 }
+void menu_academic_print()
+{
+    char temp[35],line_char='|';
+    printf("-----------------------------------\n");
+    for(int i=0; i<6; i++)
+    {
+    printf("%c%-2d%c",line_char,i+1,line_char);
+    switch (i)
+    {
+    case 0:
+        strcpy(temp,"Add new Student");
+        break;
+    case 1:
+        strcpy(temp,"Edit information Student");
+        break;
+    case 2:
+        strcpy(temp,"Set score");
+        break;
+    case 3:
+        strcpy(temp,"Get Log");
+        break;
+    case 4:
+        strcpy(temp,"Settings");
+        break;
+    case 5:
+        strcpy(temp,"Exit from Panel");
+        break;
+    default:
+        break;
+    }
 
+    printf("%-30s%c\n",temp,line_char);
+    if (i!=5)
+        printf("|--+------------------------------|\n");
+
+
+    }
+    printf("-----------------------------------\n\n");
+    printf("Select a option from menu: ");
+}
 
 void main()
 {
@@ -2311,18 +2508,18 @@ void main()
                 if (login_flag==0)
                 {
                     do{
-                        // menu_academic_print();
-                        menu_type=menu_selection_1_8();
+                        menu_academic_print();
+                        menu_type=menu_selection_1_6();
                         switch (menu_type)
                         {
                         case 1:
-                            //def
+                            set_new_student();
                             break;
                         
                         default:
                             break;
                         }
-                    }while(menu_type!=8);
+                    }while(menu_type!=6);
                 }
                 else
                     add_linked_list_academi_to_notpadd();
