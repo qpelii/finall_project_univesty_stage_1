@@ -47,6 +47,22 @@ struct struct_lesson
     struct struct_lesson *link;
 };
 struct struct_lesson *start_struct_lesson, *end_struct_lesson, *temp_struct_lesson;
+struct struct_student
+{
+    char name[20];
+    char family[30];
+    char ID_code[15];
+    char date_birthday[15];
+    char location_born[20];
+    char major[20];
+    char ID_uni[30];
+    char phone_num[15];
+    char email[40];
+    struct struct_student *link;
+};
+struct struct_student *start_struct_student, *end_struct_student, *temp_struct_student;
+
+
 
 void menu_login_print()
 {
@@ -1502,6 +1518,150 @@ int set_academic_as_link_list()
     free(temp_struct_academic);
     return 0;
 }
+int set_student_as_link_list()
+{
+    start_struct_student=malloc(sizeof(struct struct_student));
+    if (start_struct_student==NULL)
+    {
+        printf("memory is not allowed!");
+        return 1;
+    }
+    end_struct_student=start_struct_student;
+
+    FILE *student;
+    student=fopen("file_student.txt", "r");
+    if (student==NULL)
+    {
+        fclose(student);
+        start_struct_student->name[0]='0';// if file was NULL
+        start_struct_student->link=NULL;
+        return 1;
+    } 
+    char temp[225],info[50]={0};
+    int i=0,j=0,flag_info=1;
+    temp[0]='\0';
+    fgets(temp,225,student);
+    if (strlen(temp)==0)
+    {
+        fclose(student);
+        start_struct_student->name[0]='0';// if file was NULL
+        start_struct_student->link=NULL;
+        return 1;
+    }        
+    int len=strlen(temp);
+    for(i=0;i<len;i++)
+    {
+        if ((temp[i]==',' && temp[i+1]==' ') || temp[i]=='\n')
+        {
+            info[j]='\0';
+            switch (flag_info)
+            {
+            case 1:
+                strcpy(start_struct_student->name,info);
+                break;
+            case 2:
+                strcpy(start_struct_student->family,info);
+                break;
+            case 3:
+                strcpy(start_struct_student->ID_code,info);
+                break;
+            case 4:
+                strcpy(start_struct_student->date_birthday,info);
+                break;
+            case 5:
+                strcpy(start_struct_student->location_born,info);
+                break;
+            case 6:
+                strcpy(start_struct_student->major,info);
+                break;
+            case 7:
+                strcpy(start_struct_student->ID_uni,info);
+                break;
+            case 8:
+                strcpy(start_struct_student->phone_num,info);
+                break;
+            case 9:
+                strcpy(start_struct_student->email,info);
+                break;
+            default:
+                break;
+            }
+            flag_info++;
+            j=0;
+            i++;
+        }
+        else
+        {
+            info[j]=temp[i];
+            j++;
+        }
+    }
+    start_struct_student->link=NULL;
+    
+    while (1)
+    {
+        temp_struct_student=malloc(sizeof(struct struct_student));
+        temp[0]='\0';
+        fgets(temp,225,student);
+        if (strlen(temp)==0)
+            break;
+        flag_info=1,i=0,j=0;
+        while(flag_info!=11)
+        {
+            if ((temp[i]==',' && temp[i+1]==' ') || temp[i]=='\n')
+            {
+                info[j]='\0';
+                switch (flag_info)
+                {
+                case 1:
+                    strcpy(temp_struct_student->name,info);
+                    break;
+                case 2:
+                    strcpy(temp_struct_student->family,info);
+                    break;
+                case 3:
+                    strcpy(temp_struct_student->ID_code,info);
+                    break;
+                case 4:
+                    strcpy(temp_struct_student->date_birthday,info);
+                    break;
+                case 5:
+                    strcpy(temp_struct_student->location_born,info);
+                    break;
+                case 6:
+                    strcpy(temp_struct_student->major,info);
+                    break;
+                case 7:
+                    strcpy(temp_struct_student->ID_uni,info);
+                    break;
+                case 8:
+                    strcpy(temp_struct_student->phone_num,info);
+                    break;
+                case 9:
+                    strcpy(temp_struct_student->email,info);
+                    break;
+                default:
+                    break;
+                }
+                flag_info++;
+                j=0;
+                i++;
+            }
+            else
+            {
+                info[j]=temp[i];
+                j++;
+            }
+            i++;
+        }
+        temp_struct_student->link=NULL;
+        end_struct_student->link=temp_struct_student;
+        end_struct_student=temp_struct_student;
+    }
+    fclose(student);
+    free(temp_struct_student);
+    return 0;
+}
 void show_list_users(int status)//eit bayad bokhore bara vaghti ke karbari voojood nadare
 {
     char temp[25];
@@ -2217,7 +2377,7 @@ void add_new_lesson()//check code class dont repited
 }
 int set_lesson_as_link_list()
 {
-    start_struct_lesson=malloc(sizeof(struct struct_academic));
+    start_struct_lesson=malloc(sizeof(struct struct_lesson));
     if (start_struct_lesson==NULL)
     {
         printf("memory is not allowed!");
