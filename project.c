@@ -257,6 +257,20 @@ void free_departemant()
     } while (temp_struct_departemant!=NULL);
     free(temp_struct_departemant);
 }
+void free_lesson()
+{
+    if (temp_struct_lesson==NULL)
+    {
+        free(temp_struct_lesson);
+        return ;
+    }
+    do
+    {
+        temp_struct_lesson=temp_struct_lesson->link;
+        continue;
+    } while (temp_struct_lesson!=NULL);
+    free(temp_struct_lesson);
+}
 int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_time)
 {
     // -------------------- just user_name
@@ -627,6 +641,19 @@ int search_user_name_departemant(char user_name[])
         temp_struct_departemant=temp_struct_departemant->link;
     }while(temp_struct_departemant!=NULL);
     free(temp_struct_departemant);
+    return 1;// 0:= fine | 1:=not found
+}
+int search_lesson_code(char code[])
+{
+    temp_struct_lesson=malloc(sizeof(struct struct_lesson));
+    temp_struct_lesson=start_struct_lesson;
+    do
+    {
+        if (strcmp(temp_struct_lesson->code_lesson,code)==0 && strlen(temp_struct_lesson->code_lesson)==strlen(code))
+            return 0;
+        temp_struct_lesson=temp_struct_lesson->link;
+    }while(temp_struct_lesson!=NULL);
+    free(temp_struct_lesson);
     return 1;// 0:= fine | 1:=not found
 }
 int get_user_pass_user_academics()
