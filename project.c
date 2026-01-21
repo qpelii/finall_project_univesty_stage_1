@@ -38,6 +38,14 @@ struct struct_academic
     struct struct_academic *link;
 };
 struct struct_academic *start_struct_academic, *end_struct_academic, *temp_struct_academic;
+struct struct_lesson
+{
+    char name_lessom[30];
+    char vahed[3];
+    char type_lessom[3];
+    char code_lesson[15];
+};
+struct struct_academic *start_struct_lesson, *end_struct_lesson, *temp_struct_lesson;
 
 void menu_login_print()
 {
@@ -1879,15 +1887,15 @@ void load_backup()
 }
 void menu_departemant_print()
 {
-    char temp[25],line_char='|';
-    printf("------------------------------\n");
+    char temp[35],line_char='|';
+    printf("-----------------------------------\n");
     for(int i=0; i<8; i++)
     {
     printf("%c%-2d%c",line_char,i+1,line_char);
     switch (i)
     {
     case 0:
-        strcpy(temp,"Add new Lesson");// modir goorooh:)
+        strcpy(temp,"Add new Lesson");
         break;
     case 1:
         strcpy(temp,"Set Student score");
@@ -1914,16 +1922,113 @@ void menu_departemant_print()
         break;
     }
 
-    printf("%-25s%c\n",temp,line_char);
+    printf("%-30s%c\n",temp,line_char);
     if (i!=7)
-        printf("|--+-------------------------|\n");
+        printf("|--+------------------------------|\n");
 
 
     }
-    printf("------------------------------\n\n");
+    printf("-----------------------------------\n\n");
     printf("select a option from menu: ");
 }
+void list_type_of_lesson()
+{
+    char temp[15],line_char='|';
+    printf("\n---------------------------\n");
+    for(int i=0; i<4; i++)
+    {
+    printf("%c%-2d%c",line_char,i+1,line_char);
+    switch (i)
+    {
+    case 0:
+        strcpy(temp,"teori");
+        break;
+    case 1:
+        strcpy(temp,"Amali");
+        break;
+    case 2:
+        strcpy(temp,"Azmayeshgahi");
+        break;
+    case 3:
+        strcpy(temp,"kargahi");
+        break;
+    default:
+        break;
+    }
 
+    printf("%-15s%c\n",temp,line_char);
+    if (i!=3)
+        printf("|--+----------------------|\n");
+
+
+    }
+    printf("---------------------------\n\n");
+}
+void add_new_lesson()//check code class dont repited
+{
+    FILE *file_lesson;
+    file_lesson=fopen("file_lesson.txt","a");
+    if (file_lesson==NULL)
+    {
+        printf("memory is not allowed!");
+        return ;
+    }
+    char name[20],vahed[3],type[3],code_lesson[15];
+    printf("Please enter this information about Academic\n");
+
+    printf("Enter name lesson: ");
+    do{
+        gets(name);
+        if (check_str_full_alpha_whit_space(name) || strlen(name)==0)
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+
+    printf("Enter number of \"vahed\": ");
+    do{
+        gets(vahed);
+        if (check_str_was_int(vahed) || strlen(vahed)==0)
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+    list_type_of_lesson();
+    printf("selcet number of type: ");
+    do{
+        gets(type);
+        if (check_str_was_int(type) || strlen(type)==0 || (type[0]<'1' %% type[0]>4))
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+
+    printf("Enter Lesson Code's: ");
+    do{
+        gets(code_lesson);
+        if (check_str_was_int(code_lesson) || strlen(code_lesson)==0)
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+
+    // ----------------------------------file apend
+    fputs(name,file_lesson);
+    fputs(", ",file_lesson);
+    fputs(vahed,file_lesson);
+    fputs(", ",file_lesson);
+    fputs(type,file_lesson);
+    fputs(", ",file_lesson);
+    fputs(code_lesson,file_lesson);
+    fputc('\n',file_lesson);
+    fclose(file_lesson);
+    printf("Successfully added!\npreas Enter to continue\n");
+    char temp;
+    do
+    {
+        temp=getch();
+    } while (temp!=13);
+}
 
 
 void main()
@@ -2063,7 +2168,7 @@ void main()
                 if (login_flag==0)
                 {
                     do{
-                        menu_departemant_print();
+                        // menu_academic_print();
                         menu_type=menu_selection_1_8();
                         switch (menu_type)
                         {
@@ -2077,7 +2182,7 @@ void main()
                     }while(menu_type!=8);
                 }
                 else
-                    add_linked_list_departemant_to_notpadd();
+                    add_linked_list_academi_to_notpadd();
                 break;
             case 4:
                 free(start_struct_academic);
