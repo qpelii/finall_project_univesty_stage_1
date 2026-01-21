@@ -389,7 +389,33 @@ void password_to_hash(char password[])
 {
     int len=strlen(password);
     int temp_ASCII;
-    for (int i=0; i<len; i++)
+    //swap (ayne)
+    char temp;
+    int len,i=0;
+    printf("enter a Name: ");
+    gets(password);
+    len=strlen(password);
+    for (i=0; i<len/2; i++)
+    {
+        temp=password[i];
+        password[i]=password[len-i-1];
+        password[len-i-1]=temp;
+    }
+    //swap random note:min pass==8
+    {
+        temp=password[3];
+        password[3]=password[6];
+        password[6]=temp;
+
+        temp=password[1];
+        password[1]=password[7];
+        password[7]=temp;
+        
+        temp=password[5];
+        password[5]=password[0];
+        password[0]=temp;
+    }
+    for (i=0; i<len; i++)
     {
         temp_ASCII=password[i];
         temp_ASCII= temp_ASCII+3;
@@ -398,13 +424,35 @@ void password_to_hash(char password[])
 }
 void unti_hash_to_password(char password[])
 {
-    int len=strlen(password);
-    int temp_ASCII;
+    char temp;
+    int len,i=0;
+    len=strlen(password);
+    //swap (ayne)
+    for (i=0; i<len/2; i++)
+    {
+        temp=password[i];
+        password[i]=password[len-i-1];
+        password[len-i-1]=temp;
+    }
+    //swap random note:min pass==8
+    {
+        temp=password[3];
+        password[3]=password[6];
+        password[6]=temp;
+
+        temp=password[1];
+        password[1]=password[7];
+        password[7]=temp;
+        
+        temp=password[5];
+        password[5]=password[0];
+        password[0]=temp;
+    }
     for (int i=0; i<len; i++)
     {
-        temp_ASCII=password[i];
-        temp_ASCII= (temp_ASCII-3);
-        password[i]=temp_ASCII;
+        temp=password[i];
+        temp= (temp-3);
+        password[i]=temp;
     }
 }
 int check_str_date(char date[])
