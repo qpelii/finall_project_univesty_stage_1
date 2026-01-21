@@ -1262,25 +1262,25 @@ void show_list_users(int status)//eit bayad bokhore bara vaghti ke karbari voojo
             }
             printf("Departemant's %d\n",i++);
             printf("-----------------------------------\n");
-            strcpy(temp,"Name: ");
-            printf("%s%s\n",temp,temp_struct_departemant->name);
-            strcpy(temp,"Family name: ");
-            printf("%s%s\n",temp,temp_struct_departemant->family);
-            strcpy(temp,"Date start: ");
-            printf("%s%s\n",temp,temp_struct_departemant->date_start);
-            strcpy(temp,"Name Group: ");
-            printf("%s%s\n",temp,temp_struct_departemant->name_of_group);
-            strcpy(temp,"ID code: ");
-            printf("%s%s\n",temp,temp_struct_departemant->ID_code);
-            strcpy(temp,"Phone number: ");
-            printf("%s%s\n",temp,temp_struct_departemant->phone_num);
-            strcpy(temp,"Email: ");
-            printf("%s%s\n",temp,temp_struct_departemant->email);
-            strcpy(temp,"User Name: ");
-            printf("%s%s\n",temp,temp_struct_departemant->user_Name);
-            strcpy(temp,"Password: ");
+            strcpy(temp,"Name");
+            printf("%-20s%s\n",temp,temp_struct_departemant->name);
+            strcpy(temp,"Family name");
+            printf("%-20s%s\n",temp,temp_struct_departemant->family);
+            strcpy(temp,"Date start");
+            printf("%-20s%s\n",temp,temp_struct_departemant->date_start);
+            strcpy(temp,"Name Group");
+            printf("%-20s%s\n",temp,temp_struct_departemant->name_of_group);
+            strcpy(temp,"ID code");
+            printf("%-20s%s\n",temp,temp_struct_departemant->ID_code);
+            strcpy(temp,"Phone number");
+            printf("%-20s%s\n",temp,temp_struct_departemant->phone_num);
+            strcpy(temp,"Email");
+            printf("%-20s%s\n",temp,temp_struct_departemant->email);
+            strcpy(temp,"User Name");
+            printf("%-20s%s\n",temp,temp_struct_departemant->user_Name);
+            strcpy(temp,"Password");
             unti_hash_to_password(temp_struct_departemant->pass1);
-            printf("%s%s\n",temp,temp_struct_departemant->pass1);
+            printf("%-20s%s\n",temp,temp_struct_departemant->pass1);
             printf("-----------------------------------\n");
             temp_struct_departemant=temp_struct_departemant->link;
         }while(temp_struct_departemant!=NULL);
@@ -1314,23 +1314,23 @@ void show_list_users(int status)//eit bayad bokhore bara vaghti ke karbari voojo
         {
             printf("Academic's %d\n",i++);
             printf("-----------------------------------\n");
-            strcpy(temp,"Name: ");
-            printf("%s%s\n",temp,temp_struct_academic->name);
-            strcpy(temp,"Family name: ");
-            printf("%s%s\n",temp,temp_struct_academic->family);
-            strcpy(temp,"Date start: ");
-            printf("%s%s\n",temp,temp_struct_academic->date_start);
-            strcpy(temp,"Rate of Academic: ");
-            printf("%s%s\n",temp,temp_struct_academic->rate);
-            strcpy(temp,"Phone number: ");
-            printf("%s%s\n",temp,temp_struct_academic->phone_num);
-            strcpy(temp,"Email: ");
-            printf("%s%s\n",temp,temp_struct_academic->email);
-            strcpy(temp,"User Name: ");
-            printf("%s%s\n",temp,temp_struct_academic->user_Name);
-            strcpy(temp,"Password: ");
+            strcpy(temp,"Name");
+            printf("%-20s%s\n",temp,temp_struct_academic->name);
+            strcpy(temp,"Family name");
+            printf("%-20s%s\n",temp,temp_struct_academic->family);
+            strcpy(temp,"Date start");
+            printf("%-20s%s\n",temp,temp_struct_academic->date_start);
+            strcpy(temp,"Rate of Academic");
+            printf("%-20s%s\n",temp,temp_struct_academic->rate);
+            strcpy(temp,"Phone number");
+            printf("%-20s%s\n",temp,temp_struct_academic->phone_num);
+            strcpy(temp,"Email");
+            printf("%-20s%s\n",temp,temp_struct_academic->email);
+            strcpy(temp,"User Name");
+            printf("%-20s%s\n",temp,temp_struct_academic->user_Name);
+            strcpy(temp,"Password");
             unti_hash_to_password(temp_struct_academic->pass1);
-            printf("%s%s\n",temp,temp_struct_academic->pass1);
+            printf("%-20s%s\n",temp,temp_struct_academic->pass1);
             printf("-----------------------------------\n");
         }
         temp_struct_academic=temp_struct_academic->link;
@@ -1495,28 +1495,28 @@ void list_of_log_academic()
         }
         printf("Academic's %d\n",i++);
         printf("-----------------------------------\n");
-        strcpy(temp,"Name: ");
-        printf("%s%s\n",temp,temp_struct_academic->name);
-        strcpy(temp,"Family name: ");
-        printf("%s%s\n",temp,temp_struct_academic->family);
-        strcpy(temp,"Date start: ");
-        printf("%s%s\n",temp,temp_struct_academic->date_start);
-        strcpy(temp,"Rate of Academic: ");
-        printf("%s%s\n",temp,temp_struct_academic->rate);
-        strcpy(temp,"Phone number: ");
-        printf("%s%s\n",temp,temp_struct_academic->phone_num);
-        strcpy(temp,"Email: ");
-        printf("%s%s\n",temp,temp_struct_academic->email);
-        strcpy(temp,"User Name: ");
-        printf("%s%s\n",temp,temp_struct_academic->user_Name);
-        strcpy(temp,"Password: ");
+        strcpy(temp,"Name");
+        printf("%-20s%s\n",temp,temp_struct_academic->name);
+        strcpy(temp,"Family name");
+        printf("%-20s%s\n",temp,temp_struct_academic->family);
+        strcpy(temp,"Date start");
+        printf("%-20s%s\n",temp,temp_struct_academic->date_start);
+        strcpy(temp,"Rate of Academic");
+        printf("%-20s%s\n",temp,temp_struct_academic->rate);
+        strcpy(temp,"Phone number");
+        printf("%-20s%s\n",temp,temp_struct_academic->phone_num);
+        strcpy(temp,"Email");
+        printf("%-20s%s\n",temp,temp_struct_academic->email);
+        strcpy(temp,"User Name");
+        printf("%-20s%s\n",temp,temp_struct_academic->user_Name);
+        strcpy(temp,"Password");
         unti_hash_to_password(temp_struct_academic->pass1);
-        printf("%s%s\n",temp,temp_struct_academic->pass1);
-        strcpy(temp,"Status: ");
+        printf("%-20s%s\n",temp,temp_struct_academic->pass1);
+        strcpy(temp,"Status");
         if (temp_struct_academic->ekhraj[0]=='N')
-            printf("%sin Work\n",temp);
+            printf("%-20sin Work\n",temp);
         else
-            printf("%sDismissed at %s\n",temp,temp_struct_academic->ekhraj);
+            printf("%-20sDismissed at %s\n",temp,temp_struct_academic->ekhraj);
         printf("-----------------------------------\n");
         temp_struct_academic=temp_struct_academic->link;
     }while(temp_struct_academic!=NULL);
@@ -1548,25 +1548,25 @@ void list_of_log_dismissed()
         {
             printf("Academic's %d\n",i++);
             printf("-----------------------------------\n");
-            strcpy(temp,"Name: ");
-            printf("%s%s\n",temp,temp_struct_academic->name);
-            strcpy(temp,"Family name: ");
-            printf("%s%s\n",temp,temp_struct_academic->family);
-            strcpy(temp,"Date start: ");
-            printf("%s%s\n",temp,temp_struct_academic->date_start);
-            strcpy(temp,"Rate of Academic: ");
-            printf("%s%s\n",temp,temp_struct_academic->rate);
-            strcpy(temp,"Phone number: ");
-            printf("%s%s\n",temp,temp_struct_academic->phone_num);
-            strcpy(temp,"Email: ");
-            printf("%s%s\n",temp,temp_struct_academic->email);
-            strcpy(temp,"User Name: ");
-            printf("%s%s\n",temp,temp_struct_academic->user_Name);
-            strcpy(temp,"Password: ");
+            strcpy(temp,"Name");
+            printf("%-20s%s\n",temp,temp_struct_academic->name);
+            strcpy(temp,"Family name");
+            printf("%-20s%s\n",temp,temp_struct_academic->family);
+            strcpy(temp,"Date start");
+            printf("%-20s%s\n",temp,temp_struct_academic->date_start);
+            strcpy(temp,"Rate of Academic");
+            printf("%-20s%s\n",temp,temp_struct_academic->rate);
+            strcpy(temp,"Phone number");
+            printf("%-20s%s\n",temp,temp_struct_academic->phone_num);
+            strcpy(temp,"Email");
+            printf("%-20s%s\n",temp,temp_struct_academic->email);
+            strcpy(temp,"User Name");
+            printf("%-20s%s\n",temp,temp_struct_academic->user_Name);
+            strcpy(temp,"Password");
             unti_hash_to_password(temp_struct_academic->pass1);
-            printf("%s%s\n",temp,temp_struct_academic->pass1);
-            strcpy(temp,"Status: ");
-            printf("%sDismissed at %s\n",temp,temp_struct_academic->ekhraj);
+            printf("%-20s%s\n",temp,temp_struct_academic->pass1);
+            strcpy(temp,"Status");
+            printf("%-20sDismissed at %s\n",temp,temp_struct_academic->ekhraj);
             printf("-----------------------------------\n");
         }
         temp_struct_academic=temp_struct_academic->link;
@@ -1751,7 +1751,52 @@ void load_backup()
     } while (temp!=13);
     // system("cls");
 }
+void menu_departemant_print()
+{
+    char temp[25],line_char='|';
+    printf("------------------------------\n");
+    for(int i=0; i<8; i++)
+    {
+    printf("%c%-2d%c",line_char,i+1,line_char);
+    switch (i)
+    {
+    case 0:
+        strcpy(temp,"Add new Lesson");// modir goorooh:)
+        break;
+    case 1:
+        strcpy(temp,"Set Student score");
+        break;
+    case 2:
+        strcpy(temp,"Edit Student score");
+        break;
+    case 3:
+        strcpy(temp,"Edit Information about Lesson");
+        break;
+    case 4:
+        strcpy(temp,"Delete Lesson Information's");
+        break;
+    case 5:
+        strcpy(temp,"Get Log");
+        break;
+    case 6:
+        strcpy(temp,"Settings");
+        break;
+    case 7:
+        strcpy(temp,"Exit from Panle");
+        break;
+    default:
+        break;
+    }
 
+    printf("%-25s%c\n",temp,line_char);
+    if (i!=7)
+        printf("|--+-------------------------|\n");
+
+
+    }
+    printf("------------------------------\n\n");
+    printf("select a option from menu: ");
+}
 void main()
 {
     char *pointer_Uadmin;
@@ -1856,6 +1901,13 @@ void main()
                     }
                 }while(menu_type!=8);
             }
+            break;
+        case 2:
+            //def print
+            break;
+        
+        case 3:
+
             break;
         case 4:
             free(start_struct_academic);
