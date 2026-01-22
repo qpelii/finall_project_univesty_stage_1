@@ -55,7 +55,7 @@ struct struct_student
     char date_birthday[15];
     char location_born[20];
     char major[20];
-    char ID_uni[30];
+    char ID_uni[15];
     char phone_num[15];
     char email[40];
     struct struct_student *link;
@@ -286,6 +286,20 @@ void free_lesson()
         continue;
     } while (temp_struct_lesson!=NULL);
     free(temp_struct_lesson);
+}
+void free_student()
+{
+    if (temp_struct_student==NULL)
+    {
+        free(temp_struct_student);
+        return ;
+    }
+    do
+    {
+        temp_struct_student=temp_struct_student->link;
+        continue;
+    } while (temp_struct_student!=NULL);
+    free(temp_struct_student);
 }
 int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_time)
 {
@@ -942,7 +956,7 @@ void set_new_departemant()
     fputs(", ",file_departemant);
     fputs("0",file_departemant);
     fputc('\n',file_departemant);
-    printf("Successfully added!\npreas Enter to continue\n");
+    printf("Successfully added!\npress Enter to continue\n");
     fclose(file_departemant);
     char temp;
     do
@@ -1097,7 +1111,7 @@ void set_new_academic()
     fputs(", ",file_academic);
     fputc('N',file_academic);// date exit
     fputc('\n',file_academic);
-    printf("Successfully added!\npreas Enter to continue\n");
+    printf("Successfully added!\npress Enter to continue\n");
     fclose(file_academic);
     char temp;
     do
@@ -1116,8 +1130,7 @@ void set_new_student()
         printf("memory is not allowed!");
         return ;
     }
-    char name[20],family[30],date_birthday[15],location_born[20],ID_code[15],phone_num[15],email[40],major[20];
-    char ID_uni[30];
+    char name[20],family[30],date_birthday[15],location_born[20],ID_code[15],phone_num[15],email[40],major[20],ID_uni[30];
     printf("Please enter this information about Student\n");
 
     printf("Enter name: ");
@@ -1168,7 +1181,7 @@ void set_new_student()
     printf("Enter Major: ");
     do{
         gets(major);
-        if (check_str_whit_space(major))
+        if (check_str_full_alpha_whit_space(major) || strlen(major)==0)
             printf("Invalid input! Try again: ");
         else
             break;
@@ -1222,7 +1235,7 @@ void set_new_student()
     fputs(", ",file_student);
     fputs(email,file_student);
     fputc('\n',file_student);
-    printf("Successfully added!\npreas Enter to continue\n");
+    printf("Successfully added!\npress Enter to continue\n");
     fclose(file_student);
     char temp;
     do
@@ -1887,12 +1900,61 @@ void add_linked_list_departemant_to_notpadd()
     fclose(Departemant);
     
 }
+void add_linked_list_student_to_notpadd()
+{
+    FILE *Student;
+    Student=fopen("file_student.txt","w");
+    temp_struct_student=malloc(sizeof(struct struct_student));
+    if (temp_struct_student==NULL)
+    {
+        printf("memory is not Allow!! Try later.");
+        return ;
+    }
+    temp_struct_student=start_struct_student;
+    char final[225]={0},temp[50];
+    do
+    {
+        strcpy(temp,temp_struct_student->name);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_student->family);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_student->ID_code);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_student->date_birthday);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_student->location_born);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_student->major);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_student->ID_uni);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_student->phone_num);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_student->email);
+        strcat(final,temp);
+        strcat(final,"\n");
+        fputs(final,Student);
+        strcpy(final,"\0");
+        temp_struct_student=temp_struct_student->link;
+
+    } while (temp_struct_student!=NULL);
+    free(temp_struct_student);
+    fclose(Student);
+}
 void kick_user()
 {
     char user_name[20];
     int flag;
     printf("Enter user name that you want kick\n");
-    printf("if you ceed of opreation preas Enter: ");
+    printf("if you ceed of opreation press Enter: ");
     do
     {
         gets(user_name);
@@ -1924,7 +1986,7 @@ void kick_user()
         strcpy(temp_struct_academic->ekhraj,date);
         free_academic();
         add_linked_list_academi_to_notpadd();
-        printf("Successfully! preas Enter to continue\n");
+        printf("Successfully! press Enter to continue\n");
         char temp;
         do
         {
@@ -2156,7 +2218,7 @@ void get_backup()
     fclose(academic_main);
     fclose(backup_academic);
 
-    printf("backup_complit!\nprease Enter to continue\n");
+    printf("backup_complit!\npress Enter to continue\n");
     char temp;
     do
     {
@@ -2233,7 +2295,7 @@ void load_backup()
     fclose(academic_main);
     fclose(backup_academic);
 
-    printf("Backup restor compllit!\nprease Enter to continue\n");
+    printf("Backup restor compllit!\npress Enter to continue\n");
     char temp;
     do
     {
@@ -2320,7 +2382,7 @@ void list_type_of_lesson()
     }
     printf("---------------------------\n\n");
 }
-void add_new_lesson()//check code class dont repited
+void add_new_lesson()
 {
     FILE *file_lesson;
     file_lesson=fopen("file_lesson.txt","a");
@@ -2383,7 +2445,7 @@ void add_new_lesson()//check code class dont repited
     fputs(code_lesson,file_lesson);
     fputc('\n',file_lesson);
     fclose(file_lesson);
-    printf("Successfully added!\npreas Enter to continue\n");
+    printf("Successfully added!\npress Enter to continue\n");
     char temp;
     do
     {
@@ -2544,6 +2606,102 @@ void menu_academic_print()
     printf("-----------------------------------\n\n");
     printf("Select a option from menu: ");
 }
+void edit_info_student()
+{
+    char ID_uni[15];
+    char name[20],family[30],date_birthday[15],location_born[20],ID_code[15],phone_num[15],email[40],major[20];
+    int flag_user_found=0;
+    printf("enter ID university of studet\nif you dessuaded fro edit just press Enter\n");
+    do{
+        gets(ID_uni);
+        if (strlen(ID_uni)==0)
+            return ;
+        flag_user_found=search_user_name_student(ID_uni);
+        if (flag_user_found)
+            printf("Student whit this ID university not found! Try agian: ");
+        
+    }while(flag_user_found);
+    printf("if you don't want edit, just press Enter\n");
+
+    printf("Enter name: ");
+    do{
+        gets(name);
+        if (strlen(name)==0)
+            break;
+        else if (check_str_full_alpha_whit_space(name))
+            printf("Invalid input! Try again: ");
+        else
+        {
+            strcpy(temp_struct_student->name,name);
+            break;
+        }
+    }while(1);
+
+    printf("Enter family: ");
+    do{
+        gets(family);
+        if (strlen(family)==0)
+            break;
+        else if (check_str_full_alpha_whit_space(family))
+            printf("Invalid input! Try again: ");
+        else
+        {
+            strcpy(temp_struct_student->family,family);
+            break;
+        }
+    }while(1);
+
+    printf("Enter Major: ");
+    do{
+        gets(major);
+        if (strlen(major)==0)
+            break;
+        else if (check_str_full_alpha_whit_space(major))
+            printf("Invalid input! Try again: ");
+        else
+        {
+            strcpy(temp_struct_student->major,major);
+            break;
+        }
+    }while(1);
+
+    printf("Enter Phone number(whit this form 09123456789): ");
+    do{
+        gets(phone_num);
+        if (strlen(phone_num)==0)
+            break;
+        else if (check_str_was_int(phone_num) || phone_num[0]!='0' || phone_num[1]!='9' || strlen(phone_num)!=11)
+            printf("Invalid input! Try again: ");
+        else
+        {
+            strcpy(temp_struct_student->phone_num,phone_num);
+            break;
+        }
+    }while(1);
+
+    printf("Enter Email: ");
+    do{
+        gets(email);
+        if (strlen(email)==0)
+            break;
+        else if (check_email(email))
+            printf("Invalid input! Try again: ");
+        else
+        {
+            strcpy(temp_struct_student->email,email);
+            break;
+        }
+    }while(1);
+
+    free_student();
+    printf("Process compelit! Press Enter to continue\n");
+    do
+    {
+        ID_uni[0]=getch();
+    } while (ID_uni[0]!=13);
+    
+    
+}
 
 void main()
 {
@@ -2683,6 +2841,7 @@ void main()
                 if (login_flag==0)
                 {
                     do{
+                        set_student_as_link_list();
                         menu_academic_print();
                         menu_type=menu_selection_1_6();
                         switch (menu_type)
@@ -2690,7 +2849,11 @@ void main()
                         case 1:
                             set_new_student();
                             break;
-                        
+                        case 2:
+                            edit_info_student();
+                            add_linked_list_student_to_notpadd();
+                            break;
+                                                
                         default:
                             break;
                         }
