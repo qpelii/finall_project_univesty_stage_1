@@ -45,6 +45,7 @@ struct struct_course
     char vahed[3];
     char type_lessom[3];
     char code_course[15];
+    char status;
     struct struct_course *link;
 };
 struct struct_course *start_struct_course, *end_struct_course, *temp_struct_course;
@@ -2208,7 +2209,6 @@ void add_linked_list_student_to_notpadd()
     free(temp_struct_student);
     fclose(Student);
 }
-
 void kick_user()
 {
     char user_name[20];
@@ -2703,6 +2703,8 @@ void add_new_course()
     fputs(type,file_course);
     fputs(", ",file_course);
     fputs(code_course,file_course);
+    fputs(", ",file_course);
+    fputc('E',file_course);//E :=enable D:=desable
     fputc('\n',file_course);
     fclose(file_course);
     printf("Successfully added!\npress Enter to continue\n");
@@ -2762,6 +2764,9 @@ int set_course_as_link_list()
             case 4:
                 strcpy(start_struct_course->code_course,info);
                 break;
+            case 5:
+                strcpy(start_struct_course->status,info);
+                break;
             default:
                 break;
             }
@@ -2785,7 +2790,7 @@ int set_course_as_link_list()
         if (strlen(temp)==0)
             break;
         flag_info=1,i=0,j=0;
-        while(flag_info!=5)
+        while(flag_info!=6)
         {
             if ((temp[i]==',' && temp[i+1]==' ') || temp[i]=='\n')
             {
@@ -2803,6 +2808,9 @@ int set_course_as_link_list()
                     break;
                 case 4:
                     strcpy(temp_struct_course->code_course,info);
+                    break;
+                case 5:
+                    strcpy(temp_struct_course->status,info);
                     break;
                 default:
                     break;
@@ -3157,6 +3165,10 @@ void main()
                             set_score_student_as_link_list();
                             break;
                         case 3:
+                            edit_score_student();
+                            set_score_student_as_link_list();
+                            break;
+                        case 4:
                             //def
                             break;
                         default:
