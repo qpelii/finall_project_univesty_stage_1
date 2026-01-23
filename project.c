@@ -62,14 +62,14 @@ struct struct_student
     struct struct_student *link;
 };
 struct struct_student *start_struct_student, *end_struct_student, *temp_struct_student;
-struct struct_socre
+struct struct_score
 {
     char ID_uni[15];
     char code_course[15];
     char score[8];
     char date[20];
     char user[20];
-    struct struct_socre *link;
+    struct struct_score *link;
 };
 struct struct_score *start_struct_score, *end_struct_score, *temp_struct_score;
 
@@ -329,6 +329,20 @@ void free_student()
         continue;
     } while (temp_struct_student!=NULL);
     free(temp_struct_student);
+}
+void free_score()
+{
+    if (temp_struct_score==NULL)
+    {
+        free(temp_struct_score);
+        return ;
+    }
+    do
+    {
+        temp_struct_score=temp_struct_score->link;
+        continue;
+    } while (temp_struct_score!=NULL);
+    free(temp_struct_score);
 }
 int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_time)
 {
@@ -756,6 +770,26 @@ int search_user_name_student(char ID_uni[])
         temp_struct_student=temp_struct_student->link;
     }while(temp_struct_student!=NULL);
     free(temp_struct_student);
+    return 1;// 0:= fine | 1:=not found
+}
+int search_user_name_student_sync_with_code_sourse(char ID_uni[], char code[])
+{
+    temp_struct_score=malloc(sizeof(struct struct_score));
+    if (temp_struct_score==NULL)
+    {
+        printf("memory not allowed!");
+        return ;
+    }
+    temp_struct_score=start_struct_score;
+    
+    do
+    {
+        if (strcmp(temp_struct_score->ID_uni,ID_uni)==0 && strlen(temp_struct_score->ID_uni)==strlen(ID_uni) &&
+            strcmp(temp_struct_score->code_course,code)==0 && strlen(temp_struct_score->code_course)==strlen(code))
+            return 0;// found
+        temp_struct_score=temp_struct_score->link;
+    }while(temp_struct_score!=NULL);
+    free(temp_struct_score);
     return 1;// 0:= fine | 1:=not found
 }
 int get_user_pass_user_academics()
@@ -1286,6 +1320,8 @@ void set_new_score()
         gets(ID_uni);
         if (strlen(ID_uni)==0)
             return ;
+        else if (check_str_was_int(ID_uni)==1)
+            printf("Invalid input! Try agian: ");
         else if (search_user_name_student(ID_uni)==1)
             printf("Student not submit yet! enter another ID: ");
         else 
@@ -1300,6 +1336,8 @@ void set_new_score()
         gets(code_course);
         if (strlen(code_course)==0)
             return ;
+        else if (check_str_was_int(ID_uni)==1)
+            printf("Invalid input! Try agian: ");
         else if (search_course_code(code_course)==1)
             printf("course not submit yet! Enter another code course: ");
         else 
@@ -1805,7 +1843,7 @@ int set_score_student_as_link_list()
     if (score==NULL)
     {
         fclose(score);
-        start_struct_score->name[0]='0';// if file was NULL
+        start_struct_score->ID_uni[0]='N';// if file was NULL
         start_struct_score->link=NULL;
         return 1;
         }
@@ -1817,7 +1855,7 @@ int set_score_student_as_link_list()
     if (strlen(temp)==0)
     {
         fclose(score);
-        start_struct_score->name[0]='0';// if file was NULL
+        start_struct_score->ID_uni[0]='N';// if file was NULL
         start_struct_score->link=NULL;
         return 1;
     } 
@@ -1830,7 +1868,7 @@ int set_score_student_as_link_list()
             switch (flag_info)
             {
             case 1:
-                strcpy(start_struct_score->ID_uniinfo);
+                strcpy(start_struct_score->ID_uni,info);
                 break;
             case 2:
                 strcpy(start_struct_score->code_course,info);
@@ -1875,7 +1913,7 @@ int set_score_student_as_link_list()
                 switch (flag_info)
                 {
                 case 1:
-                strcpy(temp_struct_score->ID_uniinfo);
+                strcpy(temp_struct_score->ID_uni,info);
                 break;
             case 2:
                 strcpy(temp_struct_score->code_course,info);
@@ -2574,7 +2612,7 @@ void menu_departemant_print()
 void list_type_of_course()
 {
     char temp[15],line_char='|';
-    printf("\n---------------------------\n");
+    printf("\n--------------------\n");
     for(int i=0; i<4; i++)
     {
     printf("%c%-2d%c",line_char,i+1,line_char);
@@ -2598,11 +2636,11 @@ void list_type_of_course()
 
     printf("%-15s%c\n",temp,line_char);
     if (i!=3)
-        printf("|--+----------------------|\n");
+        printf("|--+---------------|\n");
 
 
     }
-    printf("---------------------------\n\n");
+    printf("--------------------\n\n");
 }
 void add_new_course()
 {
@@ -2713,16 +2751,16 @@ int set_course_as_link_list()
             switch (flag_info)
             {
             case 1:
-                strcpy(temp_struct_course->name_lessom,info);
+                strcpy(start_struct_course->name_lessom,info);
                 break;
             case 2:
-                strcpy(temp_struct_course->vahed,info);
+                strcpy(start_struct_course->vahed,info);
                 break;
             case 3:
-                strcpy(temp_struct_course->type_lessom,info);
+                strcpy(start_struct_course->type_lessom,info);
                 break;
             case 4:
-                strcpy(temp_struct_course->code_course,info);
+                strcpy(start_struct_course->code_course,info);
                 break;
             default:
                 break;
@@ -2924,7 +2962,69 @@ void edit_info_student()
     
     
 }
+void edit_score_student()
+{
+    char ID_uni[20],code_course[20];
+    printf("if you want Exit from proses just perss enter\n");
+    printf("Enter ID university of Student: ");
+    do
+    {
+        gets(ID_uni);
+        if (strlen(ID_uni)==0)
+            return ;
+        else if (check_str_was_int(ID_uni)==1)
+            printf("This format is Invalid! Try agian: ");
+        else if (search_user_name_student(ID_uni)==1)
+            printf("not found student whit tish ID! Try agian: ");
+        else
+            break;
+    } while (1);
 
+    int flag_found=0;
+    printf("enter code of course: ");
+    do
+    {
+        gets(code_course);
+        if (strlen(code_course)==0)
+            return ;
+        else if (check_str_was_int(code_course)==1)
+            printf("this format is Invalid! Try agian: ");
+        else
+        {
+            flag_found=search_user_name_student_sync_with_code_sourse(ID_uni,code_course);
+            break;
+        }   
+
+    } while (1);
+    
+    if (flag_found==1)
+        printf("student whit this data not found! first you need set socre from student and then edit score!");
+    
+    else if (flag_found==0)
+    {
+        printf("Old score: %s",temp_struct_score->score);
+        printf("\nEnter new Score: ");
+        do
+        {
+            gets(ID_uni);// baraye in ce moteghayere ezafa add nakonam
+            if (strlen(ID_uni==0) || check_str_was_flaot(ID_uni)==1)
+                printf("Invlid! Try again: ");
+            else
+                break;
+        } while (1);
+        strcpy(ID_uni,temp_struct_score->score);
+        free_score();
+        printf("edited whit Successfully! Press Enter for back to menu\n");
+        do
+        {
+            ID_uni=getch();
+        } while (ID_uni[0]!=13);
+            // system("cls");
+
+    }
+
+    
+}
 
 
 void main()
@@ -3040,6 +3140,9 @@ void main()
                 
                 if (login_flag==0)
                 {
+                    set_score_student_as_link_list();
+                    set_student_as_link_list();
+                    set_course_as_link_list();
                     do{
                         menu_departemant_print();
                         menu_type=menu_selection_1_8();
@@ -3050,6 +3153,10 @@ void main()
                             set_course_as_link_list();
                             break;
                         case 2:
+                            set_new_score();
+                            set_score_student_as_link_list();
+                            break;
+                        case 3:
                             //def
                             break;
                         default:
@@ -3101,4 +3208,4 @@ void main()
 
 }
 
-//set file back up for socre-student
+//set file back up for score-student

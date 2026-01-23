@@ -5,3 +5,5 @@ project.o
 file_departemant.txt
 file_academic.txt
 file_student.txt
+file_course.txt
+file_score_student.txt
