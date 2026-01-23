@@ -7,6 +7,7 @@
 #include<direct.h>
 static char user_admin[10]="admin";
 static char pass_admin[20]="5v8a6079zqn";// hashed
+char User_Name_static[20];
 static long int limit_admin=0;
 struct struct_departemant
 {
@@ -38,15 +39,15 @@ struct struct_academic
     struct struct_academic *link;
 };
 struct struct_academic *start_struct_academic, *end_struct_academic, *temp_struct_academic;
-struct struct_lesson
+struct struct_course
 {
     char name_lessom[30];
     char vahed[3];
     char type_lessom[3];
-    char code_lesson[15];
-    struct struct_lesson *link;
+    char code_course[15];
+    struct struct_course *link;
 };
-struct struct_lesson *start_struct_lesson, *end_struct_lesson, *temp_struct_lesson;
+struct struct_course *start_struct_course, *end_struct_course, *temp_struct_course;
 struct struct_student
 {
     char name[20];
@@ -61,6 +62,16 @@ struct struct_student
     struct struct_student *link;
 };
 struct struct_student *start_struct_student, *end_struct_student, *temp_struct_student;
+struct struct_socre
+{
+    char ID_uni[15];
+    char code_course[15];
+    char score[8];
+    char date[20];
+    char user[20];
+    struct struct_socre *link;
+};
+struct struct_score *start_struct_score, *end_struct_score, *temp_struct_score;
 
 
 
@@ -105,6 +116,24 @@ int check_str_was_int(char num[])
     for (i=0;i<len;i++)
         if (!isdigit(num[i]))
             return 1;
+
+    return 0;
+}
+int check_str_was_flaot(char num[])
+{
+    int len=strlen(num),i,flag_float=0,flag_num=0;
+    for (i=0;i<len;i++)
+        if (!isdigit(num[i]))
+            if (num[i]=='.' && flag_float==0)
+            {
+                if (i==0 || i==len-1)
+                    return 1;
+                else
+                    flag_float++;
+            }
+            else
+               return 1;
+       
 
     return 0;
 }
@@ -273,19 +302,19 @@ void free_departemant()
     } while (temp_struct_departemant!=NULL);
     free(temp_struct_departemant);
 }
-void free_lesson()
+void free_course()
 {
-    if (temp_struct_lesson==NULL)
+    if (temp_struct_course==NULL)
     {
-        free(temp_struct_lesson);
+        free(temp_struct_course);
         return ;
     }
     do
     {
-        temp_struct_lesson=temp_struct_lesson->link;
+        temp_struct_course=temp_struct_course->link;
         continue;
-    } while (temp_struct_lesson!=NULL);
-    free(temp_struct_lesson);
+    } while (temp_struct_course!=NULL);
+    free(temp_struct_course);
 }
 void free_student()
 {
@@ -703,17 +732,17 @@ int search_user_name_departemant(char user_name[])
     free(temp_struct_departemant);
     return 1;// 0:= fine | 1:=not found
 }
-int search_lesson_code(char code[])
+int search_course_code(char code[])
 {
-    temp_struct_lesson=malloc(sizeof(struct struct_lesson));
-    temp_struct_lesson=start_struct_lesson;
+    temp_struct_course=malloc(sizeof(struct struct_course));
+    temp_struct_course=start_struct_course;
     do
     {
-        if (strcmp(temp_struct_lesson->code_lesson,code)==0 && strlen(temp_struct_lesson->code_lesson)==strlen(code))
+        if (strcmp(temp_struct_course->code_course,code)==0 && strlen(temp_struct_course->code_course)==strlen(code))
             return 0;
-        temp_struct_lesson=temp_struct_lesson->link;
-    }while(temp_struct_lesson!=NULL);
-    free(temp_struct_lesson);
+        temp_struct_course=temp_struct_course->link;
+    }while(temp_struct_course!=NULL);
+    free(temp_struct_course);
     return 1;// 0:= fine | 1:=not found
 }
 int search_user_name_student(char ID_uni[])
@@ -748,6 +777,7 @@ int get_user_pass_user_academics()
         {
             strcpy(password,temp_struct_academic->pass1);
             limit_time=atol(temp_struct_academic->limit_time);
+            strcpy(User_Name_static,temp_struct_academic->user_Name);
             user_found_flag= get_check_user_pass(user,password,&limit_time);
             ltoa(limit_time,temp_struct_academic->limit_time,10);
             free_academic();
@@ -782,6 +812,7 @@ int get_user_pass_user_departemnts()
             strcpy(password,temp_struct_departemant->pass1);
             unti_hash_to_password(password);
             limit_time=atol(temp_struct_departemant->limit_time);
+            strcpy(User_Name_static,temp_struct_departemant->user_Name);
             user_found_flag= get_check_user_pass(user,password,&limit_time);
             ltoa(limit_time,temp_struct_departemant->limit_time,10);
             free_departemant();
@@ -1245,6 +1276,75 @@ void set_new_student()
 
 
 }
+void set_new_score()
+{
+    char ID_uni[15],code_course[15],score[7],date_set[20],user_name[20];
+    printf("Note: if you want exit from this proses just press Enter\n");
+    printf("Enter ID univrsity of student: ");
+    do
+    {
+        gets(ID_uni);
+        if (strlen(ID_uni)==0)
+            return ;
+        else if (search_user_name_student(ID_uni)==1)
+            printf("Student not submit yet! enter another ID: ");
+        else 
+        {
+            free_student();
+            break;
+        }
+    } while (1);
+    printf("Enter Code of course: ");
+    do
+    {
+        gets(code_course);
+        if (strlen(code_course)==0)
+            return ;
+        else if (search_course_code(code_course)==1)
+            printf("course not submit yet! Enter another code course: ");
+        else 
+        {
+            free_course();
+            break;
+        }
+    } while (1);
+    printf("Enter Score student: ");
+    do
+    {
+        gets(score);
+        if (strlen(score)==0)
+            return ;
+        else if (check_str_was_flaot(score)==1)
+            printf("Invalid format! Try agian: ");
+        else 
+            break;
+    } while (1);
+    get_now_time(date_set);
+    strcpy(user_name,User_Name_static);
+
+    FILE *file_score_student;
+    file_score_student=fopen("file_score_student.txt","a");
+
+    fputs(ID_uni,file_score_student);
+    fputs(", ",file_score_student);
+    fputs(code_course,file_score_student);
+    fputs(", ",file_score_student);
+    fputs(score,file_score_student);
+    fputs(", ",file_score_student);
+    fputs(date_set,file_score_student);
+    fputs(", ",file_score_student);
+    fputs(User_Name_static,file_score_student);
+    fputc('\n',file_score_student);
+    printf("Successfully added!\npress Enter to continue\n");
+    fclose(file_score_student);
+    char temp;
+    do
+    {
+        temp=getch();
+    } while (temp!=13);
+    // system("cls");
+    
+}
 int set_departemants_as_link_list()
 {
     start_struct_departemant=malloc(sizeof(struct struct_departemant));
@@ -1690,6 +1790,127 @@ int set_student_as_link_list()
     free(temp_struct_student);
     return 0;
 }
+int set_score_student_as_link_list()
+{
+    start_struct_score=malloc(sizeof(struct struct_score));
+    if (start_struct_score==NULL)
+    {
+        printf("memory is not allowed!");
+        return 1;
+    }
+    end_struct_score=start_struct_score;
+
+    FILE *score;
+    score=fopen("file_score_student.txt", "r");
+    if (score==NULL)
+    {
+        fclose(score);
+        start_struct_score->name[0]='0';// if file was NULL
+        start_struct_score->link=NULL;
+        return 1;
+        }
+        
+    char temp[225],info[50]={0};
+    int i=0,j=0,flag_info=1;
+    temp[0]='\0';
+    fgets(temp,225,score);
+    if (strlen(temp)==0)
+    {
+        fclose(score);
+        start_struct_score->name[0]='0';// if file was NULL
+        start_struct_score->link=NULL;
+        return 1;
+    } 
+    int len=strlen(temp);
+    for(i=0;i<len;i++)
+    {
+        if ((temp[i]==',' && temp[i+1]==' ') || temp[i]=='\n')
+        {
+            info[j]='\0';
+            switch (flag_info)
+            {
+            case 1:
+                strcpy(start_struct_score->ID_uniinfo);
+                break;
+            case 2:
+                strcpy(start_struct_score->code_course,info);
+                break;
+            case 3:
+                strcpy(start_struct_score->score,info);
+                break;
+            case 4:
+                strcpy(start_struct_score->date,info);
+                break;
+            case 5:
+                strcpy(start_struct_score->user,info);
+                break;
+            default:
+                break;
+            }
+            flag_info++;
+            j=0;
+            i++;
+        }
+        else
+        {
+            info[j]=temp[i];
+            j++;
+        }
+    }
+    start_struct_score->link=NULL;
+
+    while (1)
+    {
+        temp_struct_score=malloc(sizeof(struct struct_score));
+        temp[0]='\0';
+        fgets(temp,225,score);
+        if (strlen(temp)==0)
+            break;
+        flag_info=1,i=0,j=0;
+        while(flag_info!=6)
+        {
+            if ((temp[i]==',' && temp[i+1]==' ') || temp[i]=='\n')
+            {
+                info[j]='\0';
+                switch (flag_info)
+                {
+                case 1:
+                strcpy(temp_struct_score->ID_uniinfo);
+                break;
+            case 2:
+                strcpy(temp_struct_score->code_course,info);
+                break;
+            case 3:
+                strcpy(temp_struct_score->score,info);
+                break;
+            case 4:
+                strcpy(temp_struct_score->date,info);
+                break;
+            case 5:
+                strcpy(temp_struct_score->user,info);
+                    break;
+                default:
+                    break;
+                }
+                flag_info++;
+                j=0;
+                i++;
+            }
+            else
+            {
+                info[j]=temp[i];
+                j++;
+            }
+            i++;
+        }
+        temp_struct_score->link=NULL;
+        end_struct_score->link=temp_struct_score;
+        end_struct_score=temp_struct_score;
+    }
+    fclose(score);
+    free(temp_struct_score);
+    return 0;
+}
 void show_list_users(int status)//eit bayad bokhore bara vaghti ke karbari voojood nadare
 {
     char temp[25];
@@ -1949,6 +2170,7 @@ void add_linked_list_student_to_notpadd()
     free(temp_struct_student);
     fclose(Student);
 }
+
 void kick_user()
 {
     char user_name[20];
@@ -2349,7 +2571,7 @@ void menu_departemant_print()
     printf("-----------------------------------\n\n");
     printf("select a option from menu: ");
 }
-void list_type_of_lesson()
+void list_type_of_course()
 {
     char temp[15],line_char='|';
     printf("\n---------------------------\n");
@@ -2382,19 +2604,19 @@ void list_type_of_lesson()
     }
     printf("---------------------------\n\n");
 }
-void add_new_lesson()
+void add_new_course()
 {
-    FILE *file_lesson;
-    file_lesson=fopen("file_lesson.txt","a");
-    if (file_lesson==NULL)
+    FILE *file_course;
+    file_course=fopen("file_course.txt","a");
+    if (file_course==NULL)
     {
         printf("memory is not allowed!");
         return ;
     }
-    char name[20],vahed[3],type[3],code_lesson[15];
+    char name[20],vahed[3],type[3],code_course[15];
     printf("Please enter this information about Academic\n");
 
-    printf("Enter name lesson: ");
+    printf("Enter name course: ");
     do{
         gets(name);
         if (check_str_full_alpha_whit_space(name) || strlen(name)==0)
@@ -2411,7 +2633,7 @@ void add_new_lesson()
         else
             break;
     }while(1);
-    list_type_of_lesson();
+    list_type_of_course();
     printf("selcet number of type: ");
     do{
         gets(type);
@@ -2423,28 +2645,28 @@ void add_new_lesson()
 
     printf("Enter Lesson Code's: ");
     do{
-        gets(code_lesson);
-        if (check_str_was_int(code_lesson) || strlen(code_lesson)==0)
+        gets(code_course);
+        if (check_str_was_int(code_course) || strlen(code_course)==0)
             printf("Invalid input! Try again: ");
-        else if (search_lesson_code(code_lesson)==0)
+        else if (search_course_code(code_course)==0)
         {
             printf("this code Lesson is duplicate! Try agian: ");
-            free_lesson();
+            free_course();
         }
         else
             break;
     }while(1);
 
     // ----------------------------------file apend
-    fputs(name,file_lesson);
-    fputs(", ",file_lesson);
-    fputs(vahed,file_lesson);
-    fputs(", ",file_lesson);
-    fputs(type,file_lesson);
-    fputs(", ",file_lesson);
-    fputs(code_lesson,file_lesson);
-    fputc('\n',file_lesson);
-    fclose(file_lesson);
+    fputs(name,file_course);
+    fputs(", ",file_course);
+    fputs(vahed,file_course);
+    fputs(", ",file_course);
+    fputs(type,file_course);
+    fputs(", ",file_course);
+    fputs(code_course,file_course);
+    fputc('\n',file_course);
+    fclose(file_course);
     printf("Successfully added!\npress Enter to continue\n");
     char temp;
     do
@@ -2452,34 +2674,34 @@ void add_new_lesson()
         temp=getch();
     } while (temp!=13);
 }
-int set_lesson_as_link_list()
+int set_course_as_link_list()
 {
-    start_struct_lesson=malloc(sizeof(struct struct_lesson));
-    if (start_struct_lesson==NULL)
+    start_struct_course=malloc(sizeof(struct struct_course));
+    if (start_struct_course==NULL)
     {
         printf("memory is not allowed!");
         return 1;
     }
-    end_struct_lesson=start_struct_lesson;
+    end_struct_course=start_struct_course;
 
-    FILE *lesson;
-    lesson=fopen("file_lesson.txt", "r");
-    if (lesson==NULL)
+    FILE *course;
+    course=fopen("file_course.txt", "r");
+    if (course==NULL)
     {
-        fclose(lesson);
-        start_struct_lesson->name_lessom[0]='0';// if file was NULL
-        start_struct_lesson->link=NULL;
+        fclose(course);
+        start_struct_course->name_lessom[0]='0';// if file was NULL
+        start_struct_course->link=NULL;
         return 1;
     } 
     char temp[225],info[50]={0};
     int i=0,j=0,flag_info=1;
     temp[0]='\0';
-    fgets(temp,225,lesson);
+    fgets(temp,225,course);
     if (strlen(temp)==0)
     {
-        fclose(lesson);
-        start_struct_lesson->name_lessom[0]='0';// if file was NULL
-        start_struct_lesson->link=NULL;
+        fclose(course);
+        start_struct_course->name_lessom[0]='0';// if file was NULL
+        start_struct_course->link=NULL;
         return 1;
     }        
     int len=strlen(temp);
@@ -2491,16 +2713,16 @@ int set_lesson_as_link_list()
             switch (flag_info)
             {
             case 1:
-                strcpy(temp_struct_lesson->name_lessom,info);
+                strcpy(temp_struct_course->name_lessom,info);
                 break;
             case 2:
-                strcpy(temp_struct_lesson->vahed,info);
+                strcpy(temp_struct_course->vahed,info);
                 break;
             case 3:
-                strcpy(temp_struct_lesson->type_lessom,info);
+                strcpy(temp_struct_course->type_lessom,info);
                 break;
             case 4:
-                strcpy(temp_struct_lesson->code_lesson,info);
+                strcpy(temp_struct_course->code_course,info);
                 break;
             default:
                 break;
@@ -2515,13 +2737,13 @@ int set_lesson_as_link_list()
             j++;
         }
     }
-    start_struct_lesson->link=NULL;
+    start_struct_course->link=NULL;
     
     while (1)
     {
-        temp_struct_lesson=malloc(sizeof(struct struct_lesson));
+        temp_struct_course=malloc(sizeof(struct struct_course));
         temp[0]='\0';
-        fgets(temp,225,lesson);
+        fgets(temp,225,course);
         if (strlen(temp)==0)
             break;
         flag_info=1,i=0,j=0;
@@ -2533,16 +2755,16 @@ int set_lesson_as_link_list()
                 switch (flag_info)
                 {
                 case 1:
-                    strcpy(temp_struct_lesson->name_lessom,info);
+                    strcpy(temp_struct_course->name_lessom,info);
                     break;
                 case 2:
-                    strcpy(temp_struct_lesson->vahed,info);
+                    strcpy(temp_struct_course->vahed,info);
                     break;
                 case 3:
-                    strcpy(temp_struct_lesson->type_lessom,info);
+                    strcpy(temp_struct_course->type_lessom,info);
                     break;
                 case 4:
-                    strcpy(temp_struct_lesson->code_lesson,info);
+                    strcpy(temp_struct_course->code_course,info);
                     break;
                 default:
                     break;
@@ -2558,12 +2780,12 @@ int set_lesson_as_link_list()
             }
             i++;
         }
-        temp_struct_lesson->link=NULL;
-        end_struct_lesson->link=temp_struct_lesson;
-        end_struct_lesson=temp_struct_lesson;
+        temp_struct_course->link=NULL;
+        end_struct_course->link=temp_struct_course;
+        end_struct_course=temp_struct_course;
     }
-    fclose(lesson);
-    free(temp_struct_lesson);
+    fclose(course);
+    free(temp_struct_course);
     return 0;
 }
 void menu_academic_print()
@@ -2703,6 +2925,8 @@ void edit_info_student()
     
 }
 
+
+
 void main()
 {
     char *pointer_Uadmin;
@@ -2822,10 +3046,12 @@ void main()
                         switch (menu_type)
                         {
                         case 1:
-                            add_new_lesson();
-                            set_lesson_as_link_list();
+                            add_new_course();
+                            set_course_as_link_list();
                             break;
-                        
+                        case 2:
+                            //def
+                            break;
                         default:
                             break;
                         }
@@ -2874,3 +3100,5 @@ void main()
     }
 
 }
+
+//set file back up for socre-student
