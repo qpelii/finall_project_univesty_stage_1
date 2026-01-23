@@ -3298,8 +3298,86 @@ void settings_departemant()
         } while (str_temp[0]!=13);
             // system("cls");
 }
+void settings_academic()
+{
+    char str_temp[50];
+    search_user_name_academic(User_Name_static);
+    printf("if you want Exit from proses just perss enter\n");
+    
+    
+        printf("Enter Password: ");
+        do
+        {
+            password_to_star(str_temp);
+            if (strlen(str_temp)==0)
+                break;
+            else if (check_str_whitout_space(str_temp)==1)
+                printf("Invlid! Try again: ");
+            else if (strlen(str_temp)<8)
+                printf("too few character!(minimum character is 8) Try again: ");
+            else
+            {
+                password_to_hash(str_temp);
+                if (strcmp(str_temp,temp_struct_academic->pass1)==0 && strlen(str_temp)==strlen(temp_struct_academic->pass1))
+                {
+                    printf("new password should not be same as old password! Try another password: ");
+                    continue;
+                }
+                strcpy(temp_struct_academic->pass1,str_temp);
+                break;
+            }
+        } while (1);
+        
+        printf("Enter Email: ");
+        do
+        {
+            gets(str_temp);
+            if (strlen(str_temp)==0)
+                break;
+            else if (check_email(str_temp)==1)
+                printf("Invlid! Try again: ");
+            else
+            {
+                if (strcmp(str_temp,temp_struct_academic->email)==0 && strlen(str_temp)==strlen(temp_struct_academic->email))
+                {
+                    printf("new Email should not be same as old Email! Try another Email: ");
+                    continue;
+                }
+                strcpy(temp_struct_academic->email,str_temp);
+                break;
+            }
+        } while (1);
 
-
+        do
+        {
+            gets(str_temp);
+            if (strlen(str_temp)==0)
+                break;
+            else if (check_str_was_int(str_temp)==1 || str_temp[0]!='0' || str_temp[1]!='9')
+                printf("Invlid! enter whit this form (09123456789): ");
+            else
+            {
+                if (strcmp(str_temp,temp_struct_academic->email)==0 && strlen(str_temp)==strlen(temp_struct_academic->email))
+                {
+                    printf("new Phone should not be same as old Phone! Try another Phone: ");
+                    continue;
+                }
+                strcpy(temp_struct_academic->email,str_temp);
+                break;
+            }
+        } while (1);
+        free_academic();
+        printf("edited whit Successfully! Press Enter for back to menu\n");
+        do
+        {
+            str_temp[0]=getch();
+        } while (str_temp[0]!=13);
+            // system("cls");
+}
+void void
+{
+    
+}
 
 void main()
 {
@@ -3473,12 +3551,23 @@ void main()
                         {
                         case 1:
                             set_new_student();
+                            add_linked_list_student_to_notpadd();
                             break;
                         case 2:
                             edit_info_student();
                             add_linked_list_student_to_notpadd();
                             break;
                         case 3:
+                            set_new_score();
+                            set_score_student_as_link_list();
+                        case 4:
+                            //log def 
+                            break;
+                        case 5:
+                            settings_academic();
+                            add_linked_list_academi_to_notpadd();
+                        case 6:
+                            break;
                             
                         default:
                             break;
@@ -3502,3 +3591,5 @@ void main()
 }
 
 //set file back up for score-student
+// dota nomre nabase
+// dissbale able
