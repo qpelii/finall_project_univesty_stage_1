@@ -664,6 +664,8 @@ int check_email(char email[])
 
     // ---------------------------------------------- checker name mail
     len=strlen(name_email);
+    if (len==0)
+        return 1;
     for(counter=0;counter<len;counter++)
     {
         if (isspace(name_email[counter]))
@@ -680,6 +682,8 @@ int check_email(char email[])
     }
     // ---------------------------------------------- checker domain
     len=strlen(domain);
+    if (len==0)
+        return 1;
     int flag_dot=0;
     for(counter=0;counter<len;counter++)
     {
@@ -980,7 +984,7 @@ void set_new_departemant()
         switch (check_strong_password(pass1))
         {
         case 1:
-            printf("too few character! Try again: ");
+            printf("too few character!(minimum character is 8) Try again: ");
             break;
         case 2:
             printf("Your password for security must have number! Try again: ");
@@ -1135,7 +1139,7 @@ void set_new_academic()
         switch (check_strong_password(pass1))
         {
         case 1:
-            printf("too few character! Try again: ");
+            printf("too few character!(minimum character is 8)! Try again: ");
             break;
         case 2:
             printf("Your password for security must have number! Try again: ");
@@ -3188,8 +3192,111 @@ void edit_info_course()
     {
         name[0]=getch();
     } while (name[0]!=13);
-    system("cls");
+    // system("cls");
     
+}
+void remove_course()
+{
+    char code_course[20];
+    printf("if you want Exit from proses just perss enter\n");
+    printf("Enter Code course: ");
+    do
+    {
+        gets(code_course);
+        if (strlen(code_course)==0)
+            return ;
+        else if (check_str_was_int(code_course)==1)
+            printf("Invalid input! Try agian: ");
+        else if (search_course_code(code_course)==1)
+            printf("Not found course whit this code! Try agian: ");
+        else 
+            break;
+    } while (1);
+    strcpy(temp_struct_course->status,"D");
+    free_course();
+    printf("Process compelit! Press Enter to continue\n");
+    do
+    {
+        code_course[0]=getch();
+    } while (code_course[0]!=13);
+    system("cls");
+
+}
+void settings_departemant()
+{
+    char str_temp[50];
+    search_user_name_departemant(User_Name_static);
+    printf("if you want Exit from proses just perss enter\n");
+    
+    
+        printf("Enter Password: ");
+        do
+        {
+            password_to_star(str_temp);
+            if (strlen(str_temp)==0)
+                break;
+            else if (check_str_whitout_space(str_temp)==1)
+                printf("Invlid! Try again: ");
+            else if (strlen(str_temp)<8)
+                printf("too few character!(minimum character is 8) Try again: ");
+            else
+            {
+                password_to_hash(str_temp);
+                if (strcmp(str_temp,temp_struct_departemant->pass1)==0 && strlen(str_temp)==strlen(temp_struct_departemant->pass1))
+                {
+                    printf("new password should not be same as old password! Try another password: ");
+                    continue;
+                }
+                strcpy(temp_struct_departemant->pass1,str_temp);
+                break;
+            }
+        } while (1);
+        
+        printf("Enter Email: ");
+        do
+        {
+            gets(str_temp);
+            if (strlen(str_temp)==0)
+                break;
+            else if (check_email(str_temp)==1)
+                printf("Invlid! Try again: ");
+            else
+            {
+                if (strcmp(str_temp,temp_struct_departemant->email)==0 && strlen(str_temp)==strlen(temp_struct_departemant->email))
+                {
+                    printf("new Email should not be same as old Email! Try another Email: ");
+                    continue;
+                }
+                strcpy(temp_struct_departemant->email,str_temp);
+                break;
+            }
+        } while (1);
+
+        do
+        {
+            gets(str_temp);
+            if (strlen(str_temp)==0)
+                break;
+            else if (check_str_was_int(str_temp)==1 || str_temp[0]!='0' || str_temp[1]!='9')
+                printf("Invlid! enter whit this form (09123456789): ");
+            else
+            {
+                if (strcmp(str_temp,temp_struct_departemant->email)==0 && strlen(str_temp)==strlen(temp_struct_departemant->email))
+                {
+                    printf("new Phone should not be same as old Phone! Try another Phone: ");
+                    continue;
+                }
+                strcpy(temp_struct_departemant->email,str_temp);
+                break;
+            }
+        } while (1);
+        free_departemant();
+        printf("edited whit Successfully! Press Enter for back to menu\n");
+        do
+        {
+            str_temp[0]=getch();
+        } while (str_temp[0]!=13);
+            // system("cls");
 }
 
 
@@ -3330,6 +3437,19 @@ void main()
                         case 4:
                             edit_info_course();
                             add_linked_list_course_to_notpadd();
+                            break;
+                        case 5:
+                            remove_course();
+                            add_linked_list_course_to_notpadd();
+                            break;
+                        case 6:
+                            //def lgo **************
+                            break;
+                        case 7:
+                            settings_departemant();
+                            set_departemants_as_link_list();
+                            break;
+                        case 8:
                             break;
                         default:
                             break;
