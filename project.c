@@ -41,11 +41,11 @@ struct struct_academic
 struct struct_academic *start_struct_academic, *end_struct_academic, *temp_struct_academic;
 struct struct_course
 {
-    char name_lessom[30];
+    char name_course[30];
     char vahed[3];
-    char type_lessom[3];
+    char type_course[3];
     char code_course[15];
-    char status;
+    char status[3];
     struct struct_course *link;
 };
 struct struct_course *start_struct_course, *end_struct_course, *temp_struct_course;
@@ -208,6 +208,15 @@ int check_str_whitout_space(char string[])
     int len=strlen(string),i;
     for (i=0;i<len;i++)
         if (isspace(string[i]))
+            return 1;
+
+    return 0;
+}
+int check_str_whitout_punct(char string[])
+{
+    int len=strlen(string),i;
+    for (i=0;i<len;i++)
+        if (ispunct(string[i]))
             return 1;
 
     return 0;
@@ -779,7 +788,7 @@ int search_user_name_student_sync_with_code_sourse(char ID_uni[], char code[])
     if (temp_struct_score==NULL)
     {
         printf("memory not allowed!");
-        return ;
+        return 1;
     }
     temp_struct_score=start_struct_score;
     
@@ -2209,6 +2218,80 @@ void add_linked_list_student_to_notpadd()
     free(temp_struct_student);
     fclose(Student);
 }
+void add_linked_list_course_to_notpadd()
+{
+    FILE *course;
+    course=fopen("file_course.txt","w");
+    temp_struct_course=malloc(sizeof(struct struct_course));
+    if (temp_struct_course==NULL)
+    {
+        printf("memory is not Allow!! Try later.");
+        return ;
+    }
+    temp_struct_course=start_struct_course;
+    char final[225]={0},temp[50];
+    do
+    {
+        strcpy(temp,temp_struct_course->name_course);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_course->vahed);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_course->type_course);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_course->code_course);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_course->status);
+        strcat(final,temp);
+        strcat(final,"\n");
+        fputs(final,course);
+        strcpy(final,"\0");
+        temp_struct_course=temp_struct_course->link;
+
+    } while (temp_struct_course!=NULL);
+    free(temp_struct_course);
+    fclose(course);
+}
+void add_linked_list_score_to_notpadd()
+{
+    FILE *score;
+    score=fopen("file_score_student.txt","w");
+    temp_struct_score=malloc(sizeof(struct struct_score));
+    if (temp_struct_score==NULL)
+    {
+        printf("memory is not Allow!! Try later.");
+        return ;
+    }
+    temp_struct_score=start_struct_score;
+    char final[225]={0},temp[50];
+    do
+    {
+        strcpy(temp,temp_struct_score->ID_uni);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_score->code_course);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_score->score);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_score->date);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_score->user);
+        strcat(final,temp);
+        strcat(final,"\n");
+        fputs(final,score);
+        strcpy(final,"\0");
+        temp_struct_score=temp_struct_score->link;
+
+    } while (temp_struct_score!=NULL);
+    free(temp_struct_score);
+    fclose(score);
+}
 void kick_user()
 {
     char user_name[20];
@@ -2729,7 +2812,7 @@ int set_course_as_link_list()
     if (course==NULL)
     {
         fclose(course);
-        start_struct_course->name_lessom[0]='0';// if file was NULL
+        start_struct_course->name_course[0]='0';// if file was NULL
         start_struct_course->link=NULL;
         return 1;
     } 
@@ -2740,7 +2823,7 @@ int set_course_as_link_list()
     if (strlen(temp)==0)
     {
         fclose(course);
-        start_struct_course->name_lessom[0]='0';// if file was NULL
+        start_struct_course->name_course[0]='0';// if file was NULL
         start_struct_course->link=NULL;
         return 1;
     }        
@@ -2753,13 +2836,13 @@ int set_course_as_link_list()
             switch (flag_info)
             {
             case 1:
-                strcpy(start_struct_course->name_lessom,info);
+                strcpy(start_struct_course->name_course,info);
                 break;
             case 2:
                 strcpy(start_struct_course->vahed,info);
                 break;
             case 3:
-                strcpy(start_struct_course->type_lessom,info);
+                strcpy(start_struct_course->type_course,info);
                 break;
             case 4:
                 strcpy(start_struct_course->code_course,info);
@@ -2798,13 +2881,13 @@ int set_course_as_link_list()
                 switch (flag_info)
                 {
                 case 1:
-                    strcpy(temp_struct_course->name_lessom,info);
+                    strcpy(temp_struct_course->name_course,info);
                     break;
                 case 2:
                     strcpy(temp_struct_course->vahed,info);
                     break;
                 case 3:
-                    strcpy(temp_struct_course->type_lessom,info);
+                    strcpy(temp_struct_course->type_course,info);
                     break;
                 case 4:
                     strcpy(temp_struct_course->code_course,info);
@@ -3015,7 +3098,7 @@ void edit_score_student()
         do
         {
             gets(ID_uni);// baraye in ce moteghayere ezafa add nakonam
-            if (strlen(ID_uni==0) || check_str_was_flaot(ID_uni)==1)
+            if (strlen(ID_uni)==0 || check_str_was_flaot(ID_uni)==1)
                 printf("Invlid! Try again: ");
             else
                 break;
@@ -3025,7 +3108,7 @@ void edit_score_student()
         printf("edited whit Successfully! Press Enter for back to menu\n");
         do
         {
-            ID_uni=getch();
+            ID_uni[0]=getch();
         } while (ID_uni[0]!=13);
             // system("cls");
 
@@ -3033,6 +3116,82 @@ void edit_score_student()
 
     
 }
+void edit_info_course()
+{
+    char code_course[20];
+    char name[20],vahed[3],type[3];
+    printf("if you want Exit from proses just perss enter\n");
+    printf("Enter Code course: ");
+    do
+    {
+        gets(code_course);
+        if (strlen(code_course)==0)
+            return ;
+        else if (check_str_was_int(code_course)==1)
+            printf("Invalid input! Try agian: ");
+        else if (search_course_code(code_course)==1)
+            printf("Not found course whit this code! Try agian: ");
+        else 
+            break;
+    } while (1);
+    system("cls");
+    printf("if you don't want edit, just press Enter\n");
+    printf("enter name of course: ");
+    do
+    {
+        gets(name);
+        if (strlen(name)==0)
+            break;
+        else if (check_str_whitout_punct(name)==1)
+            printf("Invalid name! Try another name: ");
+        else
+        {
+            strcpy(temp_struct_course->name_course,name);
+            break;
+        }
+    } while (1);
+
+    printf("enter number of \"vahed\": ");
+    do
+    {
+        gets(vahed);
+        if (strlen(vahed)==0)
+            break;
+        else if (check_str_was_int(vahed)==1)
+            printf("Invalid Input! Try again: ");
+        else
+        {
+            strcpy(temp_struct_course->vahed,vahed);
+            break;
+        }
+    } while (1);
+    list_type_of_course();
+    printf("enter type of course: ");
+    do
+    {
+        gets(type);
+        if (strlen(type)==0)
+            break;
+        else if (check_str_was_int(type)==1)
+            printf("Invalid name! Try another name: ");
+        else if (strlen(type)!=1 || type[0]>'4' || type[0]<'1')
+            printf("Out of range! Try again: ");
+        else
+        {
+            strcpy(temp_struct_course->type_course,type);
+            break;
+        }
+    } while (1);
+    free_course();
+    printf("Process compelit! Press Enter to continue\n");
+    do
+    {
+        name[0]=getch();
+    } while (name[0]!=13);
+    system("cls");
+    
+}
+
 
 
 void main()
@@ -3166,10 +3325,11 @@ void main()
                             break;
                         case 3:
                             edit_score_student();
-                            set_score_student_as_link_list();
+                            add_linked_list_score_to_notpadd();
                             break;
                         case 4:
-                            //def
+                            edit_info_course();
+                            add_linked_list_course_to_notpadd();
                             break;
                         default:
                             break;
@@ -3198,7 +3358,8 @@ void main()
                             edit_info_student();
                             add_linked_list_student_to_notpadd();
                             break;
-                                                
+                        case 3:
+                            
                         default:
                             break;
                         }
