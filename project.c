@@ -266,6 +266,54 @@ int check_corect_pass_and_set_limit(char corect_pass[], int limit_time)
         }
     }
 }
+void im_not_robot(char ImNotRObot[7])
+{
+
+    char charater[]="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    int i;
+    for (i=0;i<6;i++)
+        ImNotRObot[i]=charater[rand()%32];
+    ImNotRObot[6]='\0';
+    
+}
+void desplay_ImnotRobot(char imnotrobot[])
+{
+    char im_not_robot[12];
+    im_not_robot[10]=imnotrobot[5];
+    im_not_robot[8]=imnotrobot[4];
+    im_not_robot[6]=imnotrobot[3];
+    im_not_robot[4]=imnotrobot[2];
+    im_not_robot[2]=imnotrobot[1];
+    im_not_robot[0]=imnotrobot[0];
+    char charater[]="!@#$%^&*()_+";
+    int i;
+    for (i=1;i<11;i+=2)
+        im_not_robot[i]=charater[rand()%12];
+    im_not_robot[11]='\0';
+    printf("%s",im_not_robot);
+}
+int get_im_not_robot()
+{
+    char ImNotRObot_mian[6];
+    char input[10];
+    printf("if you want cancel proses just press Enter\n");
+    printf("Enter this code whitout junk character (!@#$%) for Confrim Opration:\n");
+    do{
+        im_not_robot(ImNotRObot_mian);
+        desplay_ImnotRobot(ImNotRObot_mian);
+        str_to_lower(ImNotRObot_mian);
+        printf("\n");
+        gets(input);
+        str_to_lower(input);
+        if (strlen(input)==0)
+            return -1;
+        else if (strcmp(input,ImNotRObot_mian)==0 && strlen(input)==strlen(ImNotRObot_mian))
+            return 0;
+        else 
+            printf("Invalid!! enter new code\n");
+            printf("__________________________________\n");
+    }while(1);
+}
 int time_left_limt(long int limited)
 {
     // ---------- note: if result is possetiv:= have limit; else limit done!
@@ -381,12 +429,13 @@ int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_t
     // -------------------- just password
     // ------------------------------ note: corect--> return 0 else 1,2 || cancel login -1;
     int flag_pass=check_corect_pass_and_set_limit(corect_pass,*limit_time);
+    int flag_Im_not_Robot=get_im_not_robot();
 
-    if (flag_pass==-1)
-        // ---------- cancel login
+    if (flag_pass==-1 || flag_Im_not_Robot==-1)
+        // ---------- cancel login OR cancel Im not robot
         return -1;
-    if (flag_pass==0)
-    // ------------- dont have limit and pass is corcet!
+    if (flag_pass==0 && flag_Im_not_Robot==0)
+    // ------------- dont have limit and pass is corcet! *and Im not robot corect!
         return 0;
     // else
     if (flag_pass==1)
@@ -2744,7 +2793,7 @@ void add_new_course()
     printf("Enter name course: ");
     do{
         gets(name);
-        if (check_str_full_alpha_whit_space(name) || strlen(name)==0)
+        if (check_str_whitout_punct(name) || strlen(name)==0)
             printf("Invalid input! Try again: ");
         else
             break;
@@ -3374,10 +3423,8 @@ void settings_academic()
         } while (str_temp[0]!=13);
             // system("cls");
 }
-void void
-{
-    
-}
+//reports departemant
+
 
 void main()
 {
@@ -3412,6 +3459,7 @@ void main()
     int temp_flag=0,menu_type,type_list_log=0,login_flag;
     set_academic_as_link_list();
     set_departemants_as_link_list();
+    srand(time(NULL));
     while(1)
     {
         menu_login_print();
@@ -3448,6 +3496,7 @@ void main()
                             break;
                         case 5:
                             //lsit of Log
+                            // system("cls");
                             do{
                                 list_of_log_print();
                                 type_list_log=menu_login_filter_selection();
@@ -3468,6 +3517,7 @@ void main()
                                     // system("cls");;
                                     break;
                                 default:
+                                    // system("cls");
                                     break;
                                 }
                             }while(type_list_log!=4);
