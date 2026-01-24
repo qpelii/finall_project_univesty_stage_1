@@ -242,30 +242,6 @@ int check_str_full_alpha_whitout_space(char string[])
 
     return 0;
 }
-int check_corect_pass_and_set_limit(char corect_pass[], int limit_time)
-{
-    // note: if corect --> return 0;  ||  if invalid --> return 1;  ||  if have limit -->return 2; if want Exit -->return -1;
-    int i;
-    char pass[50]={0};
-    if (limit_time-time(NULL)>0)
-        return 2;
-    for(i=0;i<3;i++)
-    {
-        printf("eneter your password:");
-        password_to_star(pass);
-        if (strlen(pass)==0)
-            return -1;
-        int len_get_pass=strlen(pass),len_corect_pass=strlen(corect_pass);
-        if (strcmp(pass,corect_pass)==0 && len_corect_pass==len_get_pass)
-            return 0;
-        else
-        {
-            if (i==2)
-                return 1;
-            printf("Invalid password!! you have %d time's for enter password, carefull!\n",2-i);
-        }
-    }
-}
 void im_not_robot(char ImNotRObot[7])
 {
 
@@ -313,6 +289,35 @@ int get_im_not_robot()
             printf("Invalid!! enter new code\n");
             printf("__________________________________\n");
     }while(1);
+}
+int check_corect_pass_and_set_limit(char corect_pass[], int limit_time)
+{
+    // note: if corect --> return 0;  ||  if invalid --> return 1;  ||  if have limit -->return 2; if want Exit -->return -1;
+    int i;
+    char pass[50]={0};
+    int flag_Im_not_Robot=0;
+    if (limit_time-time(NULL)>0)
+        return 2;
+    for(i=0;i<3;i++)
+    {
+        printf("eneter your password:");
+        password_to_star(pass);
+        if (strlen(pass)==0)
+            return -1;
+        flag_Im_not_Robot=get_im_not_robot();
+        if (flag_Im_not_Robot==-1)
+            return -1;
+        
+        int len_get_pass=strlen(pass),len_corect_pass=strlen(corect_pass);
+        if (strcmp(pass,corect_pass)==0 && len_corect_pass==len_get_pass)
+            return 0;
+        else
+        {
+            if (i==2)
+                return 1;
+            printf("\nInvalid password!! you have %d time's for enter password, carefull!\n",2-i);
+        }
+    }
 }
 int time_left_limt(long int limited)
 {
@@ -429,12 +434,11 @@ int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_t
     // -------------------- just password
     // ------------------------------ note: corect--> return 0 else 1,2 || cancel login -1;
     int flag_pass=check_corect_pass_and_set_limit(corect_pass,*limit_time);
-    int flag_Im_not_Robot=get_im_not_robot();
 
-    if (flag_pass==-1 || flag_Im_not_Robot==-1)
+    if (flag_pass==-1)
         // ---------- cancel login OR cancel Im not robot
         return -1;
-    if (flag_pass==0 && flag_Im_not_Robot==0)
+    if (flag_pass==0)
     // ------------- dont have limit and pass is corcet! *and Im not robot corect!
         return 0;
     // else
@@ -872,6 +876,17 @@ int get_user_pass_user_academics()
         user_found_flag=search_user_name_academic(user);
         if (user_found_flag==0)// is academic
         {
+            if (temp_struct_academic->ekhraj[0]!='N')
+            {
+                printf("Sorry! you have been kicked from admin\nyou can take conaction whit admin to fix that\nPress Enter to back menu");
+                free_academic();
+                do
+                {
+                    user[0]=getch();
+                } while (user[0]!=13);
+                
+                return 1;
+            }
             strcpy(password,temp_struct_academic->pass1);
             limit_time=atol(temp_struct_academic->limit_time);
             strcpy(User_Name_static,temp_struct_academic->user_Name);
@@ -1413,7 +1428,7 @@ void set_new_score()
 
     if (search_user_name_student_sync_with_code_sourse(ID_uni,code_course)==0)
     {
-        printf("this steudent alrady submited!!\n");
+        printf("this steudent alrady set Score!!\n");
         free_score();
         printf("press Enter to back Menu\n");
         do
@@ -2693,7 +2708,7 @@ void get_backup()
     }
     fclose(student_main);
     fclose(backup_student);
-    printf("backup_complit!\npress Enter to continue\n");
+    printf("Backup complit!\nPress Enter to continue\n");
     char temp;
     do
     {
@@ -2732,6 +2747,8 @@ void load_backup()
     char location_departemant[150];
     char read_line[225];
     flag_whlie=0;
+    // -------------------------------------------------- departemant
+    
     strcpy(location_departemant,file_location);
     strcat(location_departemant,"/file_departemant.txt");
     int flag_file=0;
@@ -2750,7 +2767,9 @@ void load_backup()
     }
     fclose(departemant_main);
     fclose(backup_departemant);
-
+    // --------------------------------------- academic
+    
+    flag_file=0;
     char location_academic[150];
     strcpy(location_academic,file_location);
     strcat(location_academic,"/file_academic.txt");
@@ -2769,6 +2788,66 @@ void load_backup()
     }
     fclose(academic_main);
     fclose(backup_academic);
+    // ------------------------------------ course
+
+    char location_course[150];
+    strcpy(location_course,file_location);
+    strcat(location_course,"/file_course.txt");
+    FILE *backup_course;
+    FILE *course_main;
+    backup_course=fopen(location_course,"r");
+    course_main=fopen("file_course.txt","w");
+    if (backup_course==NULL)
+        flag_file++;
+    while(flag_file==0)
+    {
+        fgets(read_line, 225, backup_course);
+        if (feof(backup_course)==1)
+            break;
+        fputs(read_line,course_main);
+    }
+    fclose(course_main);
+    fclose(backup_course);
+    // --------------------------------------------------- score
+
+    char location_score_student[150];
+    strcpy(location_score_student,file_location);
+    strcat(location_score_student,"/file_score_student.txt");
+    FILE *backup_score_student;
+    FILE *score_student_main;
+    backup_score_student=fopen(location_score_student,"r");
+    score_student_main=fopen("file_score_student.txt","w");
+    if (backup_score_student==NULL)
+        flag_file++;
+    while(flag_file==0)
+    {
+        fgets(read_line, 225, backup_score_student);
+        if (feof(backup_score_student)==1)
+            break;
+        fputs(read_line,score_student_main);
+    }
+    fclose(score_student_main);
+    fclose(backup_score_student);
+    // ------------------------------------------------------- student
+
+    char location_student[150];
+    strcpy(location_student,file_location);
+    strcat(location_student,"/file_student.txt");
+    FILE *backup_student;
+    FILE *student_main;
+    backup_student=fopen(location_student,"r");
+    student_main=fopen("file_student.txt","w");
+    if (backup_student==NULL)
+        flag_file++;
+    while(flag_file==0)
+    {
+        fgets(read_line, 225, backup_student);
+        if (feof(backup_student)==1)
+            break;
+        fputs(read_line,student_main);
+    }
+    fclose(student_main);
+    fclose(backup_student);
 
     printf("Backup restor compllit!\npress Enter to continue\n");
     char temp;
@@ -3482,11 +3561,14 @@ void settings_academic()
             }
         } while (1);
 
+        printf("Enter Phone number: ");
         do
         {
             gets(str_temp);
             if (strlen(str_temp)==0)
                 break;
+            else if (strlen(str_temp)!=11)
+                printf("too few charater for Phone number!! Try again: ");
             else if (check_str_was_int(str_temp)==1 || str_temp[0]!='0' || str_temp[1]!='9')
                 printf("Invlid! enter whit this form (09123456789): ");
             else
@@ -3680,13 +3762,15 @@ void main()
                 {
                     do{
                         set_student_as_link_list();
+                        set_course_as_link_list();
+                        set_score_student_as_link_list();
                         menu_academic_print();
                         menu_type=menu_selection_1_6();
                         switch (menu_type)
                         {
                         case 1:
                             set_new_student();
-                            add_linked_list_student_to_notpadd();
+                            set_student_as_link_list();
                             break;
                         case 2:
                             edit_info_student();
@@ -3728,3 +3812,4 @@ void main()
 //set file back up for score-student
 // dota nomre nabase   Done
 // dissbale able   Done
+// fix from date      1234/4/4 --> 1234/04/04
