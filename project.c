@@ -1413,13 +1413,13 @@ void set_new_score()
 
     if (search_user_name_student_sync_with_code_sourse(ID_uni,code_course)==0)
     {
-        printf("this steudent already submited!!\n");
+        printf("this steudent alrady submited!!\n");
         free_score();
         printf("press Enter to back Menu\n");
         do
         {
             temp=getch();
-        } while (temp!=13)
+        } while (temp!=13);
         return ;
     }
     printf("Enter Score student: ");
@@ -2679,21 +2679,20 @@ void get_backup()
     strcpy(location_student,file_location);
     strcat(location_student,"/file_student.txt");
     FILE *backup_student;
-    FILE *score_student_main;
-    score_student_main=fopen("file_student.txt","r");
-    if (score_student_main==NULL)
+    FILE *student_main;
+    student_main=fopen("file_student.txt","r");
+    if (student_main==NULL)
         flag_file++;
     backup_student=fopen(location_student,"w");
     while(flag_file==0)
     {
-        fgets(read_line, 225, score_student_main);
-        if (feof(score_student_main)==1)
+        fgets(read_line, 225, student_main);
+        if (feof(student_main)==1)
             break;
         fputs(read_line,backup_student);
     }
-    fclose(score_student_main);
+    fclose(student_main);
     fclose(backup_student);
-
     printf("backup_complit!\npress Enter to continue\n");
     char temp;
     do
@@ -2789,7 +2788,7 @@ void menu_departemant_print()
     switch (i)
     {
     case 0:
-        strcpy(temp,"Add new Lesson");
+        strcpy(temp,"Add new Course");
         break;
     case 1:
         strcpy(temp,"Set Student score");
@@ -2798,10 +2797,10 @@ void menu_departemant_print()
         strcpy(temp,"Edit Student score");
         break;
     case 3:
-        strcpy(temp,"Edit Information about Lesson");
+        strcpy(temp,"Edit Information about Course");
         break;
     case 4:
-        strcpy(temp,"Delete Lesson Information's");
+        strcpy(temp,"Delete Course Information's");
         break;
     case 5:
         strcpy(temp,"Get Log");
@@ -2897,14 +2896,14 @@ void add_new_course()
             break;
     }while(1);
 
-    printf("Enter Lesson Code's: ");
+    printf("Enter Course Code's: ");
     do{
         gets(code_course);
         if (check_str_was_int(code_course) || strlen(code_course)<4)
             printf("Invalid input! Try again: ");
         else if (search_course_code(code_course)==0)
         {
-            printf("this code Lesson is duplicate! Try agian: ");
+            printf("this code Course is duplicate! Try agian: ");
             free_course();
         }
         else
@@ -3342,7 +3341,7 @@ void remove_course()
             break;
     } while (1);
     if (temp_struct_course->status[0]=='D')
-        printf("this course already removed of list!\n");
+        printf("this course alrady removed of list!\n");
     else 
         strcpy(temp_struct_course->status,"D");
     free_course();
@@ -3404,6 +3403,7 @@ void settings_departemant()
             }
         } while (1);
 
+        printf("Enter Phone number: ");
         do
         {
             gets(str_temp);
@@ -3411,6 +3411,8 @@ void settings_departemant()
                 break;
             else if (check_str_was_int(str_temp)==1 || str_temp[0]!='0' || str_temp[1]!='9')
                 printf("Invlid! enter whit this form (09123456789): ");
+            else if (strlen(str_temp)!=11)
+                printf("too few charater for Phone number!! Try again: ");
             else
             {
                 if (strcmp(str_temp,temp_struct_departemant->email)==0 && strlen(str_temp)==strlen(temp_struct_departemant->email))
@@ -3658,7 +3660,7 @@ void main()
                             break;
                         case 7:
                             settings_departemant();
-                            set_departemants_as_link_list();
+                            add_linked_list_departemant_to_notpadd();
                             break;
                         case 8:
                             break;
