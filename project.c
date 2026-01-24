@@ -1376,6 +1376,7 @@ void set_new_student()
 void set_new_score()
 {
     char ID_uni[15],code_course[15],score[7],date_set[20],user_name[20];
+    char temp;
     printf("Note: if you want exit from this proses just press Enter\n");
     printf("Enter ID univrsity of student: ");
     do
@@ -1409,6 +1410,18 @@ void set_new_score()
             break;
         }
     } while (1);
+
+    if (search_user_name_student_sync_with_code_sourse(ID_uni,code_course)==0)
+    {
+        printf("this steudent already submited!!\n");
+        free_score();
+        printf("press Enter to back Menu\n");
+        do
+        {
+            temp=getch();
+        } while (temp!=13)
+        return ;
+    }
     printf("Enter Score student: ");
     do
     {
@@ -1438,7 +1451,6 @@ void set_new_score()
     fputc('\n',file_score_student);
     printf("Successfully added!\npress Enter to continue\n");
     fclose(file_score_student);
-    char temp;
     do
     {
         temp=getch();
@@ -2570,6 +2582,7 @@ void get_backup()
             time[i]='\0';
             break;
         }
+    // ------------------------------------- backup departemant
     strcat(file_location,"/Backup_Manage_university_");
     strcat(file_location,time);
     mkdir(file_location);
@@ -2594,7 +2607,9 @@ void get_backup()
     }
     fclose(departemant_main);
     fclose(backup_departemant);
+    // ------------------------------------- backup academic
 
+    flag_file=0;
     char location_academic[150];
     strcpy(location_academic,file_location);
     strcat(location_academic,"/file_academic.txt");
@@ -2604,7 +2619,7 @@ void get_backup()
     if (academic_main==NULL)
         flag_file++;
     backup_academic=fopen(location_academic,"w");
-    while(1)
+    while(flag_file==0)
     {
         fgets(read_line, 225, academic_main);
         if (feof(academic_main)==1)
@@ -2613,6 +2628,71 @@ void get_backup()
     }
     fclose(academic_main);
     fclose(backup_academic);
+    // ------------------------------------- backup course
+    
+    flag_file=0;
+    char location_course[150];
+    strcpy(location_course,file_location);
+    strcat(location_course,"/file_course.txt");
+    FILE *backup_course;
+    FILE *course_main;
+    course_main=fopen("file_course.txt","r");
+    if (course_main==NULL)
+        flag_file++;
+    backup_course=fopen(location_course,"w");
+    while(flag_file==0)
+    {
+        fgets(read_line, 225, course_main);
+        if (feof(course_main)==1)
+            break;
+        fputs(read_line,backup_course);
+    }
+    fclose(course_main);
+    fclose(backup_course);
+
+    // ------------------------------------- backup Score student
+    
+    flag_file=0;
+    char location_score_student[150];
+    strcpy(location_score_student,file_location);
+    strcat(location_score_student,"/file_score_student.txt");
+    FILE *backup_score_student;
+    FILE *score_student_main;
+    score_student_main=fopen("file_score_student.txt","r");
+    if (score_student_main==NULL)
+        flag_file++;
+    backup_score_student=fopen(location_score_student,"w");
+    while(flag_file==0)
+    {
+        fgets(read_line, 225, score_student_main);
+        if (feof(score_student_main)==1)
+            break;
+        fputs(read_line,backup_score_student);
+    }
+    fclose(score_student_main);
+    fclose(backup_score_student);
+
+    // ------------------------------------- backup student
+    
+    flag_file=0;
+    char location_student[150];
+    strcpy(location_student,file_location);
+    strcat(location_student,"/file_student.txt");
+    FILE *backup_student;
+    FILE *score_student_main;
+    score_student_main=fopen("file_student.txt","r");
+    if (score_student_main==NULL)
+        flag_file++;
+    backup_student=fopen(location_student,"w");
+    while(flag_file==0)
+    {
+        fgets(read_line, 225, score_student_main);
+        if (feof(score_student_main)==1)
+            break;
+        fputs(read_line,backup_student);
+    }
+    fclose(score_student_main);
+    fclose(backup_student);
 
     printf("backup_complit!\npress Enter to continue\n");
     char temp;
@@ -2820,7 +2900,7 @@ void add_new_course()
     printf("Enter Lesson Code's: ");
     do{
         gets(code_course);
-        if (check_str_was_int(code_course) || strlen(code_course)==0)
+        if (check_str_was_int(code_course) || strlen(code_course)<4)
             printf("Invalid input! Try again: ");
         else if (search_course_code(code_course)==0)
         {
@@ -3142,7 +3222,7 @@ void edit_score_student()
     } while (1);
     
     if (flag_found==1)
-        printf("student whit this data not found! first you need set socre from student and then edit score!");
+        printf("student whit this data not found! first you need set socre from student and then edit score!\n\n");
     
     else if (flag_found==0)
     {
@@ -3187,7 +3267,7 @@ void edit_info_course()
         else 
             break;
     } while (1);
-    system("cls");
+    // system("cls");
     printf("if you don't want edit, just press Enter\n");
     printf("enter name of course: ");
     do
@@ -3261,14 +3341,17 @@ void remove_course()
         else 
             break;
     } while (1);
-    strcpy(temp_struct_course->status,"D");
+    if (temp_struct_course->status[0]=='D')
+        printf("this course already removed of list!\n");
+    else 
+        strcpy(temp_struct_course->status,"D");
     free_course();
     printf("Process compelit! Press Enter to continue\n");
     do
     {
         code_course[0]=getch();
     } while (code_course[0]!=13);
-    system("cls");
+    // system("cls");
 
 }
 void settings_departemant()
@@ -3467,7 +3550,7 @@ void main()
         // -------------------------------------------- rotation part
         switch (menu_type)
         {
-            case 1:
+            case 1:// ------------------------------------------------------------------------------- Admin
                 unti_hash_to_password(pointer_Padmin);
                 login_flag=get_check_user_pass(pointer_Uadmin,pointer_Padmin,pointer_Limit_admin);// 0:= succces; 1,2:unsaccses; -1:cancel login;
                 password_to_hash(pointer_Padmin);
@@ -3536,7 +3619,7 @@ void main()
                     }while(menu_type!=8);
                 }
                 break;
-            case 2:
+            case 2:// ------------------------------------------------------------------------------- Departemant
                 
                 login_flag=get_user_pass_user_departemnts();
                 
@@ -3588,7 +3671,7 @@ void main()
                     add_linked_list_departemant_to_notpadd();
                 break;
             
-            case 3:
+            case 3:// --------------------------------------------------------------------------------- Academic
                 login_flag=get_user_pass_user_academics();
                 
                 if (login_flag==0)
@@ -3641,5 +3724,5 @@ void main()
 }
 
 //set file back up for score-student
-// dota nomre nabase
-// dissbale able
+// dota nomre nabase   Done
+// dissbale able   Done
