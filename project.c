@@ -2205,6 +2205,26 @@ int get_len_stuct_score()
     free(temp_struct_score);
     return counter;
 }
+int get_len_stuct_student()
+{
+    temp_struct_student=malloc(sizeof(struct struct_student));
+    if (temp_struct_student==NULL)
+        return -1;
+    if (temp_struct_student->link==NULL && temp_struct_student->ID_uni[0]=='N')
+    {
+        printf("Not any set student!\n");
+        return 0;
+    }
+    temp_struct_student=start_struct_student;
+    int counter=0;
+    do
+    {
+        counter++;
+        temp_struct_student=temp_struct_student->link;
+    } while (temp_struct_student!=NULL);
+    free(temp_struct_student);
+    return counter;
+}
 void add_linked_list_academi_to_notpadd()
 {
     FILE *Academic;
@@ -4202,6 +4222,92 @@ void show_avg_score_with_code_course()
     free_course();
     press_enter_to_continue();
 }
+void sorte_student_bg_avg()
+{
+    char temp[20];
+    char name1[20],name2[20];
+    temp_struct_student=malloc(sizeof(struct struct_student));
+    struct struct_student *temp2_struct_student;
+    temp2_struct_student=malloc(sizeof(struct struct_student));
+    if (temp_struct_student==NULL || temp2_struct_student==NULL)
+    {
+        printf("memory was't allowed!\n");
+        return ;
+    }
+    // ------------------------------------------ bubelt sort part
+    int i,j,len=get_len_stuct_student();
+    if (len==-1 || len==0)
+        return 1;
+    for (i=0;i<len-1;i++)
+    {
+        temp_struct_student=start_struct_student;
+        temp2_struct_student=start_struct_student->link;
+        for (j=0;j<len-i-1;j++)
+        {
+            if (strcmp(temp_struct_student->avg_score,temp2_struct_student->avg_score)==-1)
+            {
+                //----------------------------- sawp name
+                strcpy(temp,temp_struct_student->name);
+                strcpy(temp_struct_student->name,temp2_struct_student->name);
+                strcpy(temp2_struct_student->name,temp);
+                //----------------------------- sawp ID
+                strcpy(temp,temp_struct_student->ID_uni);
+                strcpy(temp_struct_student->ID_uni,temp2_struct_student->ID_uni);
+                strcpy(temp2_struct_student->ID_uni,temp);
+                //----------------------------- sawp student
+                strcpy(temp,temp_struct_student->avg_score);
+                strcpy(temp_struct_student->avg_score,temp2_struct_student->avg_score);
+                strcpy(temp2_struct_student->avg_score,temp);
+                //faghat chizayi ke mikhaym ro sawp mikonim va badesh dobare az file overwrite mikonim:))
+            }
+            temp_struct_student=temp_struct_student->link;
+            temp2_struct_student=temp2_struct_student->link;
+            if (temp2_struct_student==NULL)
+                break;
+        }   
+    }
+    free_student();
+
+    
+}
+void sorte_student_bg_avg_print()
+{
+    char temp[25];
+    int i=1;
+        // system("cls");;
+        printf("list of Student\n_______________________________________\n\n");
+        temp_struct_student=malloc(sizeof(struct struct_student));
+        temp_struct_student=start_struct_student;
+        do
+        {
+            if (temp_struct_student->name[0]=='0')//file is NULL
+            {
+                printf("-----------------------------------\n");
+                printf("No result to show!\n");
+                printf("-----------------------------------\n");
+                break;
+            }
+            printf("Student's %d\n",i++);
+            printf("-----------------------------------\n");
+            strcpy(temp,"Name: ");
+            printf("%-20s%s\n",temp,temp_struct_student->name);
+            strcpy(temp,"Family name: ");
+            printf("%-20s%s\n",temp,temp_struct_student->family);
+            strcpy(temp,"ID Univesity: ");
+            printf("%-20s%s\n",temp,temp_struct_student->ID_uni);
+            strcpy(temp,"Avrage Score: ");
+            printf("%-20s%s\n",temp,temp_struct_student->avg_score);
+            temp_struct_student=temp_struct_student->link;
+        }while(temp_struct_student!=NULL);
+
+    free_student();
+    printf("\n-----------------------------------\n");
+    printf("Press enter to back menu\n");
+    do
+    {
+        temp[0]=getch();
+    } while (temp[0]!=13);
+}
 void panle_log_print_page3()
 {
     char temp[60],line_char='|';
@@ -4451,8 +4557,12 @@ int log_departemant()// --------------------------------------------------------
                 switch (num_menu)
                 {
                     case 1:
-                        //def
+                        sorte_student_bg_avg();
+                        sorte_student_bg_avg_print();
+                        set_student_as_link_list();
                         break;
+                    case 2:
+                    
                     case 6:
                         num_page=2;
                         break;
