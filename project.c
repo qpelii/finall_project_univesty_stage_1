@@ -60,6 +60,7 @@ struct struct_student
     char ID_uni[15];
     char phone_num[15];
     char email[40];
+    char avg_score[8];
     struct struct_student *link;
 };
 struct struct_student *start_struct_student, *end_struct_student, *temp_struct_student;
@@ -1415,6 +1416,8 @@ void set_new_student()
     fputs(phone_num,file_student);
     fputs(", ",file_student);
     fputs(email,file_student);
+    fputs(", ",file_student);
+    fputc('N',file_student);// avg score
     fputc('\n',file_student);
     printf("Successfully added!\npress Enter to continue\n");
     fclose(file_student);
@@ -2077,7 +2080,7 @@ int set_score_student_as_link_list()
     free(temp_struct_score);
     return 0;
 }
-void show_list_users(int status)//eit bayad bokhore bara vaghti ke karbari voojood nadare
+void show_list_users(int status)
 {
     char temp[25];
     int i=1;
@@ -2327,6 +2330,9 @@ void add_linked_list_student_to_notpadd()
         strcat(final,", ");
         strcpy(temp,temp_struct_student->email);
         strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_student->avg_score);
+        strcat(final,temp);
         strcat(final,"\n");
         fputs(final,Student);
         strcpy(final,"\0");
@@ -2409,6 +2415,15 @@ void add_linked_list_score_to_notpadd()
     } while (temp_struct_score!=NULL);
     free(temp_struct_score);
     fclose(score);
+}
+void press_enter_to_continue()
+{
+    char temp;
+        do
+        {
+            temp=getch();
+        } while (temp!=13);
+            // system("cls");
 }
 void kick_user()
 {
@@ -3630,11 +3645,102 @@ void settings_academic()
             // system("cls");
 }
 //reports departemant
+void info_student_sync_with_id_print()
+{
+    char num[20];
+    printf("Enter ID University of student: ");
+    do
+    {
+        gets(num);
+        if (check_str_was_int(num) || strlen(num)!=10)
+            printf("Invalid from input!! try again: ");
+        else if (search_user_name_student(num)==1)
+            printf("Student with this ID not found! try with another ID: ");
+        else
+            break;
+    } while (1);
 
+     printf("Information about Student (ID: %s)\n________________________________________\n\n",temp_struct_student->ID_uni);
+    int i=1;
+    char temp[25];
+        strcpy(temp,"Name");
+        printf("%-20s%s\n",temp,temp_struct_student->name);
+        strcpy(temp,"Family name");
+        printf("%-20s%s\n",temp,temp_struct_student->family);
+        strcpy(temp,"Major");
+        printf("%-20s%s\n",temp,temp_struct_student->major);
+        strcpy(temp,"Date Birthday");
+        printf("%-20s%s\n",temp,temp_struct_student->date_birthday);
+        strcpy(temp,"Location born");
+        printf("%-20s%s\n",temp,temp_struct_student->location_born);
+        strcpy(temp,"ID code");// code meli
+        printf("%-20s%s\n",temp,temp_struct_student->ID_code);
+        strcpy(temp,"Phone number");
+        printf("%-20s%s\n",temp,temp_struct_student->phone_num);
+        strcpy(temp,"Email");
+        printf("%-20s%s\n",temp,temp_struct_student->email);
+        printf("-----------------------------------\n");
+     
+    printf("Preas Enter to back list\n");
+    free_student();
+    do
+    {
+        temp[0]=getch();
+    } while (temp[0]!=13);
+    
+}
+void list_student_print()
+{
+    char temp[25];
+    int i=1;
+        // system("cls");;
+        printf("list of Student\n_______________________________________\n\n");
+        temp_struct_student=malloc(sizeof(struct struct_student));
+        temp_struct_student=start_struct_student;
+        do
+        {
+            if (temp_struct_student->name[0]=='0')//file is NULL
+            {
+                printf("-----------------------------------\n");
+                printf("No result to show!\n");
+                printf("-----------------------------------\n");
+                break;
+            }
+            printf("Student's %d\n",i++);
+            printf("-----------------------------------\n");
+            strcpy(temp,"Name");
+            printf("%-20s%s\n",temp,temp_struct_student->name);
+            strcpy(temp,"Family name");
+            printf("%-20s%s\n",temp,temp_struct_student->family);
+            strcpy(temp,"ID Univesity");
+            printf("%-20s%s\n",temp,temp_struct_student->ID_uni);
+            strcpy(temp,"Date Birthday");
+            printf("%-20s%s\n",temp,temp_struct_student->date_birthday);
+            strcpy(temp,"Location born");
+            printf("%-20s%s\n",temp,temp_struct_student->location_born);
+            strcpy(temp,"ID code");// code meli
+            printf("%-20s%s\n",temp,temp_struct_student->ID_code);
+            strcpy(temp,"Phone number");
+            printf("%-20s%s\n",temp,temp_struct_student->phone_num);
+            strcpy(temp,"Email");
+            printf("%-20s%s\n",temp,temp_struct_student->email);
+            strcpy(temp,"Major");
+            printf("%-20s%s\n",temp,temp_struct_student->major);
+            printf("-----------------------------------\n");
+            temp_struct_student=temp_struct_student->link;
+        }while(temp_struct_student!=NULL);
+
+    free_student();
+    printf("Preas enter to back menu\n");
+    do
+    {
+        temp[0]=getch();
+    } while (temp[0]!=13);
+}
 void panle_log_print_page3()
 {
     char temp[60],line_char='|';
-    printf("\t\t  Log page(Page 3/3)\n");
+    printf("\t\t    Log page(Page 3/3)\n");
     printf("------------------------------------------------------------\n");
     for(int i=0; i<7; i++)
     {
@@ -3678,7 +3784,7 @@ void panle_log_print_page3()
 void panle_log_print_page2()
 {
     char temp[60],line_char='|';
-    printf("\t\t  Log page(Page 2/3)\n");
+    printf("\t\t    Log page (Page 2/3)\n");
     printf("------------------------------------------------------------\n");
     for(int i=0; i<8; i++)
     {
@@ -3724,16 +3830,16 @@ void panle_log_print_page2()
 }
 void panle_log_print_page1()
 {
-    char temp[30],line_char='|';
-    printf("\tLog page (Page 1/3)\n");
-    printf("-----------------------------------\n");
+    char temp[35],line_char='|';
+    printf("\t  Log page (Page 1/3)\n");
+    printf("----------------------------------------\n");
     for(int i=0; i<7; i++)
     {
     printf("%c%-2d%c",line_char,i+1,line_char);
     switch (i)
     {
     case 0:
-        strcpy(temp,"Found student with info");
+        strcpy(temp,"Found student with ID university");
         break;
     case 1:
         strcpy(temp,"Show list of Student");
@@ -3757,13 +3863,13 @@ void panle_log_print_page1()
         break;
     }
 
-    printf("%-30s%c\n",temp,line_char);
+    printf("%-35s%c\n",temp,line_char);
     if (i!=6)
-        printf("|--+------------------------------|\n");
+        printf("|--+-----------------------------------|\n");
 
 
     }
-    printf("-----------------------------------\n\n");
+    printf("----------------------------------------\n\n");
     printf("select a option from menu: ");
 }
 void contorol_panle_print_log_departemant_panel(int num_page)
@@ -3783,7 +3889,7 @@ void contorol_panle_print_log_departemant_panel(int num_page)
         break;
     }
 }
-int log_departemant()
+int log_departemant()// -----------------------------------------------------------------------------p23193asdi1[2pio3p[oiasd]]
 {
     int num_menu;
     int num_page=1;
@@ -3798,6 +3904,12 @@ int log_departemant()
                 switch (num_menu)
                 {
                     case 1:
+                        info_student_sync_with_id_print();
+                        break;
+                    case 2:
+                        list_student_print();
+                        break;
+                    case 3
                         //def
                         break;
                     case 6:
