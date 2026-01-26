@@ -2185,6 +2185,26 @@ void show_list_users(int status)
     free_academic();
     // system("cls");;
 }
+int get_len_stuct_score()
+{
+    temp_struct_score=malloc(sizeof(struct struct_score));
+    if (temp_struct_score==NULL)
+        return -1;
+    if (temp_struct_score->link==NULL && temp_struct_score->ID_uni[0]=='N')
+    {
+        printf("Not any set score!\n");
+        return 0;
+    }
+    temp_struct_score=start_struct_score;
+    int counter=0;
+    do
+    {
+        counter++;
+        temp_struct_score=temp_struct_score->link;
+    } while (temp_struct_score!=NULL);
+    free(temp_struct_score);
+    return counter;
+}
 void add_linked_list_academi_to_notpadd()
 {
     FILE *Academic;
@@ -2415,6 +2435,72 @@ void add_linked_list_score_to_notpadd()
     } while (temp_struct_score!=NULL);
     free(temp_struct_score);
     fclose(score);
+}
+int sort_linked_list_by_name_student()
+{
+    char temp[20];
+    char name1[20],name2[20];
+    temp_struct_score=malloc(sizeof(struct struct_score));
+    struct struct_score *temp2_struct_score;
+    temp2_struct_score=malloc(sizeof(struct struct_score));
+    if (temp_struct_score==NULL || temp2_struct_score==NULL)
+        return 1;
+    // ------------------------------------------ bubelt sort part
+    int i,j,len=get_len_stuct_score();
+    if (len==-1 || len==0)
+        return 1;
+    for (i=0;i<len-1;i++)
+    {
+        temp_struct_score=start_struct_score;
+        strcpy(temp,temp_struct_score->ID_uni);
+        search_user_name_student(temp);
+        strcpy(name1,temp_struct_student->family);
+        free_student();
+        temp2_struct_score=start_struct_score->link;
+        strcpy(temp,temp2_struct_score->ID_uni);
+        search_user_name_student(temp);
+        strcpy(name2,temp_struct_student->family);
+        free_student();
+        for (j=0;j<len-i-1;j++)
+        {
+            if (strcmp(name1,name2)==1)
+            {
+                //----------------------------- sawp code course
+                strcpy(temp,temp_struct_score->code_course);
+                strcpy(temp_struct_score->code_course,temp2_struct_score->code_course);
+                strcpy(temp2_struct_score->code_course,temp);
+                //----------------------------- sawp ID
+                strcpy(temp,temp_struct_score->ID_uni);
+                strcpy(temp_struct_score->ID_uni,temp2_struct_score->ID_uni);
+                strcpy(temp2_struct_score->ID_uni,temp);
+                //----------------------------- sawp score
+                strcpy(temp,temp_struct_score->score);
+                strcpy(temp_struct_score->score,temp2_struct_score->score);
+                strcpy(temp2_struct_score->score,temp);
+                //----------------------------- sawp user
+                strcpy(temp,temp_struct_score->user);
+                strcpy(temp_struct_score->user,temp2_struct_score->user);
+                strcpy(temp2_struct_score->user,temp);
+                //----------------------------- sawp date
+                strcpy(temp,temp_struct_score->date);
+                strcpy(temp_struct_score->date,temp2_struct_score->date);
+                strcpy(temp2_struct_score->date,temp);    
+            }
+            temp_struct_score=temp_struct_score->link;
+            strcpy(temp,temp_struct_score->ID_uni);
+            search_user_name_student(temp);
+            strcpy(name1,temp_struct_student->family);
+            free_student();
+            temp2_struct_score=temp2_struct_score->link;
+            if (temp2_struct_score==NULL)
+                break;
+            strcpy(temp,temp2_struct_score->ID_uni);
+            search_user_name_student(temp);
+            strcpy(name2,temp_struct_student->family);
+            free_student();
+        }   
+    }
+    free_score();
 }
 void press_enter_to_continue()
 {
@@ -3922,11 +4008,14 @@ void search_scores_of_student_by_ID()
     temp_struct_score=malloc(sizeof(struct struct_score));
     if (temp_struct_score==NULL)
     {
-        printf("Memory not Alow!");
+        printf("Memory not Alow!\n");
+        printf("Press Enter for continue\n");
+        press_enter_to_continue();
         return ;
     }
     temp_struct_score=start_struct_score;
-    printf("   Scores of Student with ID %s\n",temp_struct_score->ID_uni);
+    printf("   %s %s Score's\n",temp_struct_student->name,temp_struct_student->family);
+    free_student();
     printf("__________________________________________\n");
     do
     {
@@ -3951,6 +4040,62 @@ void search_scores_of_student_by_ID()
     printf("Press enter to back menu\n");
     press_enter_to_continue();
 }
+void search_scores_of_student_by_code_course()
+{
+    char code[11];
+    printf("if you can cancel prosses, just press Enter\n");
+    printf("enter Code Course: ");
+    do
+    {
+        gets(code);
+        if (strlen(code)==0)
+            return ;
+        if (check_str_was_int(code))
+            printf("Invalid input! Try again: ");
+        else if (search_course_code(code)==1)
+            printf("Cours with this code not found!! Try again: ");
+        else
+            break;
+    } while (1);
+    int counter=0;
+    char temp[20];
+    temp_struct_score=malloc(sizeof(struct struct_score));
+    if (temp_struct_score==NULL)
+    {
+        printf("Memory not Alow!\n");
+        printf("Press Enter for continue\n");
+        press_enter_to_continue();
+        return ;
+    }
+    temp_struct_score=start_struct_score;
+    printf("   %s Student Scores\n",temp_struct_course->name_course);
+    free_student();
+    printf("__________________________________________\n");
+    do
+    {
+        if (strcmp(temp_struct_score->code_course,code)==0 && strlen(temp_struct_score->code_course)==strlen(code))
+        {
+            counter++;
+            search_user_name_student(temp_struct_score->ID_uni);
+            strcpy(temp,"Name Student: ");
+            printf("%-2s%s %s\n",temp,temp_struct_student->name,temp_struct_student->family);
+            free_student();
+            strcpy(temp,"ID University: ");
+            printf("%-20s%s\n",temp,temp_struct_score->ID_uni);
+            strcpy(temp,"Score: ");
+            printf("%-20s%s\n",temp,temp_struct_score->score);
+            printf("__________________________________________\n");
+        }
+        temp_struct_score=temp_struct_score->link;
+    }while(temp_struct_score!=NULL);
+    free_score();
+    if (counter==0)
+        printf("     No Score are recorded for this Course\n");
+    printf("Press enter to back menu\n");
+    press_enter_to_continue();
+}
+
+
 void panle_log_print_page3()
 {
     char temp[60],line_char='|';
@@ -4106,6 +4251,7 @@ void contorol_panle_print_log_departemant_panel(int num_page)
 int log_departemant()// -----------------------------------------------------------------------------p23193asdi1[2pio3p[oiasd]]
 {
     int num_menu;
+    int temp_flag=0;
     int num_page=1;
     while (1)
         switch (num_page)
@@ -4157,6 +4303,15 @@ int log_departemant()// --------------------------------------------------------
                     case 1:
                         search_scores_of_student_by_ID();
                         break;
+                    case 2:
+                        search_scores_of_student_by_code_course();
+                        break;
+                    case 3:
+                        temp_flag=sort_linked_list_by_name_student();
+                        if (temp_flag==1)
+                            break;
+                        search_scores_of_student_by_code_course();
+                        break;
                     case 6:
                         num_page=3;
                         break;
@@ -4201,9 +4356,7 @@ int log_departemant()// --------------------------------------------------------
                 break;
         default:
             break;
-        }
-        
-    
+        }    
 }
 
 
@@ -4428,3 +4581,4 @@ void main()
 // dissbale able   Done
 // fix from date      1234/4/4 --> 1234/04/04
 // list kamele kholase che samiya baraye deoartemant log???
+// fix con baze nomre ro 0_20
