@@ -1417,7 +1417,7 @@ void set_new_student()
     fputs(", ",file_student);
     fputs(email,file_student);
     fputs(", ",file_student);
-    fputc('N',file_student);// avg score
+    fputc('0',file_student);// avg score
     fputc('\n',file_student);
     printf("Successfully added!\npress Enter to continue\n");
     fclose(file_student);
@@ -3884,7 +3884,7 @@ void list_course_print()
         temp[0]=getch();
     } while (temp[0]!=13);
 }
-void list_course_spetial_print(int status)// status1 := D and 0:= E
+void list_course_special_print(int status)// status1 := D and 0:= E
 {
     char temp[25];
     char type[20];
@@ -4014,7 +4014,7 @@ void search_scores_of_student_by_ID()
         return ;
     }
     temp_struct_score=start_struct_score;
-    printf("   %s %s Score's\n",temp_struct_student->name,temp_struct_student->family);
+    printf("\t   %s %s Score's\n",temp_struct_student->name,temp_struct_student->family);
     free_student();
     printf("__________________________________________\n");
     do
@@ -4094,8 +4094,114 @@ void search_scores_of_student_by_code_course()
     printf("Press enter to back menu\n");
     press_enter_to_continue();
 }
-
-
+void calcurat_avrage_score_student()
+{
+    int counter=0;
+    float sum=0;
+    temp_struct_student=malloc(sizeof(struct struct_student));
+    if (temp_struct_student==NULL)
+    {
+        printf("memory not allow!!\n");
+        return ;
+    }
+    temp_struct_student=start_struct_student;
+    do{
+        counter=0;
+        temp_struct_score=malloc(sizeof(struct struct_score));
+        temp_struct_score=start_struct_score;
+        do
+        {
+            if (strcmp(temp_struct_score->ID_uni,temp_struct_student->ID_uni)==0 && strlen(temp_struct_score->ID_uni)==strlen(temp_struct_student->ID_uni))
+                {
+                    counter++;
+                    sum+=atof(temp_struct_score->score);
+                }
+            temp_struct_score=temp_struct_score->link;
+        }while(temp_struct_score!=NULL);
+        snprintf(temp_struct_student->avg_score,sizeof(temp_struct_student->avg_score),"%.2f",sum/(float)counter);
+        free(temp_struct_score);
+        temp_struct_student=temp_struct_student->link;
+    }while(temp_struct_student!=NULL);
+    free_student();
+}
+void show_avg_score_with_student_id()
+{
+    char num[20];
+    printf("Enter ID University of student: ");
+    do
+    {
+        gets(num);
+        if (check_str_was_int(num) || strlen(num)!=10)
+            printf("Invalid from input!! try again: ");
+        else if (search_user_name_student(num)==1)
+            printf("Student with this ID not found! try with another ID: ");
+        else
+            break;
+    } while (1);
+    if (temp_struct_student->avg_score[0]=='N')
+        printf("not any score set for this Student\n");
+    else 
+        printf("Avrege Score of Student : %s\n\n",temp_struct_student->avg_score);
+    printf("Press Enter for back to menu\n");
+    free_student();
+    press_enter_to_continue();
+}
+float calcurat_avrage_score_course(char code_course[])
+{
+    int counter=0;
+    float sum=0;
+    temp_struct_score=malloc(sizeof(struct struct_score));
+    if (temp_struct_course==NULL)
+    {
+        printf("memory not allow!!\n");
+        return -1;
+    }
+        temp_struct_score=start_struct_score;
+        do
+        {
+            if (strcmp(temp_struct_score->code_course,code_course)==0 && strlen(temp_struct_score->code_course)==strlen(code_course))
+                {
+                    counter++;
+                    sum+=atof(temp_struct_score->score);
+                }
+            temp_struct_score=temp_struct_score->link;
+        }while(temp_struct_score!=NULL);
+        free(temp_struct_score);
+        if (counter==0)
+        {
+            printf("not any Score set for this course!\n");
+            printf("Press enter to back menu\n");
+            press_enter_to_continue();
+            return -1;
+        }
+        return sum/(float)counter;
+}
+void show_avg_score_with_code_course()
+{
+    char code[11];
+    printf("if you can cancel prosses, just press Enter\n");
+    printf("enter Code Course: ");
+    do
+    {
+        gets(code);
+        if (strlen(code)==0)
+            return ;
+        if (check_str_was_int(code))
+            printf("Invalid input! Try again: ");
+        else if (search_course_code(code)==1)
+            printf("Cours with this code not found!! Try again: ");
+        else
+            break;
+    } while (1);
+    float flag=calcurat_avrage_score_course(code);
+    if (flag==-1)
+        return ;
+    
+    printf("Avrege Score of %s Course's : %.3f\n\n",temp_struct_course->name_course,flag);
+    printf("Press Enter for back to menu\n");
+    free_course();
+    press_enter_to_continue();
+}
 void panle_log_print_page3()
 {
     char temp[60],line_char='|';
@@ -4253,6 +4359,7 @@ int log_departemant()// --------------------------------------------------------
     int num_menu;
     int temp_flag=0;
     int num_page=1;
+    calcurat_avrage_score_student();
     while (1)
         switch (num_page)
         {
@@ -4273,10 +4380,10 @@ int log_departemant()// --------------------------------------------------------
                         list_course_print();
                         break;
                     case 4:
-                        list_course_spetial_print(1);
+                        list_course_special_print(1);
                         break;
                     case 5:
-                        list_course_spetial_print(0);
+                        list_course_special_print(0);
                         break;
                     case 6:
                         num_page=2;
@@ -4311,6 +4418,12 @@ int log_departemant()// --------------------------------------------------------
                         if (temp_flag==1)
                             break;
                         search_scores_of_student_by_code_course();
+                        break;
+                    case 4:
+                        show_avg_score_with_student_id();
+                        break;
+                    case 5:
+                        show_avg_score_with_code_course();
                         break;
                     case 6:
                         num_page=3;
