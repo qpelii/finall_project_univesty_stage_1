@@ -551,6 +551,36 @@ int menu_selection_1_6()
     } while (flag);
 
 }
+int menu_selection_1_7()
+{
+    char number[3];
+    int num,flag;
+    do
+    {
+        flag=num=0;
+        gets(number);
+        flag=check_str_was_int(number);
+        if (flag)
+        {
+            printf("Invalid input Try agian: ");
+            continue;
+        }
+        else
+        {
+            num=atoi(number) ;
+            if (num>7 || num<1)
+            {
+                printf("Your input is out of range! Try agian: ");
+                flag++;
+                continue;
+            }
+
+            // // system("cls");;
+            return num;
+        }
+    } while (flag);
+
+}
 int menu_selection_1_8()
 {
     char number[3];
@@ -966,6 +996,7 @@ void set_new_departemant()
         else
             break;
     }while(1);
+    str_to_lower(name);
 
     printf("Enter family: ");
     do{
@@ -975,6 +1006,7 @@ void set_new_departemant()
         else
             break;
     }while(1);
+    str_to_lower(family);
 
     printf("Enter date start Departemant\n(hint:enter whith this form YYYY/MM/DD): ");
     do{
@@ -993,6 +1025,7 @@ void set_new_departemant()
         else
             break;
     }while(1);
+    str_to_lower(name_of_group);
 
     printf("Enter ID: ");
     do{
@@ -1020,6 +1053,7 @@ void set_new_departemant()
         else
             break;
     }while(1);
+    str_to_lower(email);
 
     printf("Enter User name of Departemant: ");
     do{
@@ -1284,6 +1318,7 @@ void set_new_student()
         else
             break;
     }while(1);
+    str_to_lower(name);
 
     printf("Enter family: ");
     do{
@@ -1293,6 +1328,7 @@ void set_new_student()
         else
             break;
     }while(1);
+    str_to_lower(family);
 
     printf("Enter ID: ");
     do{
@@ -1320,6 +1356,7 @@ void set_new_student()
         else
             break;
     }while(1);
+    str_to_lower(location_born);
 
     printf("Enter Major: ");
     do{
@@ -1358,6 +1395,7 @@ void set_new_student()
         else
             break;
     }while(1);
+    str_to_lower(email);
 
     // ----------------------------------file apend
     fputs(name,file_student);
@@ -2956,6 +2994,7 @@ void add_new_course()
         else
             break;
     }while(1);
+    str_to_lower(name);
 
     printf("Enter number of \"vahed\": ");
     do{
@@ -3592,6 +3631,244 @@ void settings_academic()
 }
 //reports departemant
 
+void panle_log_print_page3()
+{
+    char temp[60],line_char='|';
+    printf("\t\t  Log page(Page 3/3)\n");
+    printf("------------------------------------------------------------\n");
+    for(int i=0; i<7; i++)
+    {
+    printf("%c%-2d%c",line_char,i+1,line_char);
+    switch (i)
+    {
+    case 0:
+        strcpy(temp,"Show list of Sudent (Sorted by Avrage)");
+        break;
+    case 1:
+        strcpy(temp,"Show list of Students \"ghabool shode\" in Spicail Course");
+        break;
+    case 2:
+        strcpy(temp,"Show list of Sudent that not pass in Specail Course");
+        break;
+    case 3:
+        strcpy(temp,"Show list of All Sudent submited");
+        break;
+    case 4:
+        strcpy(temp,"Show list of All Sudent submited");
+        break;
+    case 5:
+        strcpy(temp,"Previous Page");
+        break;
+    case 6:
+        strcpy(temp,"Exit");
+        break;
+    default:
+        break;
+    }
+
+    printf("%-55s%c\n",temp,line_char);
+    if (i!=6)
+        printf("|--+-------------------------------------------------------|\n");
+
+
+    }
+    printf("------------------------------------------------------------\n\n");
+    printf("select a option from menu: ");
+}
+void panle_log_print_page2()
+{
+    char temp[60],line_char='|';
+    printf("\t\t  Log page(Page 2/3)\n");
+    printf("------------------------------------------------------------\n");
+    for(int i=0; i<8; i++)
+    {
+    printf("%c%-2d%c",line_char,i+1,line_char);
+    switch (i)
+    {
+    case 0:
+        strcpy(temp,"Score student report whit ID Uuiversity");
+        break;
+    case 1:
+        strcpy(temp,"Score student report whit Code course");
+        break;
+    case 2:
+        strcpy(temp,"Score student report whit ID Uuiversity(sorted by name)");
+        break;
+    case 3:
+        strcpy(temp,"Avrege score of Student");
+        break;
+    case 4:
+        strcpy(temp,"Avrege score of Course");
+        break;
+    case 5:
+        strcpy(temp,"Next page");
+        break;
+    case 6:
+        strcpy(temp,"Previous Page");
+        break;
+    case 7:
+        strcpy(temp,"Exit");
+        break;
+    default:
+        break;
+    }
+
+    printf("%-55s%c\n",temp,line_char);
+    if (i!=7)
+        printf("|--+-------------------------------------------------------|\n");
+
+
+    }
+    printf("------------------------------------------------------------\n\n");
+    printf("select a option from menu: ");
+}
+void panle_log_print_page1()
+{
+    char temp[30],line_char='|';
+    printf("\tLog page (Page 1/3)\n");
+    printf("-----------------------------------\n");
+    for(int i=0; i<7; i++)
+    {
+    printf("%c%-2d%c",line_char,i+1,line_char);
+    switch (i)
+    {
+    case 0:
+        strcpy(temp,"Found student with info");
+        break;
+    case 1:
+        strcpy(temp,"Show list of Student");
+        break;
+    case 2:
+        strcpy(temp,"Show list of Course");
+        break;
+    case 3:
+        strcpy(temp,"Show list of Course Desable");
+        break;
+    case 4:
+        strcpy(temp,"Show list of Course Ensable");
+        break;
+    case 5:
+        strcpy(temp,"Next Page");
+        break;
+    case 6:
+        strcpy(temp,"Exit");
+        break;
+    default:
+        break;
+    }
+
+    printf("%-30s%c\n",temp,line_char);
+    if (i!=6)
+        printf("|--+------------------------------|\n");
+
+
+    }
+    printf("-----------------------------------\n\n");
+    printf("select a option from menu: ");
+}
+void contorol_panle_print_log_departemant_panel(int num_page)
+{
+    switch (num_page)
+    {
+    case 1:
+        panle_log_print_page1();
+        break;
+    case 2:
+        panle_log_print_page2();
+        break;
+    case 3:
+        panle_log_print_page3();
+        break;
+    default:
+        break;
+    }
+}
+int log_departemant()
+{
+    int num_menu;
+    int num_page=1;
+    while (1)
+        switch (num_page)
+        {
+        // ------------------------------------------------------------------page 1
+        case 1:
+            do{
+                contorol_panle_print_log_departemant_panel(num_page);
+                num_menu=menu_selection_1_7();
+                switch (num_menu)
+                {
+                    case 1:
+                        //def
+                        break;
+                    case 6:
+                        num_page=2;
+                        break;
+                    case 7:
+                        return 1;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            if (num_menu==6)
+                break;
+            }while(1);
+        // ----------------------------------------------------------------- page 2
+        
+        case 2:
+            do{
+                contorol_panle_print_log_departemant_panel(num_page);
+                num_menu=menu_selection_1_8();
+                switch (num_menu)
+                {
+                    case 1:
+                        //def
+                        break;
+                    case 6:
+                        num_page=3;
+                        break;
+                    case 7:
+                        num_page=1;
+                        break;
+                    case 8:
+                        return 1;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            if (num_menu==6 || num_menu==7 || num_menu==8)
+                break;
+            }while(1);
+        // ------------------------------------------------------------------ page 3
+        
+        case 3:
+            do{
+                contorol_panle_print_log_departemant_panel(num_page);
+                num_menu=menu_selection_1_7();
+                switch (num_menu)
+                {
+                    case 1:
+                        //def
+                        break;
+                    case 6:
+                        num_page=2;
+                        break;
+                    case 7:
+                        return 1;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            if (num_menu==6)
+                break;
+            }while(1);
+        }
+        
+    
+}
+
 
 void main()
 {
@@ -3738,7 +4015,7 @@ void main()
                             add_linked_list_course_to_notpadd();
                             break;
                         case 6:
-                            //def lgo **************
+                            log_departemant();
                             break;
                         case 7:
                             settings_departemant();
