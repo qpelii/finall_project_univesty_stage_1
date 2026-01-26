@@ -2126,7 +2126,7 @@ void show_list_users(int status)
         free_departemant();
         if (status==1)
         {
-            printf("Preas Enter to back list");
+            printf("Press Enter to back list");
             do
             {
                 temp[0]=getch();
@@ -2134,7 +2134,7 @@ void show_list_users(int status)
             return ;
         }
     }
-    printf("Preas Enter to show list of Academic\n");
+    printf("Press Enter to show list of Academic\n");
     do
     {
         temp[0]=getch();
@@ -2177,7 +2177,7 @@ void show_list_users(int status)
     }while(temp_struct_academic!=NULL);
     
 
-    printf("Preas enter to back menu\n");
+    printf("Press enter to back menu\n");
     do
     {
         temp[0]=getch();
@@ -2447,7 +2447,7 @@ void kick_user()
     if (temp_struct_academic->ekhraj[0]!='N')
     {
         printf("This user already kicked from program!\n");
-        printf("Preas Enter to back menu\n");
+        printf("Press Enter to back menu\n");
         do
         {
             user_name[0]=getch();
@@ -2548,7 +2548,7 @@ void list_of_log_academic()
         printf("-----------------------------------\n");
         temp_struct_academic=temp_struct_academic->link;
     }while(temp_struct_academic!=NULL);
-    printf("Preas Enter to back list");
+    printf("Press Enter to back list");
     free_academic();
     do
     {
@@ -2601,7 +2601,7 @@ void list_of_log_dismissed()
     }while(temp_struct_academic!=NULL);
     if (i==1 && temp_struct_academic->name[0]!='0')
         printf("No one of Academic has't dismissed!\n");
-    printf("Preas Enter to back list\n");
+    printf("Press Enter to back list\n");
     free_academic();
     do
     {
@@ -3077,7 +3077,7 @@ int set_course_as_link_list()
     if (course==NULL)
     {
         fclose(course);
-        start_struct_course->name_course[0]='0';// if file was NULL
+        start_struct_course->name_course[0]='!';// if file was NULL
         start_struct_course->link=NULL;
         return 1;
     } 
@@ -3088,7 +3088,7 @@ int set_course_as_link_list()
     if (strlen(temp)==0)
     {
         fclose(course);
-        start_struct_course->name_course[0]='0';// if file was NULL
+        start_struct_course->name_course[0]='!';// if file was NULL
         start_struct_course->link=NULL;
         return 1;
     }        
@@ -3681,7 +3681,7 @@ void info_student_sync_with_id_print()
         printf("%-20s%s\n",temp,temp_struct_student->email);
         printf("-----------------------------------\n");
      
-    printf("Preas Enter to back list\n");
+    printf("Press Enter to back list\n");
     free_student();
     do
     {
@@ -3731,7 +3731,68 @@ void list_student_print()
         }while(temp_struct_student!=NULL);
 
     free_student();
-    printf("Preas enter to back menu\n");
+    printf("Press enter to back menu\n");
+    do
+    {
+        temp[0]=getch();
+    } while (temp[0]!=13);
+}
+void list_course_print()
+{
+    char temp[25];
+    char type[20];
+    int i=1;
+        // system("cls");;
+        printf("list of Course\n_______________________________________\n\n");
+        temp_struct_course=malloc(sizeof(struct struct_course));
+        temp_struct_course=start_struct_course;
+        do
+        {
+            if (temp_struct_course->name_course[0]=='0')//file is NULL
+            {
+                printf("-----------------------------------\n");
+                printf("No result to show!\n");
+                printf("-----------------------------------\n");
+                break;
+            }
+            printf("Course's %d\n",i++);
+            printf("-----------------------------------\n");
+            strcpy(temp,"Name Course");
+            printf("%-20s%s\n",temp,temp_struct_course->name_course);
+            strcpy(temp,"Code fo Course");
+            printf("%-20s%s\n",temp,temp_struct_course->code_course);
+            strcpy(temp,"Type of Course");
+            switch (temp_struct_course->type_course)
+            {
+             case 1:
+                strcpy(type,"teori");
+                break;
+            case 2:
+                strcpy(type,"Amali");
+                break;
+            case 3:
+                strcpy(type,"Azmayeshgahi");
+                break;
+            case 4:
+                strcpy(type,"kargahi");
+                break;
+            default:
+                break;
+            }
+            printf("%-20s%s\n",temp,type);
+            strcpy(temp,"\"tedede vahed\"");
+            printf("%-20s%s\n",temp,temp_struct_course->vahed);
+            strcpy(temp,"Status Course");
+            if (temp_struct_course->status[0]=='E')
+                printf("%-20s%s\n",temp,"Enable");
+            else
+                printf("%-20s%s\n",temp,"Disable");
+            printf("-----------------------------------\n");
+            temp_struct_course=temp_struct_course->link;
+        }while(temp_struct_course!=NULL);
+
+    free_course();
+    printf("Press enter to back menu\n");
     do
     {
         temp[0]=getch();
@@ -3909,7 +3970,10 @@ int log_departemant()// --------------------------------------------------------
                     case 2:
                         list_student_print();
                         break;
-                    case 3
+                    case 3:
+                        list_course_print();
+                        break;
+                    case 4:
                         //def
                         break;
                     case 6:
@@ -4202,3 +4266,4 @@ void main()
 // dota nomre nabase   Done
 // dissbale able   Done
 // fix from date      1234/4/4 --> 1234/04/04
+// list kamele kholase che samiya baraye deoartemant log???
