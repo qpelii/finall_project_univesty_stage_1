@@ -3912,6 +3912,13 @@ void list_course_special_print(int status)// status1 := D and 0:= E
         // system("cls");;
         printf("list of Course\n_______________________________________\n\n");
         temp_struct_course=malloc(sizeof(struct struct_course));
+        if (temp_struct_course==NULL)
+        {
+            printf("memory not allow!!\n");
+            printf("Press Enter for continue\n");
+            press_enter_to_continue();
+            return ;
+        }
         temp_struct_course=start_struct_course;
         do
         {
@@ -4122,6 +4129,8 @@ void calcurat_avrage_score_student()
     if (temp_struct_student==NULL)
     {
         printf("memory not allow!!\n");
+        printf("Press Enter for continue\n");
+        press_enter_to_continue();
         return ;
     }
     temp_struct_student=start_struct_student;
@@ -4174,6 +4183,8 @@ float calcurat_avrage_score_course(char code_course[])
     if (temp_struct_course==NULL)
     {
         printf("memory not allow!!\n");
+        printf("Press Enter for continue\n");
+        press_enter_to_continue();
         return -1;
     }
         temp_struct_score=start_struct_score;
@@ -4232,6 +4243,8 @@ void sorte_student_bg_avg()
     if (temp_struct_student==NULL || temp2_struct_student==NULL)
     {
         printf("memory was't allowed!\n");
+        printf("Press Enter for continue\n");
+        press_enter_to_continue();
         return ;
     }
     // ------------------------------------------ bubelt sort part
@@ -4308,6 +4321,61 @@ void sorte_student_bg_avg_print()
         temp[0]=getch();
     } while (temp[0]!=13);
 }
+void student_passed_seach_by_code_cours_print()
+{
+    char code[11];
+    printf("if you can cancel prosses, just press Enter\n");
+    printf("enter Code Course: ");
+    do
+    {
+        gets(code);
+        if (strlen(code)==0)
+            return ;
+        if (check_str_was_int(code))
+            printf("Invalid input! Try again: ");
+        else if (search_course_code(code)==1)
+            printf("Cours with this code not found!! Try again: ");
+        else
+            break;
+    } while (1);
+    int counter=0;
+    char temp[20];
+    temp_struct_score=malloc(sizeof(struct struct_score));
+    if (temp_struct_score==NULL)
+    {
+        printf("Memory not Alow!\n");
+        printf("Press Enter for continue\n");
+        press_enter_to_continue();
+        return ;
+    }
+    temp_struct_score=start_struct_score;
+    char min_score[6]="10.00";
+    printf("   list of stuednt passed\n");
+    printf("__________________________________________\n");
+    do
+    {
+        if (strcmp(temp_struct_score->code_course,code)==0 && strlen(temp_struct_score->code_course)==strlen(code) && strcmp(temp_struct_score->score,min_score)==1)
+        {
+            counter++;
+            search_user_name_score(temp_struct_score->ID_uni);
+            strcpy(temp,"Name Student: ");
+            printf("%-2s%s %s\n",temp,temp_struct_score->name,temp_struct_score->family);
+            free_score();
+            strcpy(temp,"ID University: ");
+            printf("%-20s%s\n",temp,temp_struct_score->ID_uni);
+            strcpy(temp,"Score: ");
+            printf("%-20s%s\n",temp,temp_struct_score->score);
+            printf("__________________________________________\n");
+        }
+        temp_struct_score=temp_struct_score->link;
+    }while(temp_struct_score!=NULL);
+    free_score();
+    if (counter==0)
+        printf("     No Score are recorded for this Course\n");
+    printf("Press enter to back menu\n");
+    press_enter_to_continue();
+}
+
 void panle_log_print_page3()
 {
     char temp[60],line_char='|';
@@ -4562,7 +4630,10 @@ int log_departemant()// --------------------------------------------------------
                         set_student_as_link_list();
                         break;
                     case 2:
-                    
+                        student_passed_seach_by_code_cours_print();
+                        break;
+                    case 3:
+                        
                     case 6:
                         num_page=2;
                         break;
