@@ -3679,7 +3679,7 @@ void info_student_sync_with_id_print()
         printf("%-20s%s\n",temp,temp_struct_student->phone_num);
         strcpy(temp,"Email");
         printf("%-20s%s\n",temp,temp_struct_student->email);
-        printf("-----------------------------------\n");
+        printf("--------------------------------------\n");
      
     printf("Press Enter to back list\n");
     free_student();
@@ -3708,29 +3708,29 @@ void list_student_print()
             }
             printf("Student's %d\n",i++);
             printf("-----------------------------------\n");
-            strcpy(temp,"Name");
-            printf("%-20s%s\n",temp,temp_struct_student->name);
-            strcpy(temp,"Family name");
-            printf("%-20s%s\n",temp,temp_struct_student->family);
-            strcpy(temp,"ID Univesity");
-            printf("%-20s%s\n",temp,temp_struct_student->ID_uni);
-            strcpy(temp,"Date Birthday");
-            printf("%-20s%s\n",temp,temp_struct_student->date_birthday);
-            strcpy(temp,"Location born");
-            printf("%-20s%s\n",temp,temp_struct_student->location_born);
-            strcpy(temp,"ID code");// code meli
-            printf("%-20s%s\n",temp,temp_struct_student->ID_code);
-            strcpy(temp,"Phone number");
-            printf("%-20s%s\n",temp,temp_struct_student->phone_num);
-            strcpy(temp,"Email");
-            printf("%-20s%s\n",temp,temp_struct_student->email);
-            strcpy(temp,"Major");
-            printf("%-20s%s\n",temp,temp_struct_student->major);
-            printf("-----------------------------------\n");
+            strcpy(temp,"Name: ");
+            printf("%s%s |",temp,temp_struct_student->name);
+            strcpy(temp,"Family name: ");
+            printf("%s%s |",temp,temp_struct_student->family);
+            strcpy(temp,"ID Univesity: ");
+            printf("%s%s |",temp,temp_struct_student->ID_uni);
+            strcpy(temp,"Date Birthday: ");
+            printf("%s%s |",temp,temp_struct_student->date_birthday);
+            strcpy(temp,"Location born: ");
+            printf("%s%s |",temp,temp_struct_student->location_born);
+            strcpy(temp,"ID code: ");// code meli
+            printf("%s%s |",temp,temp_struct_student->ID_code);
+            strcpy(temp,"Phone number: ");
+            printf("%s%s |",temp,temp_struct_student->phone_num);
+            strcpy(temp,"Email: ");
+            printf("%s%s |",temp,temp_struct_student->email);
+            strcpy(temp,"Major: ");
+            printf("%s%s |",temp,temp_struct_student->major);
             temp_struct_student=temp_struct_student->link;
         }while(temp_struct_student!=NULL);
 
     free_student();
+    printf("\n-----------------------------------\n");
     printf("Press enter to back menu\n");
     do
     {
@@ -3748,7 +3748,7 @@ void list_course_print()
         temp_struct_course=start_struct_course;
         do
         {
-            if (temp_struct_course->name_course[0]=='0')//file is NULL
+            if (temp_struct_course->name_course[0]=='!')//file is NULL
             {
                 printf("-----------------------------------\n");
                 printf("No result to show!\n");
@@ -3758,11 +3758,11 @@ void list_course_print()
             printf("Course's %d\n",i++);
             printf("-----------------------------------\n");
             strcpy(temp,"Name Course");
-            printf("%-20s%s\n",temp,temp_struct_course->name_course);
+            printf("%s%s |",temp,temp_struct_course->name_course);
             strcpy(temp,"Code fo Course");
-            printf("%-20s%s\n",temp,temp_struct_course->code_course);
+            printf("%s%s |",temp,temp_struct_course->code_course);
             strcpy(temp,"Type of Course");
-            switch (temp_struct_course->type_course)
+            switch (atoi(temp_struct_course->type_course))
             {
              case 1:
                 strcpy(type,"teori");
@@ -3779,17 +3779,119 @@ void list_course_print()
             default:
                 break;
             }
-            printf("%-20s%s\n",temp,type);
+            printf("%s%s |",temp,type);
             strcpy(temp,"\"tedede vahed\"");
-            printf("%-20s%s\n",temp,temp_struct_course->vahed);
+            printf("%s%s |",temp,temp_struct_course->vahed);
             strcpy(temp,"Status Course");
             if (temp_struct_course->status[0]=='E')
-                printf("%-20s%s\n",temp,"Enable");
+                printf("%s%s |",temp,"Enable");
             else
-                printf("%-20s%s\n",temp,"Disable");
-            printf("-----------------------------------\n");
+                printf("%s%s |",temp,"Disable");
             temp_struct_course=temp_struct_course->link;
         }while(temp_struct_course!=NULL);
+
+    free_course();
+    printf("-----------------------------------\n");
+    printf("Press enter to back menu\n");
+    do
+    {
+        temp[0]=getch();
+    } while (temp[0]!=13);
+}
+void list_course_spetial_print(int status)// status1 := D and 0:= E
+{
+    char temp[25];
+    char type[20];
+    int i=1;
+        // system("cls");;
+        printf("list of Course\n_______________________________________\n\n");
+        temp_struct_course=malloc(sizeof(struct struct_course));
+        temp_struct_course=start_struct_course;
+        do
+        {
+            if (temp_struct_course->name_course[0]=='!')//file is NULL
+            {
+                printf("-----------------------------------\n");
+                printf("No result to show!\n");
+                printf("-----------------------------------\n");
+                break;
+            }
+            if (status==1 && temp_struct_course->status[0]=='D')
+            {
+                printf("Course's %d\n",i++);
+                printf("-----------------------------------\n");
+                strcpy(temp,"Name Course");
+                printf("%-20s%s\n",temp,temp_struct_course->name_course);
+                strcpy(temp,"Code fo Course");
+                printf("%-20s%s\n",temp,temp_struct_course->code_course);
+                strcpy(temp,"Type of Course");
+                switch (atoi(temp_struct_course->type_course))
+                {
+                case 1:
+                    strcpy(type,"teori");
+                    break;
+                case 2:
+                    strcpy(type,"Amali");
+                    break;
+                case 3:
+                    strcpy(type,"Azmayeshgahi");
+                    break;
+                case 4:
+                    strcpy(type,"kargahi");
+                    break;
+                default:
+                    break;
+                }
+                printf("%-20s%s\n",temp,type);
+                strcpy(temp,"\"tedede vahed\"");
+                printf("%-20s%s\n",temp,temp_struct_course->vahed);
+                strcpy(temp,"Status Course");
+                if (temp_struct_course->status[0]=='E')
+                    printf("%-20s%s\n",temp,"Enable");
+                else
+                    printf("%-20s%s\n",temp,"Disable");
+                printf("-----------------------------------\n");
+            }
+            else if (status==0 && temp_struct_course->status[0]=='D')
+            {
+                printf("Course's %d\n",i++);
+                printf("-----------------------------------\n");
+                strcpy(temp,"Name Course");
+                printf("%-20s%s\n",temp,temp_struct_course->name_course);
+                strcpy(temp,"Code fo Course");
+                printf("%-20s%s\n",temp,temp_struct_course->code_course);
+                strcpy(temp,"Type of Course");
+                switch (atoi(temp_struct_course->type_course))
+                {
+                case 1:
+                    strcpy(type,"teori");
+                    break;
+                case 2:
+                    strcpy(type,"Amali");
+                    break;
+                case 3:
+                    strcpy(type,"Azmayeshgahi");
+                    break;
+                case 4:
+                    strcpy(type,"kargahi");
+                    break;
+                default:
+                    break;
+                }
+                printf("%-20s%s\n",temp,type);
+                strcpy(temp,"\"tedede vahed\"");
+                printf("%-20s%s\n",temp,temp_struct_course->vahed);
+                strcpy(temp,"Status Course");
+                if (temp_struct_course->status[0]=='E')
+                    printf("%-20s%s\n",temp,"Enable");
+                else
+                    printf("%-20s%s\n",temp,"Disable");
+                printf("-----------------------------------\n");
+            }
+            temp_struct_course=temp_struct_course->link;
+        }while(temp_struct_course!=NULL);
+    if (i==1)
+        printf("Course with this status not found!\n");
 
     free_course();
     printf("Press enter to back menu\n");
@@ -3797,6 +3899,57 @@ void list_course_print()
     {
         temp[0]=getch();
     } while (temp[0]!=13);
+}
+void search_scores_of_student_by_ID()
+{
+    char ID[11];
+    printf("if you can cancel prosses, just press Enter\n");
+    printf("enter ID University: ");
+    do
+    {
+        gets(ID);
+        if (strlen(ID)==0)
+            return ;
+        if (strlen(ID)!=10 || check_str_was_int(ID))
+            printf("Invalid input! Try again: ");
+        else if (search_user_name_student(ID)==1)
+            printf("Student with this ID not found!! Try again: ");
+        else
+            break;
+    } while (1);
+    int counter=0;
+    char temp[20];
+    temp_struct_score=malloc(sizeof(struct struct_score));
+    if (temp_struct_score==NULL)
+    {
+        printf("Memory not Alow!");
+        return ;
+    }
+    temp_struct_score=start_struct_score;
+    printf("   Scores of Student with ID %s\n",temp_struct_score->ID_uni);
+    printf("__________________________________________\n");
+    do
+    {
+        if (strcmp(temp_struct_score->ID_uni,ID)==0 && strlen(temp_struct_score->ID_uni)==strlen(ID))
+        {
+            counter++;
+            search_course_code(temp_struct_score->code_course);
+            strcpy(temp,"Name course: ");
+            printf("%-2s%s\n",temp,temp_struct_course->name_course);
+            free_course();
+            strcpy(temp,"Code Course: ");
+            printf("%-20s%s\n",temp,temp_struct_score->code_course);
+            strcpy(temp,"Score: ");
+            printf("%-20s%s\n",temp,temp_struct_score->score);
+            printf("__________________________________________\n");
+        }
+        temp_struct_score=temp_struct_score->link;
+    }while(temp_struct_score!=NULL);
+    free_score();
+    if (counter==0)
+        printf("     No Score are recorded for this ID\n");
+    printf("Press enter to back menu\n");
+    press_enter_to_continue();
 }
 void panle_log_print_page3()
 {
@@ -3846,20 +3999,20 @@ void panle_log_print_page2()
 {
     char temp[60],line_char='|';
     printf("\t\t    Log page (Page 2/3)\n");
-    printf("------------------------------------------------------------\n");
+    printf("-------------------------------------------------------------\n");
     for(int i=0; i<8; i++)
     {
     printf("%c%-2d%c",line_char,i+1,line_char);
     switch (i)
     {
     case 0:
-        strcpy(temp,"Score student report whit ID Uuiversity");
+        strcpy(temp,"Scores student report whit ID Uuiversity");
         break;
     case 1:
-        strcpy(temp,"Score student report whit Code course");
+        strcpy(temp,"Scores student report whit Code course");
         break;
     case 2:
-        strcpy(temp,"Score student report whit ID Uuiversity(sorted by name)");
+        strcpy(temp,"Scores student report whit ID Uuiversity(sorted by name)");
         break;
     case 3:
         strcpy(temp,"Avrege score of Student");
@@ -3880,13 +4033,13 @@ void panle_log_print_page2()
         break;
     }
 
-    printf("%-55s%c\n",temp,line_char);
+    printf("%-56s%c\n",temp,line_char);
     if (i!=7)
-        printf("|--+-------------------------------------------------------|\n");
+        printf("|--+--------------------------------------------------------|\n");
 
 
     }
-    printf("------------------------------------------------------------\n\n");
+    printf("-------------------------------------------------------------\n\n");
     printf("select a option from menu: ");
 }
 void panle_log_print_page1()
@@ -3974,7 +4127,10 @@ int log_departemant()// --------------------------------------------------------
                         list_course_print();
                         break;
                     case 4:
-                        //def
+                        list_course_spetial_print(1);
+                        break;
+                    case 5:
+                        list_course_spetial_print(0);
                         break;
                     case 6:
                         num_page=2;
@@ -3986,9 +4142,10 @@ int log_departemant()// --------------------------------------------------------
                         break;
                 }
                 break;
-            if (num_menu==6)
-                break;
+                if (num_menu==6)
+                    break;
             }while(1);
+                break;
         // ----------------------------------------------------------------- page 2
         
         case 2:
@@ -3998,7 +4155,7 @@ int log_departemant()// --------------------------------------------------------
                 switch (num_menu)
                 {
                     case 1:
-                        //def
+                        search_scores_of_student_by_ID();
                         break;
                     case 6:
                         num_page=3;
@@ -4016,6 +4173,7 @@ int log_departemant()// --------------------------------------------------------
             if (num_menu==6 || num_menu==7 || num_menu==8)
                 break;
             }while(1);
+                break;
         // ------------------------------------------------------------------ page 3
         
         case 3:
@@ -4040,6 +4198,9 @@ int log_departemant()// --------------------------------------------------------
             if (num_menu==6)
                 break;
             }while(1);
+                break;
+        default:
+            break;
         }
         
     
