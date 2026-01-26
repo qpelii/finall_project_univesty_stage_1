@@ -4290,6 +4290,13 @@ void sorte_student_bg_avg_print()
         // system("cls");;
         printf("list of Student\n_______________________________________\n\n");
         temp_struct_student=malloc(sizeof(struct struct_student));
+        if (temp_struct_student==NULL)
+        {
+            printf("memory not allow!!\n");
+            printf("Press Enter for continue\n");
+            press_enter_to_continue();
+            return ;
+        }
         temp_struct_student=start_struct_student;
         do
         {
@@ -4428,6 +4435,57 @@ void student_dont_passed_seach_by_code_cours_print()
         printf("     No Score are recorded for this Course\n");
     printf("Press enter to back menu\n");
     press_enter_to_continue();
+}
+void show_list_student_mashroot()
+{
+    char temp[25];
+    int i=1;
+        // system("cls");;
+        printf("list of Student\n_______________________________________\n\n");
+        temp_struct_student=malloc(sizeof(struct struct_student));
+        if (temp_struct_student==NULL)
+            {
+                printf("memory not allow!!\n");
+                printf("Press Enter for continue\n");
+                press_enter_to_continue();
+                return ;
+            }
+        char min_score[7]="12.000";
+        temp_struct_student=start_struct_student;
+        do
+        {
+            if (temp_struct_student->name[0]=='0')//file is NULL
+            {
+                printf("-----------------------------------\n");
+                printf("No result to show!\n");
+                printf("-----------------------------------\n");
+                break;
+            }
+            if (strcmp(temp_struct_student->avg_score,min_score)==1)
+            {
+                printf("Student's %d\n",i++);
+                printf("-----------------------------------\n");
+                strcpy(temp,"Name: ");
+                printf("%-20s%s\n",temp,temp_struct_student->name);
+                strcpy(temp,"Family name: ");
+                printf("%-20s%s\n",temp,temp_struct_student->family);
+                strcpy(temp,"ID Univesity: ");
+                printf("%-20s%s\n",temp,temp_struct_student->ID_uni);
+                strcpy(temp,"Avrage Score: ");
+                printf("%-20s%s\n",temp,temp_struct_student->avg_score);
+            }
+            temp_struct_student=temp_struct_student->link;
+        }while(temp_struct_student!=NULL);
+
+    free_student();
+    if (i==1)
+        printf("not was Student \"mashrooti\"!\n")
+    printf("\n-----------------------------------\n");
+    printf("Press enter to back menu\n");
+    do
+    {
+        temp[0]=getch();
+    } while (temp[0]!=13);
 }
 void panle_log_print_page3()
 {
@@ -4688,6 +4746,8 @@ int log_departemant()// --------------------------------------------------------
                     case 3:
                         student_dont_passed_seach_by_code_cours_print();
                         break;
+                    case 4:
+
                     case 6:
                         num_page=2;
                         break;
