@@ -4873,6 +4873,70 @@ int log_departemant()
 //                                                           end repurt departemant
 
 //                                                           Academic Log
+void list_student_born_from_date_to_date()
+{
+
+}
+void list_student_seach_major_print()
+{
+    {
+    char major[20];
+    printf("if you want cancel proses just press Enter\n");
+    printf("Enter Major of Students you want search: ");
+    do
+    {
+        gets(major);
+        if (strlen(major)==0)
+            return ;
+        else if (check_str_full_alpha_whit_space(major))
+            printf("Invalid from input!! try again: ");
+        else
+            break;
+    } while (1);
+    str_to_lower(major);
+
+    printf("Information about Student (Major: %s)\n________________________________________\n\n",temp_struct_student->major);
+    int i=1;
+    char temp[25];
+    do{
+        if (strcmp(major,temp_struct_student->majorjor)==0 && strlen(major)==strlen(temp_struct_student->major))
+        {
+            printf("Student's %d",i++);
+            printf("\n-----------------------------------\n");
+            strcpy(temp,"Name");
+            printf("%-20s%s\n",temp,temp_struct_student->name);
+            strcpy(temp,"Family name");
+            printf("%-20s%s\n",temp,temp_struct_student->family);
+            strcpy(temp,"ID University");
+            printf("%-20s%s\n",temp,temp_struct_student->ID_uni);
+            strcpy(temp,"Date Birthday");
+            printf("%-20s%s\n",temp,temp_struct_student->date_birthday);
+            strcpy(temp,"Location born");
+            printf("%-20s%s\n",temp,temp_struct_student->location_born);
+            strcpy(temp,"ID code");// code meli
+            printf("%-20s%s\n",temp,temp_struct_student->ID_code);
+            strcpy(temp,"Phone number");
+            printf("%-20s%s\n",temp,temp_struct_student->phone_num);
+            strcpy(temp,"Email");
+            printf("%-20s%s\n",temp,temp_struct_student->email);
+            printf("--------------------------------------\n");
+        }
+        temp_struct_student=temp_struct_student->link;
+    }while(temp_struct_student!=NULL);
+    if (i==1)
+    {
+        printf("Major None of student is %s!\n",major);
+        printf("--------------------------------------\n");
+    }
+    printf("Press Enter to back list\n");
+    free_student();
+    do
+    {
+        temp[0]=getch();
+    } while (temp[0]!=13);
+    
+}
+}
 
 void main()
 {
