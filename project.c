@@ -1880,6 +1880,9 @@ int set_student_as_link_list()
             case 9:
                 strcpy(start_struct_student->email,info);
                 break;
+            case 10:
+                strcpy(start_struct_student->avg_score,info);
+                break;
             default:
                 break;
             }
@@ -1903,7 +1906,7 @@ int set_student_as_link_list()
         if (strlen(temp)==0)
             break;
         flag_info=1,i=0,j=0;
-        while(flag_info!=11)
+        while(flag_info!=12)
         {
             if ((temp[i]==',' && temp[i+1]==' ') || temp[i]=='\n')
             {
@@ -1936,6 +1939,9 @@ int set_student_as_link_list()
                     break;
                 case 9:
                     strcpy(temp_struct_student->email,info);
+                    break;
+                case 10:
+                    strcpy(temp_struct_student->avg_score,info);
                     break;
                 default:
                     break;
@@ -3750,7 +3756,7 @@ void settings_academic()
         } while (str_temp[0]!=13);
             // system("cls");
 }
-//reports departemant
+//                                                              reports departemant
 void info_student_sync_with_id_print()
 {
     char num[20];
@@ -3812,8 +3818,9 @@ void list_student_print()
                 printf("-----------------------------------\n");
                 break;
             }
-            printf("Student's %d\n",i++);
-            printf("-----------------------------------\n");
+            printf("\n-----------------------------------\n");
+            printf("Student's %d",i++);
+            printf("\n-----------------------------------\n");
             strcpy(temp,"Name: ");
             printf("%s%s |",temp,temp_struct_student->name);
             strcpy(temp,"Family name: ");
@@ -3831,7 +3838,7 @@ void list_student_print()
             strcpy(temp,"Email: ");
             printf("%s%s |",temp,temp_struct_student->email);
             strcpy(temp,"Major: ");
-            printf("%s%s |",temp,temp_struct_student->major);
+            printf("%s%s",temp,temp_struct_student->major);
             temp_struct_student=temp_struct_student->link;
         }while(temp_struct_student!=NULL);
 
@@ -3861,13 +3868,14 @@ void list_course_print()
                 printf("-----------------------------------\n");
                 break;
             }
-            printf("Course's %d\n",i++);
-            printf("-----------------------------------\n");
-            strcpy(temp,"Name Course");
+            printf("\n-----------------------------------\n");
+            printf("Course's %d",i++);
+            printf("\n-----------------------------------\n");
+            strcpy(temp,"Name Course: ");
             printf("%s%s |",temp,temp_struct_course->name_course);
-            strcpy(temp,"Code fo Course");
+            strcpy(temp,"Code fo Course: ");
             printf("%s%s |",temp,temp_struct_course->code_course);
-            strcpy(temp,"Type of Course");
+            strcpy(temp,"Type of Course: ");
             switch (atoi(temp_struct_course->type_course))
             {
              case 1:
@@ -3886,18 +3894,18 @@ void list_course_print()
                 break;
             }
             printf("%s%s |",temp,type);
-            strcpy(temp,"\"tedede vahed\"");
+            strcpy(temp,"\"tedede vahed\": ");
             printf("%s%s |",temp,temp_struct_course->vahed);
-            strcpy(temp,"Status Course");
+            strcpy(temp,"Status Course: ");
             if (temp_struct_course->status[0]=='E')
-                printf("%s%s |",temp,"Enable");
+                printf("%s%s",temp,"Enable");
             else
-                printf("%s%s |",temp,"Disable");
+                printf("%s%s",temp,"Disable");
             temp_struct_course=temp_struct_course->link;
         }while(temp_struct_course!=NULL);
 
     free_course();
-    printf("-----------------------------------\n");
+    printf("\n-----------------------------------\n");
     printf("Press enter to back menu\n");
     do
     {
@@ -3965,7 +3973,7 @@ void list_course_special_print(int status)// status1 := D and 0:= E
                     printf("%-20s%s\n",temp,"Disable");
                 printf("-----------------------------------\n");
             }
-            else if (status==0 && temp_struct_course->status[0]=='D')
+            else if (status==0 && temp_struct_course->status[0]=='E')
             {
                 printf("Course's %d\n",i++);
                 printf("-----------------------------------\n");
@@ -4051,7 +4059,7 @@ void search_scores_of_student_by_ID()
             counter++;
             search_course_code(temp_struct_score->code_course);
             strcpy(temp,"Name course: ");
-            printf("%-2s%s\n",temp,temp_struct_course->name_course);
+            printf("%-20s%s\n",temp,temp_struct_course->name_course);
             free_course();
             strcpy(temp,"Code Course: ");
             printf("%-20s%s\n",temp,temp_struct_score->code_course);
@@ -4063,7 +4071,10 @@ void search_scores_of_student_by_ID()
     }while(temp_struct_score!=NULL);
     free_score();
     if (counter==0)
-        printf("     No Score are recorded for this ID\n");
+    {
+        printf("No Score are recorded for this ID\n");
+        printf("------------------------------------------\n");
+    }
     printf("Press enter to back menu\n");
     press_enter_to_continue();
 }
@@ -4105,7 +4116,7 @@ void search_scores_of_student_by_code_course()
             counter++;
             search_user_name_student(temp_struct_score->ID_uni);
             strcpy(temp,"Name Student: ");
-            printf("%-2s%s %s\n",temp,temp_struct_student->name,temp_struct_student->family);
+            printf("%-20s%s %s\n",temp,temp_struct_student->name,temp_struct_student->family);
             free_student();
             strcpy(temp,"ID University: ");
             printf("%-20s%s\n",temp,temp_struct_score->ID_uni);
@@ -4117,7 +4128,10 @@ void search_scores_of_student_by_code_course()
     }while(temp_struct_score!=NULL);
     free_score();
     if (counter==0)
-        printf("     No Score are recorded for this Course\n");
+    {
+        printf("No Score are recorded for this Course\n");
+        printf("------------------------------------------\n");
+    }
     printf("Press enter to back menu\n");
     press_enter_to_continue();
 }
@@ -4136,6 +4150,7 @@ void calcurat_avrage_score_student()
     temp_struct_student=start_struct_student;
     do{
         counter=0;
+        sum=0;
         temp_struct_score=malloc(sizeof(struct struct_score));
         temp_struct_score=start_struct_score;
         do
@@ -4147,7 +4162,11 @@ void calcurat_avrage_score_student()
                 }
             temp_struct_score=temp_struct_score->link;
         }while(temp_struct_score!=NULL);
-        snprintf(temp_struct_student->avg_score,sizeof(temp_struct_student->avg_score),"%.2f",sum/(float)counter);
+        if (counter!=0)
+            snprintf(temp_struct_student->avg_score,sizeof(temp_struct_student->avg_score),"%.2f",sum/(float)counter);
+        else
+            strcpy(temp_struct_student->avg_score,"0");
+
         free(temp_struct_score);
         temp_struct_student=temp_struct_student->link;
     }while(temp_struct_student!=NULL);
@@ -4169,8 +4188,12 @@ void show_avg_score_with_student_id()
     } while (1);
     if (temp_struct_student->avg_score[0]=='N')
         printf("not any score set for this Student\n");
-    else 
-        printf("Avrege Score of Student : %s\n\n",temp_struct_student->avg_score);
+    else
+    {
+        printf("-----------------------------------\n");
+        printf("Avrege Score of Student : %s\n",temp_struct_student->avg_score);
+        printf("-----------------------------------\n");
+    }
     printf("Press Enter for back to menu\n");
     free_student();
     press_enter_to_continue();
@@ -4228,7 +4251,9 @@ void show_avg_score_with_code_course()
     if (flag==-1)
         return ;
     
-    printf("Avrege Score of %s Course's : %.3f\n\n",temp_struct_course->name_course,flag);
+    printf("-----------------------------------\n");
+    printf("Avrege Score of %s Course's : %.3f\n",temp_struct_course->name_course,flag);
+    printf("-----------------------------------\n");
     printf("Press Enter for back to menu\n");
     free_course();
     press_enter_to_continue();
@@ -4250,7 +4275,7 @@ void sorte_student_bg_avg()
     // ------------------------------------------ bubelt sort part
     int i,j,len=get_len_stuct_student();
     if (len==-1 || len==0)
-        return 1;
+        return ;
     for (i=0;i<len-1;i++)
     {
         temp_struct_student=start_struct_student;
@@ -4356,18 +4381,18 @@ void student_passed_seach_by_code_cours_print()
         return ;
     }
     temp_struct_score=start_struct_score;
-    char min_score[6]="10.00";
+    float min_score=10.00;
     printf("   list of stuednt passed\n");
     printf("__________________________________________\n");
     do
     {
-        if (strcmp(temp_struct_score->code_course,code)==0 && strlen(temp_struct_score->code_course)==strlen(code) && strcmp(temp_struct_score->score,min_score)==1)
+        if (strcmp(temp_struct_score->code_course,code)==0 && strlen(temp_struct_score->code_course)==strlen(code) && atof(temp_struct_score->score)>=min_score)
         {
             counter++;
-            search_user_name_score(temp_struct_score->ID_uni);
+            search_user_name_student(temp_struct_score->ID_uni);
             strcpy(temp,"Name Student: ");
-            printf("%-2s%s %s\n",temp,temp_struct_score->name,temp_struct_score->family);
-            free_score();
+            printf("%-20s%s %s\n",temp,temp_struct_student->name,temp_struct_student->family);
+            free_student();
             strcpy(temp,"ID University: ");
             printf("%-20s%s\n",temp,temp_struct_score->ID_uni);
             strcpy(temp,"Score: ");
@@ -4378,7 +4403,10 @@ void student_passed_seach_by_code_cours_print()
     }while(temp_struct_score!=NULL);
     free_score();
     if (counter==0)
-        printf("     No Score are recorded for this Course\n");
+    {
+        printf("No Score are recorded for this Course\n");
+        printf("------------------------------------------\n");
+    }
     printf("Press enter to back menu\n");
     press_enter_to_continue();
 }
@@ -4410,18 +4438,18 @@ void student_dont_passed_seach_by_code_cours_print()
         return ;
     }
     temp_struct_score=start_struct_score;
-    char min_score[6]="10.00";
+    float min_score=10.00;
     printf("   list of stuednt passed\n");
     printf("__________________________________________\n");
     do
     {
-        if (strcmp(temp_struct_score->code_course,code)==0 && strlen(temp_struct_score->code_course)==strlen(code) && strcmp(temp_struct_score->score,min_score)==-1)
+        if (strcmp(temp_struct_score->code_course,code)==0 && strlen(temp_struct_score->code_course)==strlen(code) && atof(temp_struct_score->score)<min_score)
         {
             counter++;
-            search_user_name_score(temp_struct_score->ID_uni);
+            search_user_name_student(temp_struct_score->ID_uni);
             strcpy(temp,"Name Student: ");
-            printf("%-2s%s %s\n",temp,temp_struct_score->name,temp_struct_score->family);
-            free_score();
+            printf("%-20s%s %s\n",temp,temp_struct_student->name,temp_struct_student->family);
+            free_student();
             strcpy(temp,"ID University: ");
             printf("%-20s%s\n",temp,temp_struct_score->ID_uni);
             strcpy(temp,"Score: ");
@@ -4432,7 +4460,10 @@ void student_dont_passed_seach_by_code_cours_print()
     }while(temp_struct_score!=NULL);
     free_score();
     if (counter==0)
-        printf("     No Score are recorded for this Course\n");
+    {
+        printf("No Score are recorded for this Course\n");
+        printf("------------------------------------------\n");
+    }
     printf("Press enter to back menu\n");
     press_enter_to_continue();
 }
@@ -4450,7 +4481,7 @@ void show_list_student_mashroot()
                 press_enter_to_continue();
                 return ;
             }
-        char min_score[7]="12.000";
+        float min_score=12.00;
         temp_struct_student=start_struct_student;
         do
         {
@@ -4461,7 +4492,7 @@ void show_list_student_mashroot()
                 printf("-----------------------------------\n");
                 break;
             }
-            if (strcmp(temp_struct_student->avg_score,min_score)==1)
+            if (atof(temp_struct_student->avg_score)<min_score)
             {
                 printf("Student's %d\n",i++);
                 printf("-----------------------------------\n");
@@ -4479,7 +4510,75 @@ void show_list_student_mashroot()
 
     free_student();
     if (i==1)
-        printf("not was Student \"mashrooti\"!\n")
+        printf("not was Student \"mashrooti\"!\n");
+    printf("\n-----------------------------------\n");
+    printf("Press enter to back menu\n");
+    do
+    {
+        temp[0]=getch();
+    } while (temp[0]!=13);
+}
+void show_list_student_mashroot_and_get_score_in_one_cours()
+{
+    char code[11];
+    printf("if you can cancel prosses, just press Enter\n");
+    printf("enter Code Course: ");
+    do
+    {
+        gets(code);
+        if (strlen(code)==0)
+            return ;
+        if (check_str_was_int(code))
+            printf("Invalid input! Try again: ");
+        else if (search_course_code(code)==1)
+            printf("Cours with this code not found!! Try again: ");
+        else
+            break;
+    } while (1);
+
+    char temp[25];
+    int i=1;
+        // system("cls");;
+        printf("list of Student\n_______________________________________\n\n");
+        temp_struct_student=malloc(sizeof(struct struct_student));
+        if (temp_struct_student==NULL)
+            {
+                printf("memory not allow!!\n");
+                printf("Press Enter for continue\n");
+                press_enter_to_continue();
+                return ;
+            }
+        float min_score=12.000;
+        temp_struct_student=start_struct_student;
+        do
+        {
+            if (temp_struct_student->name[0]=='0')//file is NULL
+            {
+                printf("-----------------------------------\n");
+                printf("No result to show!\n");
+                printf("-----------------------------------\n");
+                break;
+            }
+            if (atof(temp_struct_student->avg_score)<min_score && search_user_name_student_sync_with_code_sourse(temp_struct_student->ID_code,code)==0)
+            {
+                printf("Student's %d\n",i++);
+                printf("-----------------------------------\n");
+                strcpy(temp,"Name: ");
+                printf("%-20s%s\n",temp,temp_struct_student->name);
+                strcpy(temp,"Family name: ");
+                printf("%-20s%s\n",temp,temp_struct_student->family);
+                strcpy(temp,"ID Univesity: ");
+                printf("%-20s%s\n",temp,temp_struct_student->ID_uni);
+                strcpy(temp,"Avrage Score: ");
+                printf("%-20s%s\n",temp,temp_struct_student->avg_score);
+                free_score();
+            }
+            temp_struct_student=temp_struct_student->link;
+        }while(temp_struct_student!=NULL);
+
+    free_student();
+    if (i==1)
+        printf("not was Student \"mashrooti\"!\n");
     printf("\n-----------------------------------\n");
     printf("Press enter to back menu\n");
     do
@@ -4507,10 +4606,10 @@ void panle_log_print_page3()
         strcpy(temp,"Show list of Sudent that not pass in Specail Course");
         break;
     case 3:
-        strcpy(temp,"Show list of All Sudent submited");
+        strcpy(temp,"Show \"mashroot\" Student");
         break;
     case 4:
-        strcpy(temp,"Show list of All Sudent submited");
+        strcpy(temp,"Show \"mashroot\" Student and pass one Specil course");
         break;
     case 5:
         strcpy(temp,"Previous Page");
@@ -4639,7 +4738,7 @@ void contorol_panle_print_log_departemant_panel(int num_page)
         break;
     }
 }
-int log_departemant()// -----------------------------------------------------------------------------p23193asdi1[2pio3p[oiasd]]
+int log_departemant()
 {
     int num_menu;
     int temp_flag=0;
@@ -4739,6 +4838,7 @@ int log_departemant()// --------------------------------------------------------
                         sorte_student_bg_avg();
                         sorte_student_bg_avg_print();
                         set_student_as_link_list();
+                        calcurat_avrage_score_student();
                         break;
                     case 2:
                         student_passed_seach_by_code_cours_print();
@@ -4747,7 +4847,11 @@ int log_departemant()// --------------------------------------------------------
                         student_dont_passed_seach_by_code_cours_print();
                         break;
                     case 4:
-
+                        show_list_student_mashroot();
+                        break;
+                    case 5:
+                        show_list_student_mashroot_and_get_score_in_one_cours();
+                        break;
                     case 6:
                         num_page=2;
                         break;
@@ -4766,7 +4870,7 @@ int log_departemant()// --------------------------------------------------------
             break;
         }    
 }
-
+//                                                           end repurt departemant
 
 void main()
 {
