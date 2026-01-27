@@ -4872,6 +4872,8 @@ int log_departemant()
 }
 //                                                           end repurt departemant
 
+//                                                           Academic Log
+
 void main()
 {
     char *pointer_Uadmin;
