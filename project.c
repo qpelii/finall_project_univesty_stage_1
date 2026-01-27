@@ -522,6 +522,36 @@ void menu_admin_page_print()
     printf("------------------------------\n\n");
     printf("select a option from menu: ");
 }
+int menu_selection_1_5()
+{
+    char number[3];
+    int num,flag;
+    do
+    {
+        flag=num=0;
+        gets(number);
+        flag=check_str_was_int(number);
+        if (flag)
+        {
+            printf("Invalid input Try agian: ");
+            continue;
+        }
+        else
+        {
+            num=atoi(number) ;
+            if (num>5 || num<1)
+            {
+                printf("Your input is out of range! Try agian: ");
+                flag++;
+                continue;
+            }
+
+            // // system("cls");;
+            return num;
+        }
+    } while (flag);
+
+}
 int menu_selection_1_6()
 {
     char number[3];
@@ -3772,8 +3802,7 @@ void info_student_sync_with_id_print()
             break;
     } while (1);
 
-     printf("Information about Student (ID: %s)\n________________________________________\n\n",temp_struct_student->ID_uni);
-    int i=1;
+    printf("Information about Student (ID: %s)\n________________________________________\n\n",temp_struct_student->ID_uni);
     char temp[25];
         strcpy(temp,"Name");
         printf("%-20s%s\n",temp,temp_struct_student->name);
@@ -4873,9 +4902,156 @@ int log_departemant()
 //                                                           end repurt departemant
 
 //                                                           Academic Log
-void list_student_born_from_date_to_date()
+void list_student_born_since_date_to_date()
 {
-
+    char first_date[15];
+    printf("if you want cancel proses just press Enter\n");
+    printf("Enter first Date \n(hint:enter whith this form YYYY/MM/DD): ");
+    do{
+        gets(first_date);
+        if (strlen(first_date)==0)
+            return ;
+        else if (check_str_date(first_date))
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+    char secend_date[15];
+    printf("Enter secend Date: ");
+    do{
+        gets(secend_date);
+        if (strlen(secend_date)==0)
+            return ;
+        else if (check_str_date(secend_date))
+            printf("Invalid input! Try again: ");
+        else
+            break;
+    }while(1);
+    int year1,year2,mounth1,mounth2,day1,day2;
+    sscanf(first_date,"%d/%d/%d",&year1,&mounth1,&day1);
+    sscanf(secend_date,"%d/%d/%d",&year2,&mounth2,&day2);
+    // ------------ if secend date <first date
+    int flag_return=0;
+    if (year1>year2)
+        flag_return++;
+    else if (mounth1>mounth2)
+        flag_return++;
+    else if (day1>day2)
+        flag_return++;
+    if (flag_return==1)
+    {
+        printf("this input of date is wrong! maybe need swap this date and Try again!\n");
+        printf("Press enter for continue\n");
+        press_enter_to_continue();
+        return ;
+    }
+    int year,mounth,day;
+    char temp[25];
+    temp_struct_student=malloc(sizeof(struct struct_student));
+    if (temp_struct_student==NULL)
+    {
+        printf("memory not allow!\n");
+        return ;
+    }
+    int counter=0;
+    temp_struct_student=start_struct_student;
+    printf("List of Student since %s Until %s\n",first_date,secend_date);
+    printf("______________________________________\n");
+    if (year1!=year2)
+    {
+        do{
+            sscanf(temp_struct_student->date_birthday,"%d/%d/%d",&year,&mounth,&day);
+            if (year1<year && year<year2)
+            {
+                counter++;
+                strcpy(temp,"Name");
+                printf("%-20s%s\n",temp,temp_struct_student->name);
+                strcpy(temp,"Family name");
+                printf("%-20s%s\n",temp,temp_struct_student->family);
+                strcpy(temp,"ID University");
+                printf("%-20s%s\n",temp,temp_struct_student->ID_uni);
+                strcpy(temp,"Major");
+                printf("%-20s%s\n",temp,temp_struct_student->major);
+                strcpy(temp,"Date Birthday");
+                printf("%-20s%s\n",temp,temp_struct_student->date_birthday);
+                strcpy(temp,"Location born");
+                printf("%-20s%s\n",temp,temp_struct_student->location_born);
+                strcpy(temp,"ID code");// code meli
+                printf("%-20s%s\n",temp,temp_struct_student->ID_code);
+                strcpy(temp,"Phone number");
+                printf("%-20s%s\n",temp,temp_struct_student->phone_num);
+                strcpy(temp,"Email");
+                printf("%-20s%s\n",temp,temp_struct_student->email);
+                printf("--------------------------------------\n");
+            }
+            temp_struct_student=temp_struct_student->link;
+        }while(temp_struct_student!=NULL);
+    }
+    else if (mounth1!=mounth2)
+    {
+        do{
+            sscanf(temp_struct_student->date_birthday,"%d/%d/%d",&year,&mounth,&day);
+            if (mounth1<mounth && mounth<mounth2)
+            {
+                counter++;
+                strcpy(temp,"Name");
+                printf("%-20s%s\n",temp,temp_struct_student->name);
+                strcpy(temp,"Family name");
+                printf("%-20s%s\n",temp,temp_struct_student->family);
+                strcpy(temp,"ID University");
+                printf("%-20s%s\n",temp,temp_struct_student->ID_uni);
+                strcpy(temp,"Major");
+                printf("%-20s%s\n",temp,temp_struct_student->major);
+                strcpy(temp,"Date Birthday");
+                printf("%-20s%s\n",temp,temp_struct_student->date_birthday);
+                strcpy(temp,"Location born");
+                printf("%-20s%s\n",temp,temp_struct_student->location_born);
+                strcpy(temp,"ID code");// code meli
+                printf("%-20s%s\n",temp,temp_struct_student->ID_code);
+                strcpy(temp,"Phone number");
+                printf("%-20s%s\n",temp,temp_struct_student->phone_num);
+                strcpy(temp,"Email");
+                printf("%-20s%s\n",temp,temp_struct_student->email);
+                printf("--------------------------------------\n");
+            }
+            temp_struct_student=temp_struct_student->link;
+        }while(temp_struct_student!=NULL);
+    }
+    else if (day1!=day2)
+    {
+        do{
+            sscanf(temp_struct_student->date_birthday,"%d/%d/%d",&year,&mounth,&day);
+            if (day1<day && day<day2)
+            {
+                counter++;
+                strcpy(temp,"Name");
+                printf("%-20s%s\n",temp,temp_struct_student->name);
+                strcpy(temp,"Family name");
+                printf("%-20s%s\n",temp,temp_struct_student->family);
+                strcpy(temp,"ID University");
+                printf("%-20s%s\n",temp,temp_struct_student->ID_uni);
+                strcpy(temp,"Major");
+                printf("%-20s%s\n",temp,temp_struct_student->major);
+                strcpy(temp,"Date Birthday");
+                printf("%-20s%s\n",temp,temp_struct_student->date_birthday);
+                strcpy(temp,"Location born");
+                printf("%-20s%s\n",temp,temp_struct_student->location_born);
+                strcpy(temp,"ID code");// code meli
+                printf("%-20s%s\n",temp,temp_struct_student->ID_code);
+                strcpy(temp,"Phone number");
+                printf("%-20s%s\n",temp,temp_struct_student->phone_num);
+                strcpy(temp,"Email");
+                printf("%-20s%s\n",temp,temp_struct_student->email);
+                printf("--------------------------------------\n");
+            }
+            temp_struct_student=temp_struct_student->link;
+        }while(temp_struct_student!=NULL);
+    }
+    if (counter==0)
+        printf("no result for show!!\n");
+    free(temp_struct_student);
+    printf("Press enter to back menu\n");
+    press_enter_to_continue();
 }
 void list_student_seach_major_print()
 {
@@ -4894,8 +5070,16 @@ void list_student_seach_major_print()
             break;
     } while (1);
     str_to_lower(major);
-
-    printf("Information about Students (Major: %s)\n________________________________________\n\n",temp_struct_student->major);
+    temp_struct_student=malloc(sizeof(struct struct_student));
+    if (temp_struct_student==NULL)
+    {
+        printf("Memory was't allow!\n");
+        printf("Press Enter to Back Menu\n");
+        press_enter_to_continue();
+        return ;
+    }
+    temp_struct_student=start_struct_student;
+    printf("Information about Students (Major: %s)\n________________________________________\n\n",major);
     int i=1;
     char temp[25];
     do{
@@ -4954,8 +5138,16 @@ void list_student_seach_city_print()
             break;
     } while (1);
     str_to_lower(city);
-
-    printf("Information about Students (Born location: %s)\n________________________________________\n\n",temp_struct_student->location_born);
+    temp_struct_student=malloc(sizeof(struct struct_student));
+    if (temp_struct_student==NULL)
+    {
+        printf("Memory was't allow!\n");
+        printf("Press Enter to Back Menu\n");
+        press_enter_to_continue();
+        return ;
+    }
+    temp_struct_student=start_struct_student;
+    printf("Information about Students (Born location: %s)\n________________________________________\n\n",city);
     int i=1;
     char temp[25];
     do{
@@ -4994,6 +5186,71 @@ void list_student_seach_city_print()
     {
         temp[0]=getch();
     } while (temp[0]!=13);
+    
+}
+void log_academic_panel_print()
+{
+    char temp[40],line_char='|';
+    printf("\t      Log Academic Page\n");
+    printf("---------------------------------------------\n");
+    for(int i=0; i<5; i++)
+    {
+    printf("%c%-2d%c",line_char,i+1,line_char);
+    switch (i)
+    {
+    case 0:
+        strcpy(temp,"Search info student by ID university");
+        break;
+    case 1:
+        strcpy(temp,"Search info student since date to date");
+        break;
+    case 2:
+        strcpy(temp,"Search info student by Major");
+        break;
+    case 3:
+        strcpy(temp,"Search info student by location Born");
+        break;
+    case 4:
+        strcpy(temp,"Back to Academic Panel");
+        break;
+    default:
+        break;
+    }
+
+    printf("%-40s%c\n",temp,line_char);
+    if (i!=4)
+        printf("|--+----------------------------------------|\n");
+
+
+    }
+    printf("---------------------------------------------\n\n");
+    printf("select a option from menu: ");
+}
+void log_academic()
+{
+    int num_menu;
+    do
+    {
+        log_academic_panel_print();
+        num_menu=menu_selection_1_5();
+        switch (num_menu)
+        {
+        case 1:
+            info_student_sync_with_id_print();
+            break;
+        case 2:
+            list_student_born_since_date_to_date();
+            break;
+        case 3:
+            list_student_seach_major_print();
+            break;
+        case 4:
+            list_student_seach_city_print();
+            break;
+        default:
+            break;
+        }
+    } while (num_menu!=5);
     
 }
 
@@ -5184,7 +5441,7 @@ void main()
                             set_new_score();
                             set_score_student_as_link_list();
                         case 4:
-                            //log def 
+                            log_academic(); 
                             break;
                         case 5:
                             settings_academic();
