@@ -135,7 +135,7 @@ int check_str_was_flaot(char num[])
             }
             else
                return 1;
-       
+
 
     return 0;
 }
@@ -156,7 +156,7 @@ void password_to_star(char pass_pointer[])
         case 8:
             if (i==0)
                 continue;
-            
+
             printf("\b \b");
             pass[i-1]='\0';
             pass[i]='\0';
@@ -219,18 +219,57 @@ int check_str_whitout_punct(char string[])
     for (i=0;i<len;i++)
         if (ispunct(string[i]))
             return 1;
+    // -------------------- remove whit space
+    do
+    {
+        len=strlen(string);
+        if (string[0]==' ')
+            for (i=0;i<len;i++)
+                string[i]=string[i+1];
+        else
+            break;
+    } while (1);
+    do
+    {
+        len=strlen(string);
+        if (string[len-1]==' ')
+            string[len-1]='\0';
+        else 
+            break;
+    } while (1);
+    
 
     return 0;
 }
 int check_str_full_alpha_whit_space(char string[])
 {
-    int len=strlen(string),i;
+     int len=strlen(string),i;
     for (i=0;i<len;i++)
         if (!isalpha(string[i]))
             if (isspace(string[i]))
                 continue;
             else
                 return 1;
+    // -------------------- remove white space
+    do
+    {
+        len=strlen(string);
+        if (string[0]==' ')
+            for (i=0;i<len;i++)
+                string[i]=string[i+1];
+        else
+            break;
+    } while (1);
+    do
+    {
+        len=strlen(string);
+        if (string[len-1]==' ')
+            string[len-1]='\0';
+        else 
+            break;
+    } while (1);
+    
+    
 
     return 0;
 }
@@ -251,7 +290,7 @@ void im_not_robot(char ImNotRObot[7])
     for (i=0;i<6;i++)
         ImNotRObot[i]=charater[rand()%32];
     ImNotRObot[6]='\0';
-    
+
 }
 void desplay_ImnotRobot(char imnotrobot[])
 {
@@ -286,7 +325,7 @@ int get_im_not_robot()
             return -1;
         else if (strcmp(input,ImNotRObot_mian)==0 && strlen(input)==strlen(ImNotRObot_mian))
             return 0;
-        else 
+        else
             printf("Invalid!! enter new code\n");
             printf("__________________________________\n");
     }while(1);
@@ -308,7 +347,7 @@ int check_corect_pass_and_set_limit(char corect_pass[], int limit_time)
         flag_Im_not_Robot=get_im_not_robot();
         if (flag_Im_not_Robot==-1)
             return -1;
-        
+
         int len_get_pass=strlen(pass),len_corect_pass=strlen(corect_pass);
         if (strcmp(pass,corect_pass)==0 && len_corect_pass==len_get_pass)
             return 0;
@@ -663,7 +702,7 @@ void password_to_hash(char password[])
         temp=password[1];
         password[1]=password[7];
         password[7]=temp;
-        
+
         temp=password[5];
         password[5]=password[0];
         password[0]=temp;
@@ -719,7 +758,7 @@ void unti_hash_to_password(char password[])
         temp=password[1];
         password[1]=password[7];
         password[7]=temp;
-        
+
         temp=password[5];
         password[5]=password[0];
         password[0]=temp;
@@ -909,7 +948,7 @@ int search_user_name_student_sync_with_code_sourse(char ID_uni[], char code[])
         return 1;
     }
     temp_struct_score=start_struct_score;
-    
+
     do
     {
         if (strcmp(temp_struct_score->ID_uni,ID_uni)==0 && strlen(temp_struct_score->ID_uni)==strlen(ID_uni) &&
@@ -945,7 +984,7 @@ int get_user_pass_user_academics()
                 {
                     user[0]=getch();
                 } while (user[0]!=13);
-                
+
                 return 1;
             }
             strcpy(password,temp_struct_academic->pass1);
@@ -961,9 +1000,9 @@ int get_user_pass_user_academics()
             printf("User name not found!Try Agian\n");
             continue;
         }
-    }while(1);    
+    }while(1);
         return user_found_flag;
-    
+
 }
 int get_user_pass_user_departemnts()
 {
@@ -996,9 +1035,9 @@ int get_user_pass_user_departemnts()
             printf("User name not found!Try Agian\n");
             continue;
         }
-    }while(1);    
+    }while(1);
         return user_found_flag;
-    
+
 }
 void get_now_time(char result[])
 {
@@ -1474,7 +1513,7 @@ void set_new_score()
             printf("Invalid input! Try agian: ");
         else if (search_user_name_student(ID_uni)==1)
             printf("Student not submit yet! enter another ID: ");
-        else 
+        else
         {
             free_student();
             break;
@@ -1490,7 +1529,7 @@ void set_new_score()
             printf("Invalid input! Try agian: ");
         else if (search_course_code(code_course)==1)
             printf("course not submit yet! Enter another code course: ");
-        else 
+        else
         {
             free_course();
             break;
@@ -1516,7 +1555,7 @@ void set_new_score()
             return ;
         else if (check_str_was_flaot(score)==1)
             printf("Invalid format! Try agian: ");
-        else 
+        else
             break;
     } while (1);
     get_now_time(date_set);
@@ -1542,7 +1581,7 @@ void set_new_score()
         temp=getch();
     } while (temp!=13);
     // system("cls");
-    
+
 }
 int set_departemants_as_link_list()
 {
@@ -1563,7 +1602,7 @@ int set_departemants_as_link_list()
         start_struct_departemant->link=NULL;
         return 1;
         }
-        
+
     char temp[225],info[50]={0};
     int i=0,j=0,flag_info=1;
     temp[0]='\0';
@@ -1574,7 +1613,7 @@ int set_departemants_as_link_list()
         start_struct_departemant->name[0]='0';// if file was NULL
         start_struct_departemant->link=NULL;
         return 1;
-    } 
+    }
     int len=strlen(temp);
     for(i=0;i<len;i++)
     {
@@ -1713,7 +1752,7 @@ int set_academic_as_link_list()
         start_struct_academic->name[0]='0';// if file was NULL
         start_struct_academic->link=NULL;
         return 1;
-    } 
+    }
     char temp[225],info[50]={0};
     int i=0,j=0,flag_info=1;
     temp[0]='\0';
@@ -1724,7 +1763,7 @@ int set_academic_as_link_list()
         start_struct_academic->name[0]='0';// if file was NULL
         start_struct_academic->link=NULL;
         return 1;
-    }        
+    }
     int len=strlen(temp);
     for(i=0;i<len;i++)
     {
@@ -1777,7 +1816,7 @@ int set_academic_as_link_list()
         }
     }
     start_struct_academic->link=NULL;
-    
+
     while (1)
     {
         temp_struct_academic=malloc(sizeof(struct struct_academic));
@@ -1863,7 +1902,7 @@ int set_student_as_link_list()
         start_struct_student->name[0]='0';// if file was NULL
         start_struct_student->link=NULL;
         return 1;
-    } 
+    }
     char temp[225],info[50]={0};
     int i=0,j=0,flag_info=1;
     temp[0]='\0';
@@ -1874,7 +1913,7 @@ int set_student_as_link_list()
         start_struct_student->name[0]='0';// if file was NULL
         start_struct_student->link=NULL;
         return 1;
-    }        
+    }
     int len=strlen(temp);
     for(i=0;i<len;i++)
     {
@@ -1927,7 +1966,7 @@ int set_student_as_link_list()
         }
     }
     start_struct_student->link=NULL;
-    
+
     while (1)
     {
         temp_struct_student=malloc(sizeof(struct struct_student));
@@ -2014,7 +2053,7 @@ int set_score_student_as_link_list()
         start_struct_score->link=NULL;
         return 1;
         }
-        
+
     char temp[225],info[50]={0};
     int i=0,j=0,flag_info=1;
     temp[0]='\0';
@@ -2025,7 +2064,7 @@ int set_score_student_as_link_list()
         start_struct_score->ID_uni[0]='N';// if file was NULL
         start_struct_score->link=NULL;
         return 1;
-    } 
+    }
     int len=strlen(temp);
     for(i=0;i<len;i++)
     {
@@ -2211,7 +2250,7 @@ void show_list_users(int status)
         }
         temp_struct_academic=temp_struct_academic->link;
     }while(temp_struct_academic!=NULL);
-    
+
 
     printf("Press enter to back menu\n");
     do
@@ -2364,7 +2403,7 @@ void add_linked_list_departemant_to_notpadd()
     } while (temp_struct_departemant!=NULL);
     free(temp_struct_departemant);
     fclose(Departemant);
-    
+
 }
 void add_linked_list_student_to_notpadd()
 {
@@ -2429,6 +2468,12 @@ void add_linked_list_course_to_notpadd()
         return ;
     }
     temp_struct_course=start_struct_course;
+    if (temp_struct_course->name_course[0]=='!')
+    {
+        fclose(course);
+        free(temp_struct_course);
+        return ;
+    }
     char final[225]={0},temp[50];
     do
     {
@@ -2466,6 +2511,12 @@ void add_linked_list_score_to_notpadd()
         return ;
     }
     temp_struct_score=start_struct_score;
+    if (temp_struct_score->ID_uni[0]=='N')
+    {
+        fclose(score);
+        free(temp_struct_score);
+        return ;
+    }
     char final[225]={0},temp[50];
     do
     {
@@ -2540,7 +2591,7 @@ int sort_linked_list_by_name_student()
                 //----------------------------- sawp date
                 strcpy(temp,temp_struct_score->date);
                 strcpy(temp_struct_score->date,temp2_struct_score->date);
-                strcpy(temp2_struct_score->date,temp);    
+                strcpy(temp2_struct_score->date,temp);
             }
             temp_struct_score=temp_struct_score->link;
             strcpy(temp,temp_struct_score->ID_uni);
@@ -2554,7 +2605,7 @@ int sort_linked_list_by_name_student()
             search_user_name_student(temp);
             strcpy(name2,temp_struct_student->family);
             free_student();
-        }   
+        }
     }
     free_score();
 }
@@ -2596,7 +2647,7 @@ void kick_user()
         } while (user_name[0]!=13);
         // system("cls");;
         return ;
-    }    
+    }
     if (flag==0)
     {
         char date[20];
@@ -2762,7 +2813,7 @@ void get_backup()
         //---------- checkt addres
         len=strlen(file_location);
         for (i=0; i<len; i++)
-            if (file_location[i]=='\\' || (file_location[i]==':' && i!=1)|| file_location[i]=='*' || file_location[i]=='?' || file_location[i]=='\"' 
+            if (file_location[i]=='\\' || (file_location[i]==':' && i!=1)|| file_location[i]=='*' || file_location[i]=='?' || file_location[i]=='\"'
             || file_location[i]=='>' || file_location[i]=='<' || file_location[i]=='|' || (file_location[i]=='/' && file_location[i+1]=='/'))
             {
                 printf("Invalid file locatin!! Try agian\n");
@@ -2773,17 +2824,17 @@ void get_backup()
             {
                 printf("Invalid file locatin!! Try agian\n");
                 flag_whlie++;
-            }   
+            }
     }while(flag_whlie);
     if (file_location[len-1]=='/')
         file_location[len-1]='\0';
 
     char time[20];
     get_now_time(time);
-    
+
     //------------------ change format time
     len=strlen(time);
-    
+
     for (i=0;i<len;i++)
         if (time[i]=='/')
             time[i]='_';
@@ -2839,7 +2890,7 @@ void get_backup()
     fclose(academic_main);
     fclose(backup_academic);
     // ------------------------------------- backup course
-    
+
     flag_file=0;
     char location_course[150];
     strcpy(location_course,file_location);
@@ -2861,7 +2912,7 @@ void get_backup()
     fclose(backup_course);
 
     // ------------------------------------- backup Score student
-    
+
     flag_file=0;
     char location_score_student[150];
     strcpy(location_score_student,file_location);
@@ -2883,7 +2934,7 @@ void get_backup()
     fclose(backup_score_student);
 
     // ------------------------------------- backup student
-    
+
     flag_file=0;
     char location_student[150];
     strcpy(location_student,file_location);
@@ -2923,7 +2974,7 @@ void load_backup()
         //---------- checkt addres
         len=strlen(file_location);
         for (i=0; i<len; i++)
-            if (file_location[i]=='\\' || (file_location[i]==':' && i!=1)|| file_location[i]=='*' || file_location[i]=='?' || file_location[i]=='\"' 
+            if (file_location[i]=='\\' || (file_location[i]==':' && i!=1)|| file_location[i]=='*' || file_location[i]=='?' || file_location[i]=='\"'
             || file_location[i]=='>' || file_location[i]=='<' || file_location[i]=='|' || (file_location[i]=='/' && file_location[i+1]=='/'))
             {
                 printf("Invalid file locatin!! Try agian\n");
@@ -2934,16 +2985,16 @@ void load_backup()
             {
                 printf("Invalid file locatin!! Try agian\n");
                 flag_whlie++;
-            }   
+            }
     }while(flag_whlie);
     if (file_location[len-1]=='/')
         file_location[len-1]='\0';
-    
+
     char location_departemant[150];
     char read_line[225];
     flag_whlie=0;
     // -------------------------------------------------- departemant
-    
+
     strcpy(location_departemant,file_location);
     strcat(location_departemant,"/file_departemant.txt");
     int flag_file=0;
@@ -2963,7 +3014,7 @@ void load_backup()
     fclose(departemant_main);
     fclose(backup_departemant);
     // --------------------------------------- academic
-    
+
     flag_file=0;
     char location_academic[150];
     strcpy(location_academic,file_location);
@@ -3222,7 +3273,7 @@ int set_course_as_link_list()
         start_struct_course->name_course[0]='!';// if file was NULL
         start_struct_course->link=NULL;
         return 1;
-    } 
+    }
     char temp[225],info[50]={0};
     int i=0,j=0,flag_info=1;
     temp[0]='\0';
@@ -3233,7 +3284,7 @@ int set_course_as_link_list()
         start_struct_course->name_course[0]='!';// if file was NULL
         start_struct_course->link=NULL;
         return 1;
-    }        
+    }
     int len=strlen(temp);
     for(i=0;i<len;i++)
     {
@@ -3271,7 +3322,7 @@ int set_course_as_link_list()
         }
     }
     start_struct_course->link=NULL;
-    
+
     while (1)
     {
         temp_struct_course=malloc(sizeof(struct struct_course));
@@ -3369,7 +3420,7 @@ void edit_info_student()
     char ID_uni[15];
     char name[20],family[30],date_birthday[15],location_born[20],ID_code[15],phone_num[15],email[40],major[20];
     int flag_user_found=0;
-    printf("enter ID university of studet\nif you dessuaded fro edit just press Enter\n");
+    printf("enter ID university of studet\nif you dessuaded for edit just press Enter\n");
     do{
         gets(ID_uni);
         if (strlen(ID_uni)==0)
@@ -3377,7 +3428,7 @@ void edit_info_student()
         flag_user_found=search_user_name_student(ID_uni);
         if (flag_user_found)
             printf("Student whit this ID university not found! Try agian: ");
-        
+
     }while(flag_user_found);
     printf("if you don't want edit, just press Enter\n");
 
@@ -3457,8 +3508,8 @@ void edit_info_student()
     {
         ID_uni[0]=getch();
     } while (ID_uni[0]!=13);
-    
-    
+
+
 }
 void edit_score_student()
 {
@@ -3491,13 +3542,13 @@ void edit_score_student()
         {
             flag_found=search_user_name_student_sync_with_code_sourse(ID_uni,code_course);
             break;
-        }   
+        }
 
     } while (1);
-    
+
     if (flag_found==1)
         printf("student whit this data not found! first you need set socre from student and then edit score!\n\n");
-    
+
     else if (flag_found==0)
     {
         printf("Old score: %s",temp_struct_score->score);
@@ -3521,7 +3572,7 @@ void edit_score_student()
 
     }
 
-    
+
 }
 void edit_info_course()
 {
@@ -3538,7 +3589,7 @@ void edit_info_course()
             printf("Invalid input! Try agian: ");
         else if (search_course_code(code_course)==1)
             printf("Not found course whit this code! Try agian: ");
-        else 
+        else
             break;
     } while (1);
     // system("cls");
@@ -3596,7 +3647,7 @@ void edit_info_course()
         name[0]=getch();
     } while (name[0]!=13);
     // system("cls");
-    
+
 }
 void remove_course()
 {
@@ -3612,12 +3663,12 @@ void remove_course()
             printf("Invalid input! Try agian: ");
         else if (search_course_code(code_course)==1)
             printf("Not found course whit this code! Try agian: ");
-        else 
+        else
             break;
     } while (1);
     if (temp_struct_course->status[0]=='D')
         printf("this course alrady removed of list!\n");
-    else 
+    else
         strcpy(temp_struct_course->status,"D");
     free_course();
     printf("Process compelit! Press Enter to continue\n");
@@ -3633,8 +3684,8 @@ void settings_departemant()
     char str_temp[50];
     search_user_name_departemant(User_Name_static);
     printf("if you want Exit from proses just perss enter\n");
-    
-    
+
+
         printf("Enter Password: ");
         do
         {
@@ -3657,7 +3708,7 @@ void settings_departemant()
                 break;
             }
         } while (1);
-        
+
         printf("Enter Email: ");
         do
         {
@@ -3712,8 +3763,8 @@ void settings_academic()
     char str_temp[50];
     search_user_name_academic(User_Name_static);
     printf("if you want Exit from proses just perss enter\n");
-    
-    
+
+
         printf("Enter Password: ");
         do
         {
@@ -3736,7 +3787,7 @@ void settings_academic()
                 break;
             }
         } while (1);
-        
+
         printf("Enter Email: ");
         do
         {
@@ -3790,11 +3841,15 @@ void settings_academic()
 void info_student_sync_with_id_print()
 {
     char num[20];
+    printf("if you want Exit from proses just perss enter\n");
+
     printf("Enter ID University of student: ");
     do
     {
         gets(num);
-        if (check_str_was_int(num) || strlen(num)!=10)
+        if (strlen(num)==0)
+            return ;
+        else if (check_str_was_int(num) || strlen(num)!=10)
             printf("Invalid from input!! try again: ");
         else if (search_user_name_student(num)==1)
             printf("Student with this ID not found! try with another ID: ");
@@ -3821,14 +3876,14 @@ void info_student_sync_with_id_print()
         strcpy(temp,"Email");
         printf("%-20s%s\n",temp,temp_struct_student->email);
         printf("--------------------------------------\n");
-     
+
     printf("Press Enter to back list\n");
     free_student();
     do
     {
         temp[0]=getch();
     } while (temp[0]!=13);
-    
+
 }
 void list_student_print()
 {
@@ -4204,11 +4259,15 @@ void calcurat_avrage_score_student()
 void show_avg_score_with_student_id()
 {
     char num[20];
+    printf("if you want Exit from proses just perss enter\n");
+
     printf("Enter ID University of student: ");
     do
     {
         gets(num);
-        if (check_str_was_int(num) || strlen(num)!=10)
+        if (strlen(num)==0)
+            return ;
+        else if (check_str_was_int(num) || strlen(num)!=10)
             printf("Invalid from input!! try again: ");
         else if (search_user_name_student(num)==1)
             printf("Student with this ID not found! try with another ID: ");
@@ -4279,7 +4338,7 @@ void show_avg_score_with_code_course()
     float flag=calcurat_avrage_score_course(code);
     if (flag==-1)
         return ;
-    
+
     printf("-----------------------------------\n");
     printf("Avrege Score of %s Course's : %.3f\n",temp_struct_course->name_course,flag);
     printf("-----------------------------------\n");
@@ -4331,11 +4390,11 @@ void sorte_student_bg_avg()
             temp2_struct_student=temp2_struct_student->link;
             if (temp2_struct_student==NULL)
                 break;
-        }   
+        }
     }
     free_student();
 
-    
+
 }
 void sorte_student_bg_avg_print()
 {
@@ -4813,7 +4872,7 @@ int log_departemant()
             }while(1);
                 break;
         // ----------------------------------------------------------------- page 2
-        
+
         case 2:
             do{
                 contorol_panle_print_log_departemant_panel(num_page);
@@ -4856,7 +4915,7 @@ int log_departemant()
             }while(1);
                 break;
         // ------------------------------------------------------------------ page 3
-        
+
         case 3:
             do{
                 contorol_panle_print_log_departemant_panel(num_page);
@@ -4897,7 +4956,7 @@ int log_departemant()
                 break;
         default:
             break;
-        }    
+        }
 }
 //                                                           end repurt departemant
 
@@ -5054,7 +5113,6 @@ void list_student_born_since_date_to_date()
     press_enter_to_continue();
 }
 void list_student_seach_major_print()
-{
     {
     char major[20];
     printf("if you want cancel proses just press Enter\n");
@@ -5118,12 +5176,11 @@ void list_student_seach_major_print()
     {
         temp[0]=getch();
     } while (temp[0]!=13);
-    
-}
+
 }
 void list_student_seach_city_print()
 {
-    
+
     char city[20];
     printf("if you want cancel proses just press Enter\n");
     printf("Enter Major of Students you want search: ");
@@ -5186,7 +5243,7 @@ void list_student_seach_city_print()
     {
         temp[0]=getch();
     } while (temp[0]!=13);
-    
+
 }
 void log_academic_panel_print()
 {
@@ -5251,7 +5308,7 @@ void log_academic()
             break;
         }
     } while (num_menu!=5);
-    
+
 }
 
 void main()
@@ -5312,9 +5369,11 @@ void main()
                         {
                         case 1:
                             set_new_departemant();
+                            set_departemants_as_link_list();
                             break;
                         case 2:
                             set_new_academic();
+                            set_academic_as_link_list();
                             break;
                         case 3:
                             show_list_users(0);
@@ -5365,9 +5424,9 @@ void main()
                 }
                 break;
             case 2:// ------------------------------------------------------------------------------- Departemant
-                
+
                 login_flag=get_user_pass_user_departemnts();
-                
+
                 if (login_flag==0)
                 {
                     set_score_student_as_link_list();
@@ -5412,19 +5471,19 @@ void main()
                         }
                     }while(menu_type!=8);
                 }
-                else
+                else if (login_flag!=-1)
                     add_linked_list_departemant_to_notpadd();
                 break;
-            
+
             case 3:// --------------------------------------------------------------------------------- Academic
                 login_flag=get_user_pass_user_academics();
-                
+
                 if (login_flag==0)
                 {
+                    set_student_as_link_list();
+                    set_course_as_link_list();
+                    set_score_student_as_link_list();
                     do{
-                        set_student_as_link_list();
-                        set_course_as_link_list();
-                        set_score_student_as_link_list();
                         menu_academic_print();
                         menu_type=menu_selection_1_6();
                         switch (menu_type)
@@ -5441,20 +5500,20 @@ void main()
                             set_new_score();
                             set_score_student_as_link_list();
                         case 4:
-                            log_academic(); 
+                            log_academic();
                             break;
                         case 5:
                             settings_academic();
                             add_linked_list_academi_to_notpadd();
                         case 6:
                             break;
-                            
+
                         default:
                             break;
                         }
                     }while(menu_type!=6);
                 }
-                else
+                else if (login_flag!=-1)
                     add_linked_list_academi_to_notpadd();
                 break;
             case 4:
@@ -5475,4 +5534,6 @@ void main()
 // dissbale able   Done
 // fix from date      1234/4/4 --> 1234/04/04
 // list kamele kholase che samiya baraye deoartemant log???
-// fix con baze nomre ro 0_20
+// fix zone score 0_20
+// fix cls
+// add exit option for log departemnat and probebly academic        DONE
