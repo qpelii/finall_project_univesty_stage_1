@@ -5,6 +5,7 @@
 #include<time.h>
 #include<conio.h>
 #include<direct.h>
+// #include<windows.h>
 static char user_admin[10]="admin";
 static char pass_admin[20]="5v8a6079zqn";// hashed
 char User_Name_static[20];
@@ -82,6 +83,7 @@ struct struct_ticket
 {
     char user_name[20];
     char massage[200];
+    char date_ticket[20];
     char replay[200];
     char status[3];//0 :=not replay yet 1:= get replay
     struct struct_ticket *link;
@@ -1774,6 +1776,45 @@ void set_new_score()
     } while (temp!=13);
 
 }
+void set_new_ticket()
+{
+    char massage[200],date_set[20];
+    char temp;
+    printf("Note: if you want exit from this proses just press Enter\n");
+    printf("Enter your massage for admin: ");
+    do
+    {
+        gets(massage);
+        if (strlen(massage)==0)
+            return ;
+        else
+            break;
+    } while (1);
+    
+
+    
+    get_now_time(date_set);
+    FILE *file_ticket;
+    file_ticket=fopen("file_ticket.txt","a");
+
+    fputs(User_Name_static,file_ticket);
+    fputs(", ",file_ticket);
+    fputs(massage,file_ticket);
+    fputs(", ",file_ticket);
+    fputs(date_set,file_ticket);
+    fputs(", ",file_ticket);
+    fputs("N",file_ticket);//replay massage
+    fputs(", ",file_ticket);
+    fputs("0",file_ticket);
+    fputs(User_Name_static,file_ticket);
+    fputc('\n',file_ticket);
+    printf("Successfully prosses!\npress Enter to continue\n");
+    fclose(file_ticket);
+    do
+    {
+        temp=getch();
+    } while (temp!=13); 
+}
 int set_departemants_as_link_list()
 {
     start_struct_departemant=malloc(sizeof(struct struct_departemant));
@@ -1942,7 +1983,9 @@ int set_academic_as_link_list()
     start_struct_academic=malloc(sizeof(struct struct_academic));
     if (start_struct_academic==NULL)
     {
-        printf("memory is not allowed!");
+        printf("memory is not allowed!\n");
+        printf("Press Enter to continue\n");
+        press_enter_to_continue();
         return 1;
     }
     end_struct_academic=start_struct_academic;
@@ -2104,7 +2147,9 @@ int set_student_as_link_list()
     start_struct_student=malloc(sizeof(struct struct_student));
     if (start_struct_student==NULL)
     {
-        printf("memory is not allowed!");
+        printf("memory is not allowed!\n");
+        printf("Press Enter to continue\n");
+        press_enter_to_continue();
         return 1;
     }
     end_struct_student=start_struct_student;
@@ -2137,38 +2182,38 @@ int set_student_as_link_list()
             info[j]='\0';
             switch (flag_info)
             {
-            case 1:
-                strcpy(start_struct_student->name,info);
-                break;
-            case 2:
-                strcpy(start_struct_student->family,info);
-                break;
-            case 3:
-                strcpy(start_struct_student->ID_code,info);
-                break;
-            case 4:
-                strcpy(start_struct_student->date_birthday,info);
-                break;
-            case 5:
-                strcpy(start_struct_student->location_born,info);
-                break;
-            case 6:
-                strcpy(start_struct_student->major,info);
-                break;
-            case 7:
-                strcpy(start_struct_student->ID_uni,info);
-                break;
-            case 8:
-                strcpy(start_struct_student->phone_num,info);
-                break;
-            case 9:
-                strcpy(start_struct_student->email,info);
-                break;
-            case 10:
-                strcpy(start_struct_student->avg_score,info);
-                break;
-            default:
-                break;
+                case 1:
+                    strcpy(start_struct_student->name,info);
+                    break;
+                case 2:
+                    strcpy(start_struct_student->family,info);
+                    break;
+                case 3:
+                    strcpy(start_struct_student->ID_code,info);
+                    break;
+                case 4:
+                    strcpy(start_struct_student->date_birthday,info);
+                    break;
+                case 5:
+                    strcpy(start_struct_student->location_born,info);
+                    break;
+                case 6:
+                    strcpy(start_struct_student->major,info);
+                    break;
+                case 7:
+                    strcpy(start_struct_student->ID_uni,info);
+                    break;
+                case 8:
+                    strcpy(start_struct_student->phone_num,info);
+                    break;
+                case 9:
+                    strcpy(start_struct_student->email,info);
+                    break;
+                case 10:
+                    strcpy(start_struct_student->avg_score,info);
+                    break;
+                default:
+                    break;
             }
             flag_info++;
             j=0;
@@ -2197,38 +2242,38 @@ int set_student_as_link_list()
                 info[j]='\0';
                 switch (flag_info)
                 {
-                case 1:
-                    strcpy(temp_struct_student->name,info);
-                    break;
-                case 2:
-                    strcpy(temp_struct_student->family,info);
-                    break;
-                case 3:
-                    strcpy(temp_struct_student->ID_code,info);
-                    break;
-                case 4:
-                    strcpy(temp_struct_student->date_birthday,info);
-                    break;
-                case 5:
-                    strcpy(temp_struct_student->location_born,info);
-                    break;
-                case 6:
-                    strcpy(temp_struct_student->major,info);
-                    break;
-                case 7:
-                    strcpy(temp_struct_student->ID_uni,info);
-                    break;
-                case 8:
-                    strcpy(temp_struct_student->phone_num,info);
-                    break;
-                case 9:
-                    strcpy(temp_struct_student->email,info);
-                    break;
-                case 10:
-                    strcpy(temp_struct_student->avg_score,info);
-                    break;
-                default:
-                    break;
+                    case 1:
+                        strcpy(temp_struct_student->name,info);
+                        break;
+                    case 2:
+                        strcpy(temp_struct_student->family,info);
+                        break;
+                    case 3:
+                        strcpy(temp_struct_student->ID_code,info);
+                        break;
+                    case 4:
+                        strcpy(temp_struct_student->date_birthday,info);
+                        break;
+                    case 5:
+                        strcpy(temp_struct_student->location_born,info);
+                        break;
+                    case 6:
+                        strcpy(temp_struct_student->major,info);
+                        break;
+                    case 7:
+                        strcpy(temp_struct_student->ID_uni,info);
+                        break;
+                    case 8:
+                        strcpy(temp_struct_student->phone_num,info);
+                        break;
+                    case 9:
+                        strcpy(temp_struct_student->email,info);
+                        break;
+                    case 10:
+                        strcpy(temp_struct_student->avg_score,info);
+                        break;
+                    default:
+                        break;
                 }
                 flag_info++;
                 j=0;
@@ -2254,7 +2299,9 @@ int set_score_student_as_link_list()
     start_struct_score=malloc(sizeof(struct struct_score));
     if (start_struct_score==NULL)
     {
-        printf("memory is not allowed!");
+        printf("memory is not allowed!\n");
+        printf("Press Enter to continue\n");
+        press_enter_to_continue();
         return 1;
     }
     end_struct_score=start_struct_score;
@@ -2267,7 +2314,7 @@ int set_score_student_as_link_list()
         start_struct_score->ID_uni[0]='N';// if file was NULL
         start_struct_score->link=NULL;
         return 1;
-        }
+    }
 
     char temp[225],info[50]={0};
     int i=0,j=0,flag_info=1;
@@ -2288,23 +2335,23 @@ int set_score_student_as_link_list()
             info[j]='\0';
             switch (flag_info)
             {
-            case 1:
-                strcpy(start_struct_score->ID_uni,info);
-                break;
-            case 2:
-                strcpy(start_struct_score->code_course,info);
-                break;
-            case 3:
-                strcpy(start_struct_score->score,info);
-                break;
-            case 4:
-                strcpy(start_struct_score->date,info);
-                break;
-            case 5:
-                strcpy(start_struct_score->user,info);
-                break;
-            default:
-                break;
+                case 1:
+                    strcpy(start_struct_score->ID_uni,info);
+                    break;
+                case 2:
+                    strcpy(start_struct_score->code_course,info);
+                    break;
+                case 3:
+                    strcpy(start_struct_score->score,info);
+                    break;
+                case 4:
+                    strcpy(start_struct_score->date,info);
+                    break;
+                case 5:
+                    strcpy(start_struct_score->user,info);
+                    break;
+                default:
+                    break;
             }
             flag_info++;
             j=0;
@@ -2333,23 +2380,23 @@ int set_score_student_as_link_list()
                 info[j]='\0';
                 switch (flag_info)
                 {
-                case 1:
-                strcpy(temp_struct_score->ID_uni,info);
-                break;
-            case 2:
-                strcpy(temp_struct_score->code_course,info);
-                break;
-            case 3:
-                strcpy(temp_struct_score->score,info);
-                break;
-            case 4:
-                strcpy(temp_struct_score->date,info);
-                break;
-            case 5:
-                strcpy(temp_struct_score->user,info);
-                    break;
-                default:
-                    break;
+                    case 1:
+                        strcpy(temp_struct_score->ID_uni,info);
+                        break;
+                    case 2:
+                        strcpy(temp_struct_score->code_course,info);
+                        break;
+                    case 3:
+                        strcpy(temp_struct_score->score,info);
+                        break;
+                    case 4:
+                        strcpy(temp_struct_score->date,info);
+                        break;
+                    case 5:
+                        strcpy(temp_struct_score->user,info);
+                        break;
+                    default:
+                        break;
                 }
                 flag_info++;
                 j=0;
@@ -2368,6 +2415,129 @@ int set_score_student_as_link_list()
     }
     fclose(score);
     free(temp_struct_score);
+    return 0;
+}
+int set_score_ticket_as_link_list()
+{
+    start_struct_ticket=malloc(sizeof(struct struct_ticket));
+    if (start_struct_ticket==NULL)
+    {
+        printf("memory is not allowed!\n");
+        printf("Press Enter to continue\n");
+        press_enter_to_continue();
+        return 1;
+    }
+    end_struct_ticket=start_struct_ticket;
+
+    FILE *ticket;
+    ticket=fopen("file_ticket.txt", "r");
+    if (ticket==NULL)
+    {
+        fclose(ticket);
+        start_struct_ticket->status[0]='N';// if file was NULL
+        start_struct_ticket->link=NULL;
+        return 1;
+    }
+
+    char temp[445],info[200]={0};
+    int i=0,j=0,flag_info=1;
+    temp[0]='\0';
+    fgets(temp,445,ticket);
+    if (strlen(temp)==0)
+    {
+        fclose(ticket);
+        start_struct_ticket->status[0]='N';// if file was NULL
+        start_struct_ticket->link=NULL;
+        return 1;
+    }
+    int len=strlen(temp);
+    for(i=0;i<len;i++)
+    {
+        if ((temp[i]==',' && temp[i+1]==' ') || temp[i]=='\n')
+        {
+            info[j]='\0';
+            switch (flag_info)
+            {
+                case 1:
+                    strcpy(start_struct_ticket->user_name,info);
+                    break;
+                case 2:
+                    strcpy(start_struct_ticket->massage,info);
+                    break;
+                case 3:
+                    strcpy(start_struct_ticket->date_ticket,info);
+                    break;
+                case 4:
+                    strcpy(start_struct_ticket->replay,info);
+                    break;
+                case 5:
+                    strcpy(start_struct_ticket->status,info);
+                    break;
+                default:
+                    break;
+            }
+            flag_info++;
+            j=0;
+            i++;
+        }
+        else
+        {
+            info[j]=temp[i];
+            j++;
+        }
+    }
+    start_struct_ticket->link=NULL;
+
+    while (1)
+    {
+        temp_struct_ticket=malloc(sizeof(struct struct_ticket));
+        temp[0]='\0';
+        fgets(temp,445,ticket);
+        if (strlen(temp)==0)
+            break;
+        flag_info=1,i=0,j=0;
+        while(flag_info!=6)
+        {
+            if ((temp[i]==',' && temp[i+1]==' ') || temp[i]=='\n')
+            {
+                info[j]='\0';
+                switch (flag_info)
+                {
+                    case 1:
+                        strcpy(temp_struct_ticket->user_name,info);
+                        break;
+                    case 2:
+                        strcpy(temp_struct_ticket->massage,info);
+                        break;
+                    case 3:
+                        strcpy(temp_struct_ticket->date_ticket,info);
+                        break;
+                    case 4:
+                        strcpy(temp_struct_ticket->replay,info);
+                        break;
+                    case 5:
+                        strcpy(temp_struct_ticket->status,info);
+                        break;
+                    default:
+                        break;
+                }
+                flag_info++;
+                j=0;
+                i++;
+            }
+            else
+            {
+                info[j]=temp[i];
+                j++;
+            }
+            i++;
+        }
+        temp_struct_ticket->link=NULL;
+        end_struct_ticket->link=temp_struct_ticket;
+        end_struct_ticket=temp_struct_ticket;
+    }
+    fclose(ticket);
+    free(temp_struct_ticket);
     return 0;
 }
 void show_list_users(int status)
@@ -3585,7 +3755,7 @@ void menu_departemant_print()
 {
     char temp[35],line_char='|';
     printf("-----------------------------------\n");
-    for(int i=0; i<8; i++)
+    for(int i=0; i<9; i++)
     {
     printf("%c%-2d%c",line_char,i+1,line_char);
     switch (i)
@@ -3609,9 +3779,12 @@ void menu_departemant_print()
         strcpy(temp,"Get Log");
         break;
     case 6:
-        strcpy(temp,"Settings");
+        strcpy(temp,"Set Ticket");
         break;
     case 7:
+        strcpy(temp,"Settings");
+        break;
+    case 8:
         strcpy(temp,"Exit from Panle");
         break;
     default:
@@ -3619,7 +3792,7 @@ void menu_departemant_print()
     }
 
     printf("%-30s%c\n",temp,line_char);
-    if (i!=7)
+    if (i!=8)
         printf("|--+------------------------------|\n");
 
 
@@ -3857,7 +4030,7 @@ void menu_academic_print()
 {
     char temp[35],line_char='|';
     printf("-----------------------------------\n");
-    for(int i=0; i<6; i++)
+    for(int i=0; i<7; i++)
     {
     printf("%c%-2d%c",line_char,i+1,line_char);
     switch (i)
@@ -3875,9 +4048,12 @@ void menu_academic_print()
         strcpy(temp,"Get Log");
         break;
     case 4:
-        strcpy(temp,"Settings");
+        strcpy(temp,"Set Ticket");
         break;
     case 5:
+        strcpy(temp,"Settings");
+        break;
+    case 6:
         strcpy(temp,"Exit from Panel");
         break;
     default:
@@ -3885,7 +4061,7 @@ void menu_academic_print()
     }
 
     printf("%-30s%c\n",temp,line_char);
-    if (i!=5)
+    if (i!=6)
         printf("|--+------------------------------|\n");
 
 
@@ -5996,11 +6172,15 @@ void main()
                             system("cls");
                             break;
                         case 7:
+                            set_new_ticket();
+                            set_ticket_as_link_list();
+                            break;
+                        case 8:
                             settings_departemant();
                             add_linked_list_departemant_to_notpadd();
                             system("cls");
                             break;
-                        case 8:
+                        case 9:
                             break;
                         default:
                             break;
@@ -6065,6 +6245,8 @@ void main()
                 system("cls");
                 break;
             case 5:
+                printf("enjoy life ;)");
+                // Sleep(5000);
                 free(start_struct_academic);
                 free(start_struct_departemant);
                 return ;
