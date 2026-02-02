@@ -312,7 +312,6 @@ int get_im_not_robot()
 {
     char ImNotRObot_mian[6];
     char input[10];
-    printf("if you want cancel proses just press Enter\n");
     printf("Enter this code whitout junk character (!@#$%) for Confrim Opration:\n");
     do{
         im_not_robot(ImNotRObot_mian);
@@ -988,6 +987,7 @@ int get_user_pass_user_academics()
                 return 1;
             }
             strcpy(password,temp_struct_academic->pass1);
+            unti_hash_to_password(password);
             limit_time=atol(temp_struct_academic->limit_time);
             strcpy(User_Name_static,temp_struct_academic->user_Name);
             user_found_flag= get_check_user_pass(user,password,&limit_time);
@@ -1267,8 +1267,6 @@ void set_new_academic()
         gets(phone_num);
         if (check_str_was_int(phone_num) || phone_num[0]!='0' || phone_num[1]!='9' || strlen(phone_num)!=11)
             printf("Invalid input! Try again: ");
-        else if (search_user_name_academic(user_Name)==0 || search_user_name_departemant(user_Name)==0 || strcmp(user_Name,user_admin)==0)
-            printf("this user name is duplicated!! Try again: ");
         else
             break;
     }while(1);
@@ -1287,6 +1285,10 @@ void set_new_academic()
         gets(user_Name);    // ----------------------------- need edit for duplicated user_name
         if (check_str_whitout_space(user_Name) || strlen(user_Name)==0)
             printf("Invalid input! Try again: ");
+        else if (search_user_name_academic(user_Name)==0 || search_user_name_departemant(user_Name)==0 || strcmp(user_Name,user_admin)==0)
+            printf("this user name is duplicated!! Try again: ");
+        else if (strlen(user_Name)<6)
+            printf("too few charachter! Try again: ");
         else
         {
             str_to_lower(user_Name);
@@ -2311,6 +2313,12 @@ void add_linked_list_academi_to_notpadd()
         return ;
     }
     temp_struct_academic=start_struct_academic;
+    if (temp_struct_academic->name[0]=='0')
+    {
+        fclose(Academic);
+        free_academic();
+        return ;
+    }
     char final[225]={0},temp[50];
     do
     {
@@ -2363,6 +2371,12 @@ void add_linked_list_departemant_to_notpadd()
         return ;
     }
     temp_struct_departemant=start_struct_departemant;
+    if (temp_struct_departemant->name[0]=='0')
+    {
+        fclose(Departemant);
+        free_departemant();
+        return ;
+    }
     char final[225]={0},temp[50];
     do
     {
@@ -2416,6 +2430,12 @@ void add_linked_list_student_to_notpadd()
         return ;
     }
     temp_struct_student=start_struct_student;
+    if (temp_struct_student->name[0]=='0')
+    {
+        fclose(Student);
+        free_student();
+        return ;
+    }
     char final[225]={0},temp[50];
     do
     {
@@ -2471,7 +2491,7 @@ void add_linked_list_course_to_notpadd()
     if (temp_struct_course->name_course[0]=='!')
     {
         fclose(course);
-        free(temp_struct_course);
+        free_course();
         return ;
     }
     char final[225]={0},temp[50];
@@ -2759,12 +2779,7 @@ void list_of_log_dismissed()
     do
     {
         if (temp_struct_academic->name[0]=='0')//file is NULL
-            {
-                printf("-----------------------------------\n");
-                printf("No result to show!\n");
-                printf("-----------------------------------\n");
                 break;
-            }
         if (temp_struct_academic->ekhraj[0]!='N')
         {
             printf("Academic's %d\n",i++);
@@ -2792,8 +2807,12 @@ void list_of_log_dismissed()
         }
         temp_struct_academic=temp_struct_academic->link;
     }while(temp_struct_academic!=NULL);
-    if (i==1 && temp_struct_academic->name[0]!='0')
+    if (i==1)
+    {
+        printf("-----------------------------------\n");
         printf("No one of Academic has't dismissed!\n");
+        printf("-----------------------------------\n");
+    }
     printf("Press Enter to back list\n");
     free_academic();
     do
@@ -3682,6 +3701,8 @@ void remove_course()
 void settings_departemant()
 {
     char str_temp[50];
+    char pass2[50];
+    int flag=0;
     search_user_name_departemant(User_Name_static);
     printf("if you want Exit from proses just perss enter\n");
 
@@ -3690,14 +3711,44 @@ void settings_departemant()
         do
         {
             password_to_star(str_temp);
+            flag=check_strong_password(str_temp);
             if (strlen(str_temp)==0)
                 break;
             else if (check_str_whitout_space(str_temp)==1)
                 printf("Invlid! Try again: ");
-            else if (strlen(str_temp)<8)
-                printf("too few character!(minimum character is 8) Try again: ");
+            else if (flag)
+            {
+                switch (flag)
+                {
+                case 1:
+                    printf("too few character!(minimum character is 8)! Try again: ");
+                    break;
+                case 2:
+                    printf("Your password for security must have number! Try again: ");
+                    break;
+                case 3:
+                    printf("Your password must have Capital and Small letters! Try again: ");
+                    break;
+                case 4:
+                    printf("Your password must have punct(!@#$%^) character! Try again: ");
+                    break;
+                case 5:
+                    printf("Your password must have Capital and Small letters! Try again: ");
+                    break;
+                default:
+                    break;
+                }
+                continue;
+            }
             else
             {
+                printf("Repet password: ");
+                password_to_star(pass2);
+                if (strcmp(pass2,str_temp)!=0 || strlen(pass2)!=strlen(str_temp))
+                {
+                    printf("Repeated password mast match whit fisrt password! Try agian: ");
+                    continue;
+                }
                 password_to_hash(str_temp);
                 if (strcmp(str_temp,temp_struct_departemant->pass1)==0 && strlen(str_temp)==strlen(temp_struct_departemant->pass1))
                 {
@@ -3719,12 +3770,12 @@ void settings_departemant()
                 printf("Invlid! Try again: ");
             else
             {
-                if (strcmp(str_temp,temp_struct_departemant->email)==0 && strlen(str_temp)==strlen(temp_struct_departemant->email))
+                if (strcmp(str_temp,temp_struct_departemant->phone_num)==0 && strlen(str_temp)==strlen(temp_struct_departemant->phone_num))
                 {
                     printf("new Email should not be same as old Email! Try another Email: ");
                     continue;
                 }
-                strcpy(temp_struct_departemant->email,str_temp);
+                strcpy(temp_struct_departemant->phone_num,str_temp);
                 break;
             }
         } while (1);
@@ -3761,6 +3812,8 @@ void settings_departemant()
 void settings_academic()
 {
     char str_temp[50];
+    char pass2[50];
+    int flag=0;
     search_user_name_academic(User_Name_static);
     printf("if you want Exit from proses just perss enter\n");
 
@@ -3769,14 +3822,46 @@ void settings_academic()
         do
         {
             password_to_star(str_temp);
+            flag=check_strong_password(str_temp);
             if (strlen(str_temp)==0)
                 break;
             else if (check_str_whitout_space(str_temp)==1)
                 printf("Invlid! Try again: ");
             else if (strlen(str_temp)<8)
                 printf("too few character!(minimum character is 8) Try again: ");
+            else if (flag)
+            {
+                switch (flag)
+                {
+                case 1:
+                    printf("too few character!(minimum character is 8)! Try again: ");
+                    break;
+                case 2:
+                    printf("Your password for security must have number! Try again: ");
+                    break;
+                case 3:
+                    printf("Your password must have Capital and Small letters! Try again: ");
+                    break;
+                case 4:
+                    printf("Your password must have punct(!@#$%^) character! Try again: ");
+                    break;
+                case 5:
+                    printf("Your password must have Capital and Small letters! Try again: ");
+                    break;
+                default:
+                    break;
+                }
+                continue;
+            }
             else
             {
+                printf("Repet password: ");
+                password_to_star(pass2);
+                if (strcmp(pass2,str_temp)!=0 || strlen(pass2)!=strlen(str_temp))
+                {
+                    printf("Repeated password mast match whit fisrt password! Try agian: ");
+                    continue;
+                }
                 password_to_hash(str_temp);
                 if (strcmp(str_temp,temp_struct_academic->pass1)==0 && strlen(str_temp)==strlen(temp_struct_academic->pass1))
                 {
@@ -3820,12 +3905,12 @@ void settings_academic()
                 printf("Invlid! enter whit this form (09123456789): ");
             else
             {
-                if (strcmp(str_temp,temp_struct_academic->email)==0 && strlen(str_temp)==strlen(temp_struct_academic->email))
+                if (strcmp(str_temp,temp_struct_academic->phone_num)==0 && strlen(str_temp)==strlen(temp_struct_academic->phone_num))
                 {
                     printf("new Phone should not be same as old Phone! Try another Phone: ");
                     continue;
                 }
-                strcpy(temp_struct_academic->email,str_temp);
+                strcpy(temp_struct_academic->phone_num,str_temp);
                 break;
             }
         } while (1);
@@ -3897,9 +3982,7 @@ void list_student_print()
         {
             if (temp_struct_student->name[0]=='0')//file is NULL
             {
-                printf("-----------------------------------\n");
                 printf("No result to show!\n");
-                printf("-----------------------------------\n");
                 break;
             }
             printf("\n-----------------------------------\n");
@@ -3947,9 +4030,7 @@ void list_course_print()
         {
             if (temp_struct_course->name_course[0]=='!')//file is NULL
             {
-                printf("-----------------------------------\n");
                 printf("No result to show!\n");
-                printf("-----------------------------------\n");
                 break;
             }
             printf("\n-----------------------------------\n");
@@ -4014,13 +4095,8 @@ void list_course_special_print(int status)// status1 := D and 0:= E
         temp_struct_course=start_struct_course;
         do
         {
-            if (temp_struct_course->name_course[0]=='!')//file is NULL
-            {
-                printf("-----------------------------------\n");
-                printf("No result to show!\n");
-                printf("-----------------------------------\n");
+            if (temp_struct_course->name_course[0]=='!')//file is NULL 
                 break;
-            }
             if (status==1 && temp_struct_course->status[0]=='D')
             {
                 printf("Course's %d\n",i++);
@@ -4096,8 +4172,11 @@ void list_course_special_print(int status)// status1 := D and 0:= E
             temp_struct_course=temp_struct_course->link;
         }while(temp_struct_course!=NULL);
     if (i==1)
+    {
+        printf("-----------------------------------\n");
         printf("Course with this status not found!\n");
-
+        printf("-----------------------------------\n");
+    }
     free_course();
     printf("Press enter to back menu\n");
     do
@@ -4415,9 +4494,7 @@ void sorte_student_bg_avg_print()
         {
             if (temp_struct_student->name[0]=='0')//file is NULL
             {
-                printf("-----------------------------------\n");
                 printf("No result to show!\n");
-                printf("-----------------------------------\n");
                 break;
             }
             printf("Student's %d\n",i++);
@@ -4441,7 +4518,7 @@ void sorte_student_bg_avg_print()
         temp[0]=getch();
     } while (temp[0]!=13);
 }
-void student_passed_seach_by_code_cours_print()
+void student_passed_search_by_code_cours_print()
 {
     char code[11];
     printf("if you can cancel prosses, just press Enter\n");
@@ -4498,7 +4575,7 @@ void student_passed_seach_by_code_cours_print()
     printf("Press enter to back menu\n");
     press_enter_to_continue();
 }
-void student_dont_passed_seach_by_code_cours_print()
+void student_dont_passed_search_by_code_cours_print()
 {
     char code[11];
     printf("if you can cancel prosses, just press Enter\n");
@@ -4574,12 +4651,7 @@ void show_list_student_mashroot()
         do
         {
             if (temp_struct_student->name[0]=='0')//file is NULL
-            {
-                printf("-----------------------------------\n");
-                printf("No result to show!\n");
-                printf("-----------------------------------\n");
                 break;
-            }
             if (atof(temp_struct_student->avg_score)<min_score)
             {
                 printf("Student's %d\n",i++);
@@ -4598,7 +4670,10 @@ void show_list_student_mashroot()
 
     free_student();
     if (i==1)
+    {
+        printf("-----------------------------------\n");
         printf("not was Student \"mashrooti\"!\n");
+    }
     printf("\n-----------------------------------\n");
     printf("Press enter to back menu\n");
     do
@@ -4929,10 +5004,10 @@ int log_departemant()
                         calcurat_avrage_score_student();
                         break;
                     case 2:
-                        student_passed_seach_by_code_cours_print();
+                        student_passed_search_by_code_cours_print();
                         break;
                     case 3:
-                        student_dont_passed_seach_by_code_cours_print();
+                        student_dont_passed_search_by_code_cours_print();
                         break;
                     case 4:
                         show_list_student_mashroot();
@@ -5112,7 +5187,7 @@ void list_student_born_since_date_to_date()
     printf("Press enter to back menu\n");
     press_enter_to_continue();
 }
-void list_student_seach_major_print()
+void list_student_search_major_print()
     {
     char major[20];
     printf("if you want cancel proses just press Enter\n");
@@ -5178,7 +5253,7 @@ void list_student_seach_major_print()
     } while (temp[0]!=13);
 
 }
-void list_student_seach_city_print()
+void list_student_search_city_print()
 {
 
     char city[20];
@@ -5299,10 +5374,10 @@ void log_academic()
             list_student_born_since_date_to_date();
             break;
         case 3:
-            list_student_seach_major_print();
+            list_student_search_major_print();
             break;
         case 4:
-            list_student_seach_city_print();
+            list_student_search_city_print();
             break;
         default:
             break;
@@ -5499,6 +5574,7 @@ void main()
                         case 3:
                             set_new_score();
                             set_score_student_as_link_list();
+                            break;
                         case 4:
                             log_academic();
                             break;
