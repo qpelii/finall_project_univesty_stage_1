@@ -97,6 +97,9 @@ void menu_login_print()
         strcpy(temp,"Academic Login page");
         break;
     case 3:
+        strcpy(temp,"Forgot Password");
+        break;
+    case 4:
         strcpy(temp,"Exit Program");
         break;
     default:
@@ -104,7 +107,7 @@ void menu_login_print()
     }
 
     printf("%-22s%c\n",temp,line_char);
-    if (i!=3)
+    if (i!=4)
         printf("|--+----------------------|\n");
 
 
@@ -198,7 +201,6 @@ int menu_login_filter_selection()
                 continue;
             }
 
-            // // system("cls");;
             return num;
         }
     } while (flag);
@@ -517,6 +519,7 @@ int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_t
 void menu_admin_page_print()
 {
     char temp[25],line_char='|';
+    printf("\t  Admin Panle\n");
     printf("------------------------------\n");
     for(int i=0; i<8; i++)
     {
@@ -584,7 +587,6 @@ int menu_selection_1_5()
                 continue;
             }
 
-            // // system("cls");;
             return num;
         }
     } while (flag);
@@ -614,7 +616,6 @@ int menu_selection_1_6()
                 continue;
             }
 
-            // // system("cls");;
             return num;
         }
     } while (flag);
@@ -644,7 +645,6 @@ int menu_selection_1_7()
                 continue;
             }
 
-            // // system("cls");;
             return num;
         }
     } while (flag);
@@ -674,7 +674,6 @@ int menu_selection_1_8()
                 continue;
             }
 
-            // // system("cls");;
             return num;
         }
     } while (flag);
@@ -1056,12 +1055,15 @@ void set_new_departemant()
     }
     char name[20],family[30],date_start[15],name_of_group[20],ID_code[15],phone_num[15],email[40],user_Name[20];
     char pass1[50],pass2[50];
+    printf("Note: if you ceed of opreation press Enter\n");
     printf("Please enter this information about Departemant\n");
 
     printf("Enter name: ");
     do{
         gets(name);
-        if (check_str_full_alpha_whit_space(name) || strlen(name)==0)
+        if (strlen(name)==0)
+            return ;
+        else if (check_str_full_alpha_whit_space(name) )
             printf("Invalid input! Try again: ");
         else
             break;
@@ -1071,7 +1073,9 @@ void set_new_departemant()
     printf("Enter family: ");
     do{
         gets(family);
-        if (check_str_full_alpha_whit_space(family) || strlen(family)==0)
+        if (strlen(family)==0)
+            return ;
+        else if (check_str_full_alpha_whit_space(family))
             printf("Invalid input! Try again: ");
         else
             break;
@@ -1081,7 +1085,9 @@ void set_new_departemant()
     printf("Enter date start Departemant\n(hint:enter whith this form YYYY/MM/DD): ");
     do{
         gets(date_start);
-        if (check_str_date(date_start) || strlen(date_start)==0)
+        if (strlen(date_start)==0)
+            return ;
+        else if (check_str_date(date_start))
             printf("Invalid input! Try again: ");
         else
             break;
@@ -1090,7 +1096,9 @@ void set_new_departemant()
     printf("Enter name of Departiment group: ");
     do{
         gets(name_of_group);
-        if (check_str_full_alpha_whit_space(name_of_group) || strlen(name_of_group)==0)
+        if (strlen(name_of_group)==0)
+            return ;
+        else if (check_str_full_alpha_whit_space(name_of_group))
             printf("Invalid input! Try again: ");
         else
             break;
@@ -1100,7 +1108,9 @@ void set_new_departemant()
     printf("Enter ID: ");
     do{
         gets(ID_code);
-        if (check_str_was_int(ID_code) || strlen(ID_code)!=10)
+        if (strlen(ID_code)==0)
+            return ;
+        else if (check_str_was_int(ID_code) || strlen(ID_code)!=10)
             printf("Invalid input! Try again: ");
         else
             break;
@@ -1109,7 +1119,9 @@ void set_new_departemant()
     printf("Enter Phone number(whit this form 09123456789): ");
     do{
         gets(phone_num);
-        if (check_str_was_int(phone_num) || phone_num[0]!='0' || phone_num[1]!='9' || strlen(phone_num)!=11)
+        if (strlen(phone_num)==0)
+            return ;
+        else if (check_str_was_int(phone_num) || phone_num[0]!='0' || phone_num[1]!='9' || strlen(phone_num)!=11)
             printf("Invalid input! Try again: ");
         else
             break;
@@ -1118,7 +1130,9 @@ void set_new_departemant()
     printf("Enter Email: ");
     do{
         gets(email);
-        if (check_email(email))
+        if (strlen(email)==0)
+            return ;
+        else if (check_email(email))
             printf("Invalid input! Try again: ");
         else
             break;
@@ -1129,7 +1143,9 @@ void set_new_departemant()
     do{
         gets(user_Name);    // ----------------------------- need edit for duplicated user_name
         str_to_lower(user_Name);
-        if (check_str_whitout_space(user_Name) || strlen(user_Name)==0)
+        if (strlen(user_Name)==0)
+            return ;
+        else if (check_str_whitout_space(user_Name))
             printf("Invalid input! Try again: ");
         else if (search_user_name_academic(user_Name)==0 || search_user_name_departemant(user_Name)==0 || strcmp(user_Name,user_admin)==0)
             printf("this user name is duplicated!! Try again: ");
@@ -1143,7 +1159,9 @@ void set_new_departemant()
     do
     {
         gets(pass1);
-        if (check_str_whitout_space(pass1) || strlen(pass1)==0)
+        if (strlen(pass1)==0)
+            return ;
+        else if (check_str_whitout_space(pass1))
         {
            printf("Invalid input! Try again: ");
             continue;
@@ -1174,6 +1192,8 @@ void set_new_departemant()
 
         printf("Please repeat password: ");
         gets(pass2);
+        if (strlen(pass2)==0)
+            return ;
         if (strcmp(pass1,pass2)!=0 || strlen(pass1)!=strlen(pass2))
         {
             printf("your password is not corect! Try agian: ");
@@ -1224,12 +1244,15 @@ void set_new_academic()
     }
     char name[20],family[30],date_start[15],rate[10],phone_num[15],email[40],user_Name[20];
     char pass1[50],pass2[50];
+    printf("if you ceed of opreation press Enter\n");
     printf("Please enter this information about Academic\n");
 
     printf("Enter name: ");
     do{
         gets(name);
-        if (check_str_full_alpha_whit_space(name) || strlen(name)==0)
+        if (strlen(name)==0)
+            return ;
+        else if (check_str_full_alpha_whit_space(name))
             printf("Invalid input! Try again: ");
         else
             break;
@@ -1238,7 +1261,9 @@ void set_new_academic()
     printf("Enter family: ");
     do{
         gets(family);
-        if (check_str_full_alpha_whit_space(family) || strlen(family)==0)
+        if (strlen(family)==0)
+            return ;
+        else if (check_str_full_alpha_whit_space(family))
             printf("Invalid input! Try again: ");
         else
             break;
@@ -1247,7 +1272,9 @@ void set_new_academic()
     printf("Enter date start Academic\n(hint:enter whit this form YYYY/MM/DD): ");
     do{
         gets(date_start);
-        if (check_str_date(date_start) || strlen(date_start)==0)
+        if (strlen(date_start)==0)
+            return ;
+        else if (check_str_date(date_start))
             printf("Invalid input! Try again: ");
         else
             break;
@@ -1256,7 +1283,9 @@ void set_new_academic()
     printf("Enter Rated of Academic : ");
     do{
         gets(rate);
-        if (check_str_whitout_space(rate) || strlen(rate)==0)
+        if (strlen(rate)==0)
+            return ;
+        if (check_str_whitout_punct(rate))
             printf("Invalid input! Try again: ");
         else
             break;
@@ -1265,7 +1294,9 @@ void set_new_academic()
     printf("Enter Phone number(whit this form 09123456789): ");
     do{
         gets(phone_num);
-        if (check_str_was_int(phone_num) || phone_num[0]!='0' || phone_num[1]!='9' || strlen(phone_num)!=11)
+        if (strlen(phone_num)==0)
+            return ;
+        else if (check_str_was_int(phone_num) || phone_num[0]!='0' || phone_num[1]!='9' || strlen(phone_num)!=11)
             printf("Invalid input! Try again: ");
         else
             break;
@@ -1274,7 +1305,9 @@ void set_new_academic()
     printf("Enter Email: ");
     do{
         gets(email);
-        if (check_email(email))
+        if (strlen(email)==0)
+            return ;
+        else if (check_email(email))
             printf("Invalid input! Try again: ");
         else
             break;
@@ -1283,7 +1316,9 @@ void set_new_academic()
     printf("Enter User name of Academic: ");
     do{
         gets(user_Name);    // ----------------------------- need edit for duplicated user_name
-        if (check_str_whitout_space(user_Name) || strlen(user_Name)==0)
+        if (strlen(user_Name)==0)
+            return ;
+        else if (check_str_whitout_space(user_Name))
             printf("Invalid input! Try again: ");
         else if (search_user_name_academic(user_Name)==0 || search_user_name_departemant(user_Name)==0 || strcmp(user_Name,user_admin)==0)
             printf("this user name is duplicated!! Try again: ");
@@ -1300,7 +1335,9 @@ void set_new_academic()
     do
     {
         gets(pass1);
-        if (check_str_whitout_space(pass1) || strlen(pass1)==0)
+        if (strlen(pass1)==0)
+            return ;
+        else if (check_str_whitout_space(pass1))
         {
            printf("Invalid input! Try again: ");
             continue;
@@ -1331,7 +1368,9 @@ void set_new_academic()
 
         printf("Please repeat password: ");
         gets(pass2);
-        if (strcmp(pass1,pass2)!=0 || strlen(pass1)!=strlen(pass2))
+        if (strlen(pass2)==0)
+            return ;
+        else if (strcmp(pass1,pass2)!=0 || strlen(pass1)!=strlen(pass2))
         {
             printf("your password is not corect! Try agian: ");
             continue;
@@ -1380,12 +1419,15 @@ void set_new_student()
         return ;
     }
     char name[20],family[30],date_birthday[15],location_born[20],ID_code[15],phone_num[15],email[40],major[20],ID_uni[30];
+    printf("if you ceed of opreation press Enter\n");
     printf("Please enter this information about Student\n");
 
     printf("Enter name: ");
     do{
         gets(name);
-        if (check_str_full_alpha_whit_space(name) || strlen(name)==0)
+        if (strlen(name)==0)
+            return ;
+        else if (check_str_full_alpha_whit_space(name))
             printf("Invalid input! Try again: ");
         else
             break;
@@ -1395,7 +1437,9 @@ void set_new_student()
     printf("Enter family: ");
     do{
         gets(family);
-        if (check_str_full_alpha_whit_space(family) || strlen(family)==0)
+        if (strlen(family)==0)
+            return ;
+        else if (check_str_full_alpha_whit_space(family))
             printf("Invalid input! Try again: ");
         else
             break;
@@ -1405,6 +1449,8 @@ void set_new_student()
     printf("Enter ID: ");
     do{
         gets(ID_code);
+        if (strlen(ID_code)==0)
+            return ;
         if (check_str_was_int(ID_code) || strlen(ID_code)!=10)
             printf("Invalid input! Try again: ");
         else
@@ -1414,7 +1460,9 @@ void set_new_student()
     printf("Enter date Birthday Student\n(hint:enter whith this form YYYY/MM/DD): ");
     do{
         gets(date_birthday);
-        if (check_str_date(date_birthday) || strlen(date_birthday)==0)
+        if (strlen(date_birthday)==0)
+            return ;
+        else if (check_str_date(date_birthday))
             printf("Invalid input! Try again: ");
         else
             break;
@@ -1423,7 +1471,9 @@ void set_new_student()
     printf("Enter Location that student born: ");
     do{
         gets(location_born);
-        if (check_str_full_alpha_whit_space(location_born) || strlen(location_born)==0)
+        if (strlen(location_born)==0)
+            return ;
+        else if (check_str_full_alpha_whit_space(location_born))
             printf("Invalid input! Try again: ");
         else
             break;
@@ -1433,7 +1483,9 @@ void set_new_student()
     printf("Enter Major: ");
     do{
         gets(major);
-        if (check_str_full_alpha_whit_space(major) || strlen(major)==0)
+        if (strlen(major)==0)
+            return ;
+        else if (check_str_full_alpha_whit_space(major))
             printf("Invalid input! Try again: ");
         else
             break;
@@ -1442,6 +1494,8 @@ void set_new_student()
     printf("Enter ID of university: ");
     do{
         gets(ID_uni);
+        if (strlen(ID_uni)==0)
+            return ;
         if (check_str_was_int(ID_uni) || strlen(ID_uni)!=10)
             printf("Invalid input! Try again: ");
         else if (search_user_name_student(ID_uni)==0)
@@ -1453,6 +1507,8 @@ void set_new_student()
     printf("Enter Phone number(whit this form 09123456789): ");
     do{
         gets(phone_num);
+        if (strlen(phone_num)==0)
+            return ;
         if (check_str_was_int(phone_num) || phone_num[0]!='0' || phone_num[1]!='9' || strlen(phone_num)!=11)
             printf("Invalid input! Try again: ");
         else
@@ -1462,7 +1518,9 @@ void set_new_student()
     printf("Enter Email: ");
     do{
         gets(email);
-        if (check_email(email))
+        if (strlen(email)==0)
+            return ;
+        else if (check_email(email))
             printf("Invalid input! Try again: ");
         else
             break;
@@ -1582,7 +1640,6 @@ void set_new_score()
     {
         temp=getch();
     } while (temp!=13);
-    // system("cls");
 
 }
 int set_departemants_as_link_list()
@@ -2163,7 +2220,6 @@ void show_list_users(int status)
     int i=1;
     if (status==0 || status==1)
     {
-        // system("cls");;
         printf("list of Departemant\n_______________________________________\n\n");
         temp_struct_departemant=malloc(sizeof(struct struct_departemant));
         temp_struct_departemant=start_struct_departemant;
@@ -2260,7 +2316,6 @@ void show_list_users(int status)
         temp[0]=getch();
     } while (temp[0]!=13);
     free_academic();
-    // system("cls");;
 }
 int get_len_stuct_score()
 {
@@ -2636,7 +2691,6 @@ void press_enter_to_continue()
         {
             temp=getch();
         } while (temp!=13);
-            // system("cls");
 }
 void kick_user()
 {
@@ -2650,7 +2704,6 @@ void kick_user()
         str_to_lower(user_name);
         if (strlen(user_name)==0)
         {
-            // system("cls");
             return ;
         }
         flag=search_user_name_academic(user_name);
@@ -2665,7 +2718,6 @@ void kick_user()
         {
             user_name[0]=getch();
         } while (user_name[0]!=13);
-        // system("cls");;
         return ;
     }
     if (flag==0)
@@ -2719,7 +2771,6 @@ void list_of_log_print()
 }
 void list_of_log_academic()
 {
-    // system("cls");;
     printf("list of Academic\n_______________________________________\n\n");
     temp_struct_academic=malloc(sizeof(struct struct_academic));
     temp_struct_academic=start_struct_academic;
@@ -2770,7 +2821,6 @@ void list_of_log_academic()
 }
 void list_of_log_dismissed()
 {
-// system("cls");;
     printf("list of Academic\n_______________________________________\n\n");
     temp_struct_academic=malloc(sizeof(struct struct_academic));
     temp_struct_academic=start_struct_academic;
@@ -2979,7 +3029,6 @@ void get_backup()
     {
         temp=getch();
     } while (temp!=13);
-    // system("cls");
 }
 void load_backup()
 {
@@ -3120,7 +3169,6 @@ void load_backup()
     {
         temp=getch();
     } while (temp!=13);
-    // system("cls");
 }
 void menu_departemant_print()
 {
@@ -3587,7 +3635,6 @@ void edit_score_student()
         {
             ID_uni[0]=getch();
         } while (ID_uni[0]!=13);
-            // system("cls");
 
     }
 
@@ -3611,7 +3658,6 @@ void edit_info_course()
         else
             break;
     } while (1);
-    // system("cls");
     printf("if you don't want edit, just press Enter\n");
     printf("enter name of course: ");
     do
@@ -3665,7 +3711,6 @@ void edit_info_course()
     {
         name[0]=getch();
     } while (name[0]!=13);
-    // system("cls");
 
 }
 void remove_course()
@@ -3695,7 +3740,6 @@ void remove_course()
     {
         code_course[0]=getch();
     } while (code_course[0]!=13);
-    // system("cls");
 
 }
 void settings_departemant()
@@ -3807,7 +3851,6 @@ void settings_departemant()
         {
             str_temp[0]=getch();
         } while (str_temp[0]!=13);
-            // system("cls");
 }
 void settings_academic()
 {
@@ -3920,7 +3963,6 @@ void settings_academic()
         {
             str_temp[0]=getch();
         } while (str_temp[0]!=13);
-            // system("cls");
 }
 //                                                              reports departemant
 void info_student_sync_with_id_print()
@@ -3974,7 +4016,6 @@ void list_student_print()
 {
     char temp[25];
     int i=1;
-        // system("cls");;
         printf("list of Student\n_______________________________________\n\n");
         temp_struct_student=malloc(sizeof(struct struct_student));
         temp_struct_student=start_struct_student;
@@ -4022,7 +4063,6 @@ void list_course_print()
     char temp[25];
     char type[20];
     int i=1;
-        // system("cls");;
         printf("list of Course\n_______________________________________\n\n");
         temp_struct_course=malloc(sizeof(struct struct_course));
         temp_struct_course=start_struct_course;
@@ -4082,7 +4122,6 @@ void list_course_special_print(int status)// status1 := D and 0:= E
     char temp[25];
     char type[20];
     int i=1;
-        // system("cls");;
         printf("list of Course\n_______________________________________\n\n");
         temp_struct_course=malloc(sizeof(struct struct_course));
         if (temp_struct_course==NULL)
@@ -4479,7 +4518,6 @@ void sorte_student_bg_avg_print()
 {
     char temp[25];
     int i=1;
-        // system("cls");;
         printf("list of Student\n_______________________________________\n\n");
         temp_struct_student=malloc(sizeof(struct struct_student));
         if (temp_struct_student==NULL)
@@ -4636,7 +4674,6 @@ void show_list_student_mashroot()
 {
     char temp[25];
     int i=1;
-        // system("cls");;
         printf("list of Student\n_______________________________________\n\n");
         temp_struct_student=malloc(sizeof(struct struct_student));
         if (temp_struct_student==NULL)
@@ -4701,7 +4738,6 @@ void show_list_student_mashroot_and_get_score_in_one_cours()
 
     char temp[25];
     int i=1;
-        // system("cls");;
         printf("list of Student\n_______________________________________\n\n");
         temp_struct_student=malloc(sizeof(struct struct_student));
         if (temp_struct_student==NULL)
@@ -5423,7 +5459,8 @@ void main()
     while(1)
     {
         menu_login_print();
-        menu_type=menu_login_filter_selection();
+        menu_type=menu_selection_1_5();
+        system("cls");
         // -------------------------------------------- rotation part
         switch (menu_type)
         {
@@ -5431,64 +5468,67 @@ void main()
                 unti_hash_to_password(pointer_Padmin);
                 login_flag=get_check_user_pass(pointer_Uadmin,pointer_Padmin,pointer_Limit_admin);// 0:= succces; 1,2:unsaccses; -1:cancel login;
                 password_to_hash(pointer_Padmin);
-                // system("cls");;
                 if (login_flag==0)
                 {
+                    system("cls");
                     do{
                         menu_admin_page_print();
                         set_departemants_as_link_list();
                         set_academic_as_link_list();
                         menu_type=menu_selection_1_8();
-                        // system("cls");;
+                        system("cls");
                         switch (menu_type)
                         {
                         case 1:
                             set_new_departemant();
                             set_departemants_as_link_list();
+                            system("cls");
                             break;
                         case 2:
                             set_new_academic();
                             set_academic_as_link_list();
+                            system("cls");
                             break;
                         case 3:
                             show_list_users(0);
+                            system("cls");
                             break;
                         case 4:
                             kick_user();
+                            system("cls");
                             break;
                         case 5:
                             //lsit of Log
-                            // system("cls");
                             do{
                                 list_of_log_print();
                                 type_list_log=menu_login_filter_selection();
-                                // system("cls");;
+                                system("cls");
                                 switch (type_list_log)
                                 {
                                 case 1:
-                                    // system("cls");;
                                     list_of_log_academic();
-                                    // system("cls");;
+                                    system("cls");
                                     break;
                                 case 2:
                                     show_list_users(1);
-                                    // system("cls");;
+                                    system("cls");
                                     break;
                                 case 3:
                                     list_of_log_dismissed();
-                                    // system("cls");;
+                                    system("cls");
                                     break;
                                 default:
-                                    // system("cls");
                                     break;
                                 }
                             }while(type_list_log!=4);
                             break;
                         case 6:
                             get_backup();
+                            system("cls");
                             break;
                         case 7:
                             load_backup();
+                            system("cls");
                             break;
                         case 8:
                             break;
@@ -5501,7 +5541,7 @@ void main()
             case 2:// ------------------------------------------------------------------------------- Departemant
 
                 login_flag=get_user_pass_user_departemnts();
-
+                system("cls");
                 if (login_flag==0)
                 {
                     set_score_student_as_link_list();
@@ -5510,34 +5550,42 @@ void main()
                     do{
                         menu_departemant_print();
                         menu_type=menu_selection_1_8();
+                        system("cls");
                         switch (menu_type)
                         {
                         case 1:
                             add_new_course();
                             set_course_as_link_list();
+                            system("cls");
                             break;
                         case 2:
                             set_new_score();
                             set_score_student_as_link_list();
+                            system("cls");
                             break;
                         case 3:
                             edit_score_student();
                             add_linked_list_score_to_notpadd();
+                            system("cls");
                             break;
                         case 4:
                             edit_info_course();
                             add_linked_list_course_to_notpadd();
+                            system("cls");
                             break;
                         case 5:
                             remove_course();
                             add_linked_list_course_to_notpadd();
+                            system("cls");
                             break;
                         case 6:
                             log_departemant();
+                            system("cls");
                             break;
                         case 7:
                             settings_departemant();
                             add_linked_list_departemant_to_notpadd();
+                            system("cls");
                             break;
                         case 8:
                             break;
@@ -5552,6 +5600,7 @@ void main()
 
             case 3:// --------------------------------------------------------------------------------- Academic
                 login_flag=get_user_pass_user_academics();
+                system("cls");
 
                 if (login_flag==0)
                 {
@@ -5561,29 +5610,35 @@ void main()
                     do{
                         menu_academic_print();
                         menu_type=menu_selection_1_6();
+                        system("cls");
                         switch (menu_type)
                         {
                         case 1:
                             set_new_student();
                             set_student_as_link_list();
+                            system("cls");
                             break;
                         case 2:
                             edit_info_student();
                             add_linked_list_student_to_notpadd();
+                            system("cls");
                             break;
                         case 3:
                             set_new_score();
                             set_score_student_as_link_list();
+                            system("cls");
                             break;
                         case 4:
                             log_academic();
+                            system("cls");
                             break;
                         case 5:
                             settings_academic();
                             add_linked_list_academi_to_notpadd();
+                            system("cls");
+                            break;
                         case 6:
                             break;
-
                         default:
                             break;
                         }
@@ -5593,6 +5648,9 @@ void main()
                     add_linked_list_academi_to_notpadd();
                 break;
             case 4:
+                //def 
+                
+            case 5:
                 free(start_struct_academic);
                 free(start_struct_departemant);
                 return ;
@@ -5611,5 +5669,4 @@ void main()
 // fix from date      1234/4/4 --> 1234/04/04
 // list kamele kholase che samiya baraye deoartemant log???
 // fix zone score 0_20
-// fix cls
 // add exit option for log departemnat and probebly academic        DONE
