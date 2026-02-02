@@ -162,6 +162,14 @@ void str_to_lower(char text[])
     for (i=0; i<len; i++)
         text[i]=tolower(text[i]);
 }
+void press_enter_to_continue()
+{
+    char temp;
+        do
+        {
+            temp=getch();
+        } while (temp!=13);
+}
 void password_to_star(char pass_pointer[])
 {
     char pass[50];
@@ -729,6 +737,35 @@ int menu_selection_1_8()
         {
             num=atoi(number) ;
             if (num>8 || num<1)
+            {
+                printf("Your input is out of range! Try agian: ");
+                flag++;
+                continue;
+            }
+
+            return num;
+        }
+    } while (flag);
+
+}
+int menu_selection_1_9()
+{
+    char number[3];
+    int num,flag;
+    do
+    {
+        flag=num=0;
+        gets(number);
+        flag=check_str_was_int(number);
+        if (flag)
+        {
+            printf("Invalid input Try agian: ");
+            continue;
+        }
+        else
+        {
+            num=atoi(number) ;
+            if (num>9 || num<1)
             {
                 printf("Your input is out of range! Try agian: ");
                 flag++;
@@ -1806,7 +1843,6 @@ void set_new_ticket()
     fputs("N",file_ticket);//replay massage
     fputs(", ",file_ticket);
     fputs("0",file_ticket);
-    fputs(User_Name_static,file_ticket);
     fputc('\n',file_ticket);
     printf("Successfully prosses!\npress Enter to continue\n");
     fclose(file_ticket);
@@ -2417,7 +2453,7 @@ int set_score_student_as_link_list()
     free(temp_struct_score);
     return 0;
 }
-int set_score_ticket_as_link_list()
+int set_ticket_as_link_list()
 {
     start_struct_ticket=malloc(sizeof(struct struct_ticket));
     if (start_struct_ticket==NULL)
@@ -2956,6 +2992,49 @@ void add_linked_list_score_to_notpadd()
     free(temp_struct_score);
     fclose(score);
 }
+void add_linked_list_ticket_to_notpadd()
+{
+    FILE *ticket;
+    ticket=fopen("file_ticket.txt","w");
+    temp_struct_ticket=malloc(sizeof(struct struct_ticket));
+    if (temp_struct_ticket==NULL)
+    {
+        printf("memory is not Allow!! Try later.");
+        return ;
+    }
+    temp_struct_ticket=start_struct_ticket;
+    if (temp_struct_ticket->status[0]=='N')
+    {
+        fclose(ticket);
+        free(temp_struct_ticket);
+        return ;
+    }
+    char final[445]={0},temp[200];
+    do
+    {
+        strcpy(temp,temp_struct_ticket->user_name);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_ticket->massage);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_ticket->date_ticket);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_ticket->replay);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_ticket->status);
+        strcat(final,temp);
+        strcat(final,"\n");
+        fputs(final,ticket);
+        strcpy(final,"\0");
+        temp_struct_ticket=temp_struct_ticket->link;
+
+    } while (temp_struct_ticket!=NULL);
+    free(temp_struct_ticket);
+    fclose(ticket);
+}
 int sort_linked_list_by_name_student()
 {
     char temp[20];
@@ -3022,14 +3101,7 @@ int sort_linked_list_by_name_student()
     }
     free_score();
 }
-void press_enter_to_continue()
-{
-    char temp;
-        do
-        {
-            temp=getch();
-        } while (temp!=13);
-}
+
 void kick_user()
 {
     char user_name[20];
@@ -6138,7 +6210,7 @@ void main()
                     set_course_as_link_list();
                     do{
                         menu_departemant_print();
-                        menu_type=menu_selection_1_8();
+                        menu_type=menu_selection_1_9();
                         system("cls");
                         switch (menu_type)
                         {
@@ -6174,6 +6246,7 @@ void main()
                         case 7:
                             set_new_ticket();
                             set_ticket_as_link_list();
+                            system("cls");
                             break;
                         case 8:
                             settings_departemant();
@@ -6185,7 +6258,7 @@ void main()
                         default:
                             break;
                         }
-                    }while(menu_type!=8);
+                    }while(menu_type!=9);
                 }
                 else if (login_flag!=-1)
                     add_linked_list_departemant_to_notpadd();
@@ -6202,7 +6275,7 @@ void main()
                     set_score_student_as_link_list();
                     do{
                         menu_academic_print();
-                        menu_type=menu_selection_1_6();
+                        menu_type=menu_selection_1_7();
                         system("cls");
                         switch (menu_type)
                         {
@@ -6226,16 +6299,21 @@ void main()
                             system("cls");
                             break;
                         case 5:
+                            set_new_ticket();
+                            set_ticket_as_link_list();
+                            system("cls");
+                            break;
+                        case 6:
                             settings_academic();
                             add_linked_list_academic_to_notpadd();
                             system("cls");
                             break;
-                        case 6:
+                        case 7:
                             break;
                         default:
                             break;
                         }
-                    }while(menu_type!=6);
+                    }while(menu_type!=7);
                 }
                 else if (login_flag!=-1)
                     add_linked_list_academic_to_notpadd();
