@@ -20,6 +20,8 @@ struct struct_departemant
     char email[40];
     char user_Name[20];
     char pass1[50];
+    char question_type[5];
+    char answer_forgot_pass[50];
     char limit_time[10];
     struct struct_departemant *link;
 };
@@ -34,6 +36,8 @@ struct struct_academic
     char email[40];
     char user_Name[20];
     char pass1[50];
+    char question_type[5];
+    char answer_forgot_pass[50];
     char limit_time[10];
     char ekhraj[20];
     struct struct_academic *link;
@@ -75,14 +79,12 @@ struct struct_score
 };
 struct struct_score *start_struct_score, *end_struct_score, *temp_struct_score;
 
-
-
 void menu_login_print()
 {
     char temp[25],line_char='|';
     printf("Welcome to login page\n\n");
     printf("---------------------------\n");
-    for(int i=0; i<4; i++)
+    for(int i=0; i<5; i++)
     {
     printf("%c%-2d%c",line_char,i+1,line_char);
     switch (i)
@@ -177,34 +179,52 @@ void password_to_star(char pass_pointer[])
     pass[i]='\0';
     strcpy(pass_pointer,pass);
 }
-int menu_login_filter_selection()
+void question_print_forgot_pass()
 {
-    char number[3];
-    int num,flag;
-    do
+    char temp[65],line_char='|';
+    printf("\t\t    Question list\n");
+    printf("----------------------------------------------------------------------\n");
+    for(int i=0; i<8; i++)
     {
-        flag=num=0;
-        gets(number);
-        flag=check_str_was_int(number);
-        if (flag)
-        {
-            printf("Invalid input Try agian: ");
-            continue;
-        }
-        else
-        {
-            num=atoi(number) ;
-            if (num>4 || num<1)
-            {
-                printf("Your input is out of range! Try agian: ");
-                flag++;
-                continue;
-            }
+    printf("%c%-2d%c",line_char,i+1,line_char);
+    switch (i)
+    {
+    case 0:
+        strcpy(temp,"What is the name of your high school?");
+        break;
+    case 1:
+        strcpy(temp,"What is the name of your childhood best friend?");
+        break;
+    case 2:
+        strcpy(temp,"What was the name of the street where you lived as a child?");
+        break;
+    case 3:
+        strcpy(temp,"What is the name of your first teacher?");
+        break;
+    case 4:
+        strcpy(temp,"What is your favorite food?");
+        break;
+    case 5:
+        strcpy(temp,"What is your favorite color?");
+        break;
+    case 6:
+        strcpy(temp,"What was the name of your first school?");
+        break;
+    case 7:
+        strcpy(temp,"What is your father's name?");
+        break;
+    default:
+        break;
+    }
 
-            return num;
-        }
-    } while (flag);
+    printf("%-65s%c\n",temp,line_char);
+    if (i!=7)
+        printf("|--+-----------------------------------------------------------------|\n");
 
+
+    }
+    printf("----------------------------------------------------------------------\n\n");
+    printf("select a option for question (when you forgot password need this): ");
 }
 int check_str_whitout_space(char string[])
 {
@@ -563,6 +583,35 @@ void menu_admin_page_print()
     printf("------------------------------\n\n");
     printf("select a option from menu: ");
 }
+int menu_selection_1_4()
+{
+    char number[3];
+    int num,flag;
+    do
+    {
+        flag=num=0;
+        gets(number);
+        flag=check_str_was_int(number);
+        if (flag)
+        {
+            printf("Invalid input Try agian: ");
+            continue;
+        }
+        else
+        {
+            num=atoi(number) ;
+            if (num>4 || num<1)
+            {
+                printf("Your input is out of range! Try agian: ");
+                flag++;
+                continue;
+            }
+
+            return num;
+        }
+    } while (flag);
+
+}
 int menu_selection_1_5()
 {
     char number[3];
@@ -798,8 +847,27 @@ int check_str_date(char date[])
 }
 int check_email(char email[])
 {
+    int counter,counter_2=0,len,atsing_flag=0,i;
+    // ------------------ remove white space
+    do
+    {
+        len=strlen(email);
+        if (email[0]==' ')
+            for (i=0;i<len;i++)
+                email[i]=email[i+1];
+        else
+            break;
+    } while (1);
+    do
+    {
+        len=strlen(email);
+        if (email[len-1]==' ')
+            email[len-1]='\0';
+        else 
+            break;
+    } while (1);
     // if corect -> 0 else 1;
-    int counter,counter_2=0,len=strlen(email),atsing_flag=0;
+    len=strlen(email);
     char name_email[45]="",domain[30]="";
     for(counter=0;counter<len;counter++)
     {
@@ -1054,7 +1122,8 @@ void set_new_departemant()
         return ;
     }
     char name[20],family[30],date_start[15],name_of_group[20],ID_code[15],phone_num[15],email[40],user_Name[20];
-    char pass1[50],pass2[50];
+    char pass1[50],pass2[50],answer[50],question_type_str[5];
+    int question_type;
     printf("Note: if you ceed of opreation press Enter\n");
     printf("Please enter this information about Departemant\n");
 
@@ -1201,6 +1270,24 @@ void set_new_departemant()
         }
         break;
     } while (1);
+    question_print_forgot_pass();
+    question_type=menu_selection_1_8();
+    snprintf(question_type_str,sizeof(question_type_str),"%i",question_type);
+    printf("Enter the answer of question that selected: ");
+    do
+    {
+        gets(answer);
+        str_to_lower(answer);
+        if (strlen(answer)==0)
+            return ;
+        else if (check_str_full_alpha_whit_space(answer))
+            printf("Invalid input! Try with another form: ");
+        else 
+            break;
+    } while (1);
+    
+    
+
     // ----------------------------------file apend
     password_to_hash(pass1);
     fputs(name,file_departemant);
@@ -1220,6 +1307,10 @@ void set_new_departemant()
     fputs(user_Name,file_departemant);
     fputs(", ",file_departemant);
     fputs(pass1,file_departemant);
+    fputs(", ",file_departemant);
+    fputs(question_type_str,file_departemant);
+    fputs(", ",file_departemant);
+    fputs(answer,file_departemant);
     fputs(", ",file_departemant);
     fputs("0",file_departemant);
     fputc('\n',file_departemant);
@@ -1243,7 +1334,7 @@ void set_new_academic()
         return ;
     }
     char name[20],family[30],date_start[15],rate[10],phone_num[15],email[40],user_Name[20];
-    char pass1[50],pass2[50];
+    char pass1[50],pass2[50],answer[50],question_type_str[5];
     printf("if you ceed of opreation press Enter\n");
     printf("Please enter this information about Academic\n");
 
@@ -1377,6 +1468,22 @@ void set_new_academic()
         }
         break;
     } while (1);
+    question_print_forgot_pass();
+    int question_type=menu_selection_1_8();
+    snprintf(question_type_str,sizeof(question_type_str),"%i",question_type);
+    printf("Enter the answer of question that selected: ");
+    do
+    {
+        gets(answer);
+        str_to_lower(answer);
+        if (strlen(answer)==0)
+            return ;
+        else if (check_str_full_alpha_whit_space(answer))
+            printf("Invalid input! Try with another form: ");
+        else 
+            break;
+    } while (1);
+    
     // ----------------------------------file apend
     password_to_hash(pass1);
     fputs(name,file_academic);
@@ -1394,6 +1501,10 @@ void set_new_academic()
     fputs(user_Name,file_academic);
     fputs(", ",file_academic);
     fputs(pass1,file_academic);
+    fputs(question_type_str,file_academic);
+    fputs(", ",file_academic);
+    fputs(answer,file_academic);
+    fputs(", ",file_academic);
     fputs(", ",file_academic);
     fputs("0",file_academic);
     fputs(", ",file_academic);
@@ -1709,6 +1820,12 @@ int set_departemants_as_link_list()
                 strcpy(start_struct_departemant->pass1,info);
                 break;
             case 10:
+                strcpy(start_struct_departemant->question_type,info);
+                break;
+            case 11:
+                strcpy(start_struct_departemant->answer_forgot_pass,info);
+                break;
+            case 12:
                 strcpy(start_struct_departemant->limit_time,info);
                 break;
             default:
@@ -1734,7 +1851,7 @@ int set_departemants_as_link_list()
         if (strlen(temp)==0)
             break;
         flag_info=1,i=0,j=0;
-        while(flag_info!=11)
+        while(flag_info!=13)
         {
             if ((temp[i]==',' && temp[i+1]==' ') || temp[i]=='\n')
             {
@@ -1769,6 +1886,12 @@ int set_departemants_as_link_list()
                     strcpy(temp_struct_departemant->pass1,info);
                     break;
                 case 10:
+                    strcpy(temp_struct_departemant->question_type,info);
+                    break;
+                case 11:
+                    strcpy(temp_struct_departemant->answer_forgot_pass,info);
+                    break;
+                case 12:
                     strcpy(temp_struct_departemant->limit_time,info);
                     break;
                 default:
@@ -1856,9 +1979,15 @@ int set_academic_as_link_list()
                 strcpy(start_struct_academic->pass1,info);
                 break;
             case 9:
-                strcpy(start_struct_academic->limit_time,info);
+                strcpy(start_struct_academic->question_type,info);
                 break;
             case 10:
+                strcpy(start_struct_academic->answer_forgot_pass,info);
+                break;
+            case 11:
+                strcpy(start_struct_academic->limit_time,info);
+                break;
+            case 12:
                 strcpy(start_struct_academic->ekhraj,info);
                 break;
             default:
@@ -1884,7 +2013,7 @@ int set_academic_as_link_list()
         if (strlen(temp)==0)
             break;
         flag_info=1,i=0,j=0;
-        while(flag_info!=11)
+        while(flag_info!=13)
         {
             if ((temp[i]==',' && temp[i+1]==' ') || temp[i]=='\n')
             {
@@ -1916,9 +2045,15 @@ int set_academic_as_link_list()
                     strcpy(temp_struct_academic->pass1,info);
                     break;
                 case 9:
-                    strcpy(temp_struct_academic->limit_time,info);
+                    strcpy(temp_struct_academic->question_type,info);
                     break;
                 case 10:
+                    strcpy(temp_struct_academic->answer_forgot_pass,info);
+                    break;
+                case 11:
+                    strcpy(temp_struct_academic->limit_time,info);
+                    break;
+                case 12:
                     strcpy(temp_struct_academic->ekhraj,info);
                     break;
                 default:
@@ -2357,7 +2492,7 @@ int get_len_stuct_student()
     free(temp_struct_student);
     return counter;
 }
-void add_linked_list_academi_to_notpadd()
+void add_linked_list_academic_to_notpadd()
 {
     FILE *Academic;
     Academic=fopen("file_academic.txt","w");
@@ -2399,6 +2534,12 @@ void add_linked_list_academi_to_notpadd()
         strcat(final,temp);
         strcat(final,", ");
         strcpy(temp,temp_struct_academic->pass1);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_academic->question_type);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_academic->answer_forgot_pass);
         strcat(final,temp);
         strcat(final,", ");
         strcpy(temp,temp_struct_academic->limit_time);
@@ -2460,6 +2601,12 @@ void add_linked_list_departemant_to_notpadd()
         strcat(final,temp);
         strcat(final,", ");
         strcpy(temp,temp_struct_departemant->pass1);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_departemant->question_type);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_departemant->answer_forgot_pass);
         strcat(final,temp);
         strcat(final,", ");
         strcpy(temp,temp_struct_departemant->limit_time);
@@ -2726,7 +2873,7 @@ void kick_user()
         get_now_time(date);
         strcpy(temp_struct_academic->ekhraj,date);
         free_academic();
-        add_linked_list_academi_to_notpadd();
+        add_linked_list_academic_to_notpadd();
         printf("Successfully! press Enter to continue\n");
         char temp;
         do
@@ -3169,6 +3316,249 @@ void load_backup()
     {
         temp=getch();
     } while (temp!=13);
+}
+void forgot_password()
+{
+    int i;
+    int flag_dpartemat=0,flag_academic=0;
+    char temp[60],user[20],phone_num[15],email[40];
+    printf("if you can cancel prosses, just press Enter\n");
+    printf("enter user name: ");
+    do{
+        gets(user);
+        str_to_lower(user);
+        if (strlen(user)==0)
+            return ;
+        if (search_user_name_departemant(user)==0)
+        {
+            flag_dpartemat++;
+            break;
+        }
+        else if (search_user_name_academic(user)==0)
+        {
+            if (temp_struct_academic->ekhraj[0]!='N')
+            {
+                printf("this user was dismised by admin!!\n");
+                return ;
+            }
+            flag_academic++;
+            break;
+        }
+        else 
+            printf("User name not found!! Try again: ");
+    }while(1);
+    printf("Enter your phone number: ");
+    do
+    {
+        gets(phone_num);
+        if (strlen(phone_num)==0)
+        {
+            if (flag_academic==1)
+                free_academic();
+            else 
+                free_departemant();
+
+            return ;
+        }
+        else if (check_str_was_int(phone_num) || phone_num[0]!='0' || phone_num[1]!='9' || strlen(phone_num)!=11)
+            printf("Invalid input! Try again: ");
+        else if (flag_academic==1)
+        {
+            if (strcmp(temp_struct_academic->phone_num,phone_num)==0 && strlen(phone_num)==strlen(temp_struct_academic->phone_num))
+                break;
+            else
+                printf("Phone number is not match with user's phone number!! Try again: ");
+        }
+        else 
+        {
+            if (strcmp(temp_struct_departemant->phone_num,phone_num)==0 && strlen(phone_num)==strlen(temp_struct_departemant->phone_num))
+                break;
+            else
+                printf("Phone number is not match with user's phone number!! Try again: ");
+        }
+    } while (1);
+    
+    printf("Enter your Email: ");
+    do
+    {
+        gets(email);
+        str_to_lower(email);
+        if (strlen(email)==0)
+        {
+            if (flag_academic==1)
+                free_academic();
+            else 
+                free_departemant();
+
+            return ;
+        }
+        else if (check_email(email))
+            printf("Invalid input! Try again: ");
+        else if (flag_academic==1)
+        {
+            if (strcmp(temp_struct_academic->email,email)==0 && strlen(email)==strlen(temp_struct_academic->email))
+                break;
+            else
+                printf("Email is not match with user's Email!! Try again: ");
+        }
+        else
+        {
+            if (strcmp(temp_struct_departemant->email,email)==0 && strlen(email)==strlen(temp_struct_departemant->email))
+                break;
+            else
+                printf("Email is not match with user's Email!! Try again: ");
+        }
+
+    } while (1);
+    if (flag_academic==1)
+        i=atoi(temp_struct_academic->question_type);
+    else 
+        i=atoi(temp_struct_departemant->question_type);
+
+    switch (i)
+    {
+    case 1:
+        strcpy(temp,"What is the name of your high school?");
+        break;
+    case 2:
+        strcpy(temp,"What is the name of your childhood best friend?");
+        break;
+    case 3:
+        strcpy(temp,"What was the name of the street where you lived as a child?");
+        break;
+    case 4:
+        strcpy(temp,"What is the name of your first teacher?");
+        break;
+    case 5:
+        strcpy(temp,"What is your favorite food?");
+        break;
+    case 6:
+        strcpy(temp,"What is your favorite color?");
+        break;
+    case 7:
+        strcpy(temp,"What was the name of your first school?");
+        break;
+    case 8:
+        strcpy(temp,"What is your father's name? ");
+        break;
+    default:
+        break;
+    }
+    printf("%s ",temp);
+    do
+    {
+        gets(temp);
+        str_to_lower(temp);
+        if (strlen(temp)==0)
+        {
+            if (flag_academic==1)
+                free_academic();
+            else 
+                free_departemant();
+
+            return ;
+        }
+        if (flag_academic==1)
+        {
+            if (strcmp(temp_struct_academic->answer_forgot_pass,temp)==0 && strlen(temp_struct_academic->answer_forgot_pass)==strlen(temp))
+                break;
+            else 
+                printf("this is not answer!! try again: ");
+        }
+        else 
+        {
+            if (strcmp(temp_struct_departemant->answer_forgot_pass,temp)==0 && strlen(temp_struct_departemant->answer_forgot_pass)==strlen(temp))
+                break;
+            else 
+                printf("this is not answer!! try again: ");
+        }
+    } while (1);
+    // ---------------------------------- After that match identity
+    char pass1[50],pass2[50];
+    printf("Set new Password for User: ");
+    do
+    {
+        password_to_star(pass1);
+        i=check_strong_password(pass1);
+        if (strlen(pass1)==0)
+        {
+            if (flag_academic==1)
+                free_academic();
+            else 
+                free_departemant();
+
+            return ;
+        }
+        else if (check_str_whitout_space(pass1)==1)
+            printf("Invlid! Try again: ");
+        else if (i)
+        {
+            switch (i)
+            {
+            case 1:
+                printf("too few character!(minimum character is 8)! Try again: ");
+                break;
+            case 2:
+                printf("Your password for security must have number! Try again: ");
+                break;
+            case 3:
+                printf("Your password must have Capital and Small letters! Try again: ");
+                break;
+            case 4:
+                printf("Your password must have punct(!@#$%^) character! Try again: ");
+                break;
+            case 5:
+                printf("Your password must have Capital and Small letters! Try again: ");
+                break;
+            default:
+                break;
+            }
+            continue;
+        }
+        else
+        {
+            printf("Repet password: ");
+            password_to_star(pass2);
+            if (strcmp(pass2,pass1)!=0 || strlen(pass2)!=strlen(pass1))
+            {
+                printf("Repeated password mast match whit fisrt password! Try agian: ");
+                continue;
+            }
+            if (flag_academic==1)
+            {
+                if (strcmp(pass1,temp_struct_academic->pass1)==0 && strlen(pass1)==strlen(temp_struct_academic->pass1))
+                {
+                    printf("new password should not be same as old password! Try another password: ");
+                    continue;
+                }
+            }
+            else if (strcmp(pass1,temp_struct_departemant->pass1)==0 && strlen(pass1)==strlen(temp_struct_departemant->pass1))
+            {
+                printf("new password should not be same as old password! Try another password: ");
+                continue;
+            }
+            password_to_hash(pass1);
+            if (flag_academic==1)
+                strcpy(temp_struct_academic->pass1,pass1);
+            else 
+                strcpy(temp_struct_departemant->pass1,pass1);
+            break;
+        }
+    } while (1);
+    if (flag_academic==1)
+    {
+        strcpy(temp_struct_academic->pass1,pass1);
+        add_linked_list_academic_to_notpadd();
+        free_academic();
+    }
+    else
+    {
+        strcpy(temp_struct_departemant->pass1,pass1);
+        add_linked_list_departemant_to_notpadd();
+        free_departemant();
+    }
+    printf("successfull proses! Press Enter to continue\n");
+    press_enter_to_continue();
 }
 void menu_departemant_print()
 {
@@ -5460,7 +5850,7 @@ void main()
     {
         menu_login_print();
         menu_type=menu_selection_1_5();
-        system("cls");
+        // system("cls");
         // -------------------------------------------- rotation part
         switch (menu_type)
         {
@@ -5501,7 +5891,7 @@ void main()
                             //lsit of Log
                             do{
                                 list_of_log_print();
-                                type_list_log=menu_login_filter_selection();
+                                type_list_log=menu_selection_1_4();
                                 system("cls");
                                 switch (type_list_log)
                                 {
@@ -5634,7 +6024,7 @@ void main()
                             break;
                         case 5:
                             settings_academic();
-                            add_linked_list_academi_to_notpadd();
+                            add_linked_list_academic_to_notpadd();
                             system("cls");
                             break;
                         case 6:
@@ -5645,11 +6035,12 @@ void main()
                     }while(menu_type!=6);
                 }
                 else if (login_flag!=-1)
-                    add_linked_list_academi_to_notpadd();
+                    add_linked_list_academic_to_notpadd();
                 break;
             case 4:
-                //def 
-                
+                forgot_password();
+                // system("cls");
+                break;
             case 5:
                 free(start_struct_academic);
                 free(start_struct_departemant);
