@@ -1112,6 +1112,15 @@ void get_now_time(char result[])
     struct tm *time = localtime(&now);
     strftime(result, 20, "%Y/%m/%d|%H:%M:%S", time);
 }
+int check_domain_score(char score[])
+{
+    int len=strlen(score);
+    int score_int=atoi(score);
+    if (0<=score_int && score_int<=20)
+        return 0;
+    else 
+        return 1;
+}
 void set_new_departemant()
 {
     FILE *file_departemant;
@@ -1726,6 +1735,8 @@ void set_new_score()
             return ;
         else if (check_str_was_flaot(score)==1)
             printf("Invalid format! Try agian: ");
+        else if (check_domain_score(score))
+            printf("Out of range input!! score must bitwen 0 and 20! Try again: ");
         else
             break;
     } while (1);
@@ -4015,6 +4026,8 @@ void edit_score_student()
             gets(ID_uni);// baraye in ce moteghayere ezafa add nakonam
             if (strlen(ID_uni)==0 || check_str_was_flaot(ID_uni)==1)
                 printf("Invlid! Try again: ");
+            else if (check_domain_score(ID_uni))
+                printf("Out of range input!! score must bitwen 0 and 20! Try again: ");
             else
                 break;
         } while (1);
@@ -5850,7 +5863,7 @@ void main()
     {
         menu_login_print();
         menu_type=menu_selection_1_5();
-        // system("cls");
+        system("cls");
         // -------------------------------------------- rotation part
         switch (menu_type)
         {
@@ -6039,7 +6052,7 @@ void main()
                 break;
             case 4:
                 forgot_password();
-                // system("cls");
+                system("cls");
                 break;
             case 5:
                 free(start_struct_academic);
@@ -6054,10 +6067,9 @@ void main()
 
 }
 
-//set file back up for score-student
+//set file back up for score-student   Done
 // dota nomre nabase   Done
 // dissbale able   Done
-// fix from date      1234/4/4 --> 1234/04/04
-// list kamele kholase che samiya baraye deoartemant log???
+// fix from date      1234/4/4 --> 1234/04/04    mohem nist
 // fix zone score 0_20
 // add exit option for log departemnat and probebly academic        DONE
