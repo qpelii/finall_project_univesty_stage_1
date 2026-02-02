@@ -78,6 +78,16 @@ struct struct_score
     struct struct_score *link;
 };
 struct struct_score *start_struct_score, *end_struct_score, *temp_struct_score;
+struct struct_ticket
+{
+    char user_name[20];
+    char massage[200];
+    char replay[200];
+    char status[3];//0 :=not replay yet 1:= get replay
+    struct struct_ticket *link;
+};
+struct struct_ticket *start_struct_ticket, *end_struct_ticket, *temp_struct_ticket;
+
 
 void menu_login_print()
 {
@@ -182,7 +192,7 @@ void password_to_star(char pass_pointer[])
 void question_print_forgot_pass()
 {
     char temp[65],line_char='|';
-    printf("\t\t    Question list\n");
+    printf("\t\t\t    Question list\n");
     printf("----------------------------------------------------------------------\n");
     for(int i=0; i<8; i++)
     {
@@ -1434,7 +1444,7 @@ void set_new_academic()
     printf("Set Password for Academic: ");
     do
     {
-        gets(pass1);
+        password_to_star(pass1);
         if (strlen(pass1)==0)
             return ;
         else if (check_str_whitout_space(pass1))
@@ -1467,7 +1477,7 @@ void set_new_academic()
             continue;
 
         printf("Please repeat password: ");
-        gets(pass2);
+        password_to_star(pass2);
         if (strlen(pass2)==0)
             return ;
         else if (strcmp(pass1,pass2)!=0 || strlen(pass1)!=strlen(pass2))
@@ -1510,10 +1520,10 @@ void set_new_academic()
     fputs(user_Name,file_academic);
     fputs(", ",file_academic);
     fputs(pass1,file_academic);
+    fputs(", ",file_academic);
     fputs(question_type_str,file_academic);
     fputs(", ",file_academic);
     fputs(answer,file_academic);
-    fputs(", ",file_academic);
     fputs(", ",file_academic);
     fputs("0",file_academic);
     fputs(", ",file_academic);
