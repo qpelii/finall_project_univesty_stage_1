@@ -1184,9 +1184,9 @@ int check_domain_score(char score[])
     else 
         return 1;
 }
-int list_sent_ticket_by_user_name(char user[])
+int list_sent_ticket_by_user_name(char user[],int flag)
 {
-    char temp[25],char_line='|';
+    char temp[20],char_line='|';
     int i=1;
         printf("\t\t\t      List of Ticket\n--------------------------------------------------------------------------\n");
         temp_struct_ticket=malloc(sizeof(struct struct_ticket));
@@ -1198,7 +1198,7 @@ int list_sent_ticket_by_user_name(char user[])
             press_enter_to_continue();
             return -1;
         }
-        printf("|row|time sent ticket    |massage ticket\t |status answer\t  |");
+        printf("|row|time sent ticket    |massage ticket\t |status answer          |");
         do
         {
             if (strcmp(temp_struct_ticket->user_name,user)==0 && strlen(temp_struct_ticket->user_name)==strlen(user))
@@ -1207,18 +1207,18 @@ int list_sent_ticket_by_user_name(char user[])
                 printf("%c%-3d%c",char_line,i++,char_line);
                 printf("%-20s%c",temp_struct_ticket->date_ticket,char_line);
                 strncpy(temp,temp_struct_ticket->massage,sizeof(temp)-1);
-                printf("%s...%c",temp,char_line);
+                printf("%s... %c",temp,char_line);
                 if (temp_struct_ticket->status[0]=='0')
-                    printf("not seen yet\t   %c",char_line);
+                    printf("not seen yet           %c",char_line);
                 else if (temp_struct_ticket->status[0]=='1' && strlen(temp_struct_ticket->replay)==0)
                     printf("just seen your massage %c",char_line);
                 else 
-                    printf("Answered ticket\t%c",char_line);
+                    printf("Answered ticket        %c",char_line);
             }
             temp_struct_ticket=temp_struct_ticket->link;
         } while (temp_struct_ticket!=NULL);
         free(temp_struct_ticket);
-        printf("--------------------------------------------------------------------------\n");
+        printf("\n--------------------------------------------------------------------------\n");
         if (i==1)
         {
             printf("\t\t\t   not ticket set yet!\n");
@@ -1226,22 +1226,29 @@ int list_sent_ticket_by_user_name(char user[])
             press_enter_to_continue();
             return -1;
         }
-        int selection=0;
-        printf("select a number of ticket from menu: ");
-        do
+        if (flag==1)
         {
-            gets(temp);
-            if (check_str_was_int(temp))
-                printf("Invalid input! Try again: ");
-            else
-                selection=atoi(temp);
-            if (selection<=0 || selection>=i)
-                printf("out of range!! try another one: ");
-            else
-                break;
-        } while (1);
-        return selection;
-        
+            int selection=0;
+            printf("select a number of ticket from menu: ");
+            do
+            {
+                gets(temp);
+                if (check_str_was_int(temp))
+                    printf("Invalid input! Try again: ");
+                else
+                    selection=atoi(temp);
+                if (selection<=0 || selection>=i)
+                    printf("out of range!! try another one: ");
+                else
+                    break;
+            } while (1);
+            return selection;
+        }
+        else
+        {
+            printf("Press enter to continue\n");
+            press_enter_to_continue();
+        }
 }
 int answer_ticket_print(int num, char user[])
 {
@@ -1270,6 +1277,7 @@ int answer_ticket_print(int num, char user[])
         {
             printf("date create ticket: %s\n",temp_struct_ticket->date_ticket);
             printf("your massage:\n%s\n",temp_struct_ticket->massage);
+            printf("Operator Massage: \n\t");
             if (temp_struct_ticket->status[0]=='0')
                 printf("not seen yet\n");
             else if (temp_struct_ticket->status[0]=='1' && strlen(temp_struct_ticket->replay)==0)
@@ -6266,7 +6274,7 @@ void main()
     {
         menu_login_print();
         menu_type=menu_selection_1_5();
-        system("cls");
+        // system("cls");
         // -------------------------------------------- rotation part
         switch (menu_type)
         {
@@ -6350,7 +6358,7 @@ void main()
             case 2:// ------------------------------------------------------------------------------- Departemant
 
                 login_flag=get_user_pass_user_departemnts();
-                system("cls");
+                // system("cls");
                 if (login_flag==0)
                 {
                     set_score_student_as_link_list();
@@ -6359,7 +6367,7 @@ void main()
                     do{
                         menu_departemant_print();
                         menu_type=menu_selection_1_9();
-                        system("cls");
+                        // system("cls");
                         switch (menu_type)
                         {
                         case 1:
@@ -6392,7 +6400,6 @@ void main()
                             system("cls");
                             break;
                         case 7:
-                            
                             do
                             {
                                 menu_ticket_user_print();
@@ -6404,10 +6411,15 @@ void main()
                                     set_ticket_as_link_list();
                                     break;
                                 case 2:
-                                    menu_type=list_sent_ticket_by_user_name(User_Name_static);
+                                    set_ticket_as_link_list();
+                                    menu_type=list_sent_ticket_by_user_name(User_Name_static, 1);
                                     if (menu_type==-1)
                                         break;
                                     answer_ticket_print(menu_type,User_Name_static);
+                                    break;
+                                case 3:
+                                    set_ticket_as_link_list();
+                                    list_sent_ticket_by_user_name(User_Name_static, 0);
                                     break;
                                 default:
                                     break;
@@ -6466,8 +6478,29 @@ void main()
                             system("cls");
                             break;
                         case 5:
-                            set_new_ticket();
-                            set_ticket_as_link_list();
+                            do
+                            {
+                                menu_ticket_user_print();
+                                menu_type=menu_selection_1_4();
+                                switch (menu_type)
+                                {
+                                case 1:
+                                    set_new_ticket();
+                                    set_ticket_as_link_list();
+                                    break;
+                                case 2:
+                                    menu_type=list_sent_ticket_by_user_name(User_Name_static, 1);
+                                    if (menu_type==-1)
+                                        break;
+                                    answer_ticket_print(menu_type,User_Name_static);
+                                    break;
+                                case 3:
+                                    list_sent_ticket_by_user_name(User_Name_static, 0);
+                                    break;
+                                default:
+                                    break;
+                                }
+                            } while (menu_type!=4);
                             system("cls");
                             break;
                         case 6:
