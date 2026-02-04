@@ -1056,6 +1056,14 @@ int list_sent_ticket_by_user_name(char user[])
             return -1;
         }
         printf("|row|time sent ticket    |massage ticket\t |ticket status          |");
+        if (temp_struct_ticket->status[0]=='N')
+        {
+            printf("\n--------------------------------------------------------------------------\n");
+            printf("\t\t\t   not ticket set yet!\n");
+            printf("Press Enter to contniue\n");
+            press_enter_to_continue();
+            return -1;
+        }
         do
         {
             if (strcmp(temp_struct_ticket->user_name,user)==0 && strlen(temp_struct_ticket->user_name)==strlen(user))
@@ -1129,6 +1137,14 @@ int list_unread_ticket_by_user_name(char user[])
             return -1;
         }
         printf("|row|time sent ticket    |massage ticket\t |ticket status          |");
+        if (temp_struct_ticket->status[0]=='N')
+        {
+            printf("\n--------------------------------------------------------------------------\n");
+            printf("\t\t\t   not ticket set yet!\n");
+            printf("Press Enter to contniue\n");
+            press_enter_to_continue();
+            return -1;
+        }
         do
         {
             if (strcmp(temp_struct_ticket->user_name,user)==0 && strlen(temp_struct_ticket->user_name)==strlen(user) && (temp_struct_ticket->status[0]=='0' || temp_struct_ticket->status[0]=='1'))
@@ -1202,6 +1218,15 @@ int list_pending_ticket_admin()
         return -1;
     }
     printf("|row|time sent ticket    |massage ticket\t |answer massage         |user name           |");
+    if (temp_struct_ticket->status[0]=='N')
+        {
+            printf("\n-----------------------------------------------------------------------------------------------\n");
+            
+            printf("\t\t\t\t      not ticket set yet!\n");
+            printf("Press Enter to contniue\n");
+            press_enter_to_continue();
+            return -1;
+        }
     do
     {
         if (temp_struct_ticket->status[0]=='0')
@@ -1322,6 +1347,14 @@ int hestory_of_ticket_list_print_for_admin()
         return -1;
     }
     printf("|row|time sent ticket    |massage ticket\t |ticket status          |user name           |");
+    if (temp_struct_ticket->status[0]=='N')
+    {
+        printf("\n-----------------------------------------------------------------------------------------------\n");
+        printf("\t\t\t\t      not ticket set yet!\n");
+        printf("Press Enter to contniue\n");
+        press_enter_to_continue();
+        return -1;
+    }
     do
     {
          printf("\n|---+--------------------+-----------------------+-----------------------+--------------------|\n");
@@ -1375,7 +1408,11 @@ int delete_ticket_from_admin(int num)
     if (num==1)
     {
         if (temp_struct_ticket->link==NULL)
+        {
             temp_struct_ticket->status[0]='N';
+            temp_struct_ticket=temp_struct_ticket->link;
+            free(temp_struct_ticket);
+        }
         else 
         {
             temp_struct_ticket=temp_struct_ticket->link;
@@ -1388,6 +1425,7 @@ int delete_ticket_from_admin(int num)
     }
     temp1_struct_ticket=malloc(sizeof(struct struct_ticket));
     temp1_struct_ticket=start_struct_ticket;
+    temp_struct_ticket=temp_struct_ticket->link;
     if (temp1_struct_ticket==NULL)
     {
         printf("memory is not allowed!! Try later\n");
@@ -1545,7 +1583,7 @@ void menu_ticket_user_print()
 void menu_ticket_admin_print()
 {
     char temp[25],line_char='|';
-    printf("Ticket page\n\n");
+    printf("\tTicket page\n");
     printf("---------------------------\n");
     for(int i=0; i<4; i++)
     {
@@ -3411,7 +3449,7 @@ void add_linked_list_ticket_to_notpadd()
     if (temp_struct_ticket->status[0]=='N')
     {
         fclose(ticket);
-        free(temp_struct_ticket);
+        free_ticket();
         return ;
     }
     char final[445]={0},temp[200];
@@ -3736,7 +3774,7 @@ void get_backup()
     strcat(file_location,time);
     mkdir(file_location);
     char location_departemant[150];
-    char read_line[225];
+    char read_line[445];
     flag_whlie=0;
     strcpy(location_departemant,file_location);
     strcat(location_departemant,"/file_departemant.txt");
@@ -3842,6 +3880,28 @@ void get_backup()
     }
     fclose(student_main);
     fclose(backup_student);
+
+    // ------------------------------------- backup ticket
+
+    flag_file=0;
+    char location_ticket[150];
+    strcpy(location_ticket,file_location);
+    strcat(location_ticket,"/file_ticket.txt");
+    FILE *backup_ticket;
+    FILE *ticket_main;
+    ticket_main=fopen("file_ticket.txt","r");
+    if (ticket_main==NULL)
+        flag_file++;
+    backup_ticket=fopen(location_ticket,"w");
+    while(flag_file==0)
+    {
+        fgets(read_line, 445, ticket_main);
+        if (feof(ticket_main)==1)
+            break;
+        fputs(read_line,backup_ticket);
+    }
+    fclose(ticket_main);
+    fclose(backup_ticket);
     printf("Backup complit!\nPress Enter to continue\n");
     char temp;
     do
@@ -3878,7 +3938,7 @@ void load_backup()
         file_location[len-1]='\0';
 
     char location_departemant[150];
-    char read_line[225];
+    char read_line[445];
     flag_whlie=0;
     // -------------------------------------------------- departemant
 
@@ -3981,7 +4041,27 @@ void load_backup()
     }
     fclose(student_main);
     fclose(backup_student);
+    // ------------------------------------------------------- ticket
 
+    char location_ticket[150];
+    strcpy(location_ticket,file_location);
+    strcat(location_ticket,"/file_ticket.txt");
+    FILE *backup_ticket;
+    FILE *ticket_main;
+    backup_ticket=fopen(location_ticket,"r");
+    ticket_main=fopen("file_ticket.txt","w");
+    if (backup_ticket==NULL)
+        flag_file++;
+    while(flag_file==0)
+    {
+        fgets(read_line, 445, backup_ticket);
+        if (feof(backup_ticket)==1)
+            break;
+        fputs(read_line,ticket_main);
+    }
+    fclose(ticket_main);
+    fclose(backup_ticket);
+    
     printf("Backup restor compllit!\npress Enter to continue\n");
     char temp;
     do
@@ -6530,7 +6610,7 @@ void main()
     {
         menu_login_print();
         menu_type=menu_selection_1_num(5);
-        system("cls");
+        // system("cls");
         // -------------------------------------------- rotation part
         switch (menu_type)
         {
@@ -6540,108 +6620,110 @@ void main()
                 password_to_hash(pointer_Padmin);
                 if (login_flag==0)
                 {
-                    system("cls");
+                    // system("cls");
                     set_departemants_as_link_list();
                     set_academic_as_link_list();
                     do{
                         menu_admin_page_print();
                         menu_type=menu_selection_1_num(9);
-                        system("cls");
+                        // system("cls");
                         switch (menu_type)
                         {
                         case 1:
                             set_new_departemant();
                             set_departemants_as_link_list();
-                            system("cls");
+                            // system("cls");
                             break;
                         case 2:
                             set_new_academic();
                             set_academic_as_link_list();
-                            system("cls");
+                            // system("cls");
                             break;
                         case 3:
                             show_list_users(0);
-                            system("cls");
+                            // system("cls");
                             break;
                         case 4:
                             kick_user();
-                            system("cls");
+                            // system("cls");
                             break;
                         case 5:
                             //lsit of Log
                             do{
                                 list_of_log_print();
                                 type_list_log=menu_selection_1_num(4);
-                                system("cls");
+                                // system("cls");
                                 switch (type_list_log)
                                 {
                                 case 1:
                                     list_of_log_academic();
-                                    system("cls");
+                                    // system("cls");
                                     break;
                                 case 2:
                                     show_list_users(1);
-                                    system("cls");
+                                    // system("cls");
                                     break;
                                 case 3:
                                     list_of_log_dismissed();
-                                    system("cls");
+                                    // system("cls");
                                     break;
                                 default:
                                     break;
                                 }
                             }while(type_list_log!=4);
                             break;
-                        case 6:// ---------------------------------- ticket
+                        case 6:// -------------------------------------------- ticket
                             set_ticket_as_link_list();
-                            system("cls");
+                            // system("cls");
                             do
                             {
                                 menu_ticket_admin_print();
                                 menu_type=menu_selection_1_num(4);
                                 switch (menu_type)
                                 {
-                                case 1:
-                                    menu_type=list_pending_ticket_admin();
-                                    system("cls");
-                                    if (menu_type==-1)
+                                    case 1:
+                                        menu_type=list_pending_ticket_admin();
+                                        // system("cls");
+                                        if (menu_type==-1)
+                                            break;
+                                        answer_pending_ticket_by_admin(menu_type);
+                                        // system("cls");
+                                        add_linked_list_ticket_to_notpadd();
                                         break;
-                                    answer_pending_ticket_by_admin(menu_type);
-                                    system("cls");
-                                    add_linked_list_ticket_to_notpadd();
-                                    break;
-                                case 2:
-                                    menu_type=hestory_of_ticket_list_print_for_admin();
-                                    if (menu_type==-1)
+                                    case 2:
+                                        menu_type=hestory_of_ticket_list_print_for_admin();
+                                        if (menu_type==-1)
+                                            break;
+                                        printf("\nPress Enter to continue\n");
+                                        press_enter_to_continue();
+                                        // system("cls");
                                         break;
-                                    printf("\nPress Enter to continue\n");
-                                    press_enter_to_continue();
-                                    system("cls");
-                                    break;
-                                case 3:
-                                    menu_type=hestory_of_ticket_list_print_for_admin();
-                                    printf("enter a optaion from menu: ");
-                                    menu_type=menu_selection_1_num(menu_type);
-                                    system("cls");
-                                    menu_type=delete_ticket_from_admin(menu_type);
-                                    if (menu_type==-1)
+                                    case 3:
+                                        menu_type=hestory_of_ticket_list_print_for_admin();
+                                        if (menu_type==-1)
+                                            break;
+                                        printf("enter a optaion from menu: ");
+                                        menu_type=menu_selection_1_num(menu_type);
+                                        // system("cls");
+                                        menu_type=delete_ticket_from_admin(menu_type);
+                                        if (menu_type==-1)
+                                            break;
+                                        // system("cls");
+                                        add_linked_list_ticket_to_notpadd();
                                         break;
-                                    system("cls");
-                                    add_linked_list_ticket_to_notpadd();
-                                    break;
-                                default:
-                                    break;
+                                    default:
+                                        break;
                                 }
                             } while (menu_type!=4);
                             
                             break;
                         case 7:
                             get_backup();
-                            system("cls");
+                            // system("cls");
                             break;
                         case 8:
                             load_backup();
-                            system("cls");
+                            // system("cls");
                             break;
                         case 9:
                             break;
@@ -6654,7 +6736,7 @@ void main()
             case 2:// ------------------------------------------------------------------------------- Departemant
 
                 login_flag=get_user_pass_user_departemnts();
-                system("cls");
+                // system("cls");
                 if (login_flag==0)
                 {
                     set_score_student_as_link_list();
@@ -6663,37 +6745,37 @@ void main()
                     do{
                         menu_departemant_print();
                         menu_type=menu_selection_1_num(9);
-                        system("cls");
+                        // system("cls");
                         switch (menu_type)
                         {
                         case 1:
                             add_new_course();
                             set_course_as_link_list();
-                            system("cls");
+                            // system("cls");
                             break;
                         case 2:
                             set_new_score();
                             set_score_student_as_link_list();
-                            system("cls");
+                            // system("cls");
                             break;
                         case 3:
                             edit_score_student();
                             add_linked_list_score_to_notpadd();
-                            system("cls");
+                            // system("cls");
                             break;
                         case 4:
                             edit_info_course();
                             add_linked_list_course_to_notpadd();
-                            system("cls");
+                            // system("cls");
                             break;
                         case 5:
                             remove_course();
                             add_linked_list_course_to_notpadd();
-                            system("cls");
+                            // system("cls");
                             break;
                         case 6:
                             log_departemant();
-                            system("cls");
+                            // system("cls");
                             break;
                         case 7:
                             do
@@ -6726,12 +6808,12 @@ void main()
                                     break;
                                 }
                             } while (menu_type!=4);
-                            system("cls");
+                            // system("cls");
                             break;
                         case 8:
                             settings_departemant();
                             add_linked_list_departemant_to_notpadd();
-                            system("cls");
+                            // system("cls");
                             break;
                         case 9:
                             break;
@@ -6746,7 +6828,7 @@ void main()
 
             case 3:// --------------------------------------------------------------------------------- Academic
                 login_flag=get_user_pass_user_academics();
-                system("cls");
+                // system("cls");
 
                 if (login_flag==0)
                 {
@@ -6756,27 +6838,27 @@ void main()
                     do{
                         menu_academic_print();
                         menu_type=menu_selection_1_num(7);
-                        system("cls");
+                        // system("cls");
                         switch (menu_type)
                         {
                         case 1:
                             set_new_student();
                             set_student_as_link_list();
-                            system("cls");
+                            // system("cls");
                             break;
                         case 2:
                             edit_info_student();
                             add_linked_list_student_to_notpadd();
-                            system("cls");
+                            // system("cls");
                             break;
                         case 3:
                             set_new_score();
                             set_score_student_as_link_list();
-                            system("cls");
+                            // system("cls");
                             break;
                         case 4:
                             log_academic();
-                            system("cls");
+                            // system("cls");
                             break;
                         case 5:
                             do
@@ -6809,12 +6891,12 @@ void main()
                                     break;
                                 }
                             } while (menu_type!=4);
-                            system("cls");
+                            // system("cls");
                             break;
                         case 6:
                             settings_academic();
                             add_linked_list_academic_to_notpadd();
-                            system("cls");
+                            // system("cls");
                             break;
                         case 7:
                             break;
@@ -6828,11 +6910,11 @@ void main()
                 break;
             case 4:
                 forgot_password();
-                system("cls");
+                // system("cls");
                 break;
             case 5:
                 printf("enjoy life ;)");
-                Sleep(5000);
+                Sleep(2000);
                 free(start_struct_academic);
                 free(start_struct_departemant);
                 return ;
@@ -6853,3 +6935,4 @@ void main()
 // add exit option for log departemnat and probebly academic        DONE
 // age ticket bedoon javab sace len moshken dash \r bezar be jaye len 0
 //cls ticket
+// add ticket to backup file  Done
