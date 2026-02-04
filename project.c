@@ -620,180 +620,6 @@ void menu_admin_page_print()
     printf("------------------------------\n\n");
     printf("select a option from menu: ");
 }
-int menu_selection_1_4()
-{
-    char number[3];
-    int num,flag;
-    do
-    {
-        flag=num=0;
-        gets(number);
-        flag=check_str_was_int(number);
-        if (flag)
-        {
-            printf("Invalid input Try agian: ");
-            continue;
-        }
-        else
-        {
-            num=atoi(number) ;
-            if (num>4 || num<1)
-            {
-                printf("Your input is out of range! Try agian: ");
-                flag++;
-                continue;
-            }
-
-            return num;
-        }
-    } while (flag);
-
-}
-int menu_selection_1_5()
-{
-    char number[3];
-    int num,flag;
-    do
-    {
-        flag=num=0;
-        gets(number);
-        flag=check_str_was_int(number);
-        if (flag)
-        {
-            printf("Invalid input Try agian: ");
-            continue;
-        }
-        else
-        {
-            num=atoi(number) ;
-            if (num>5 || num<1)
-            {
-                printf("Your input is out of range! Try agian: ");
-                flag++;
-                continue;
-            }
-
-            return num;
-        }
-    } while (flag);
-
-}
-int menu_selection_1_6()
-{
-    char number[3];
-    int num,flag;
-    do
-    {
-        flag=num=0;
-        gets(number);
-        flag=check_str_was_int(number);
-        if (flag)
-        {
-            printf("Invalid input Try agian: ");
-            continue;
-        }
-        else
-        {
-            num=atoi(number) ;
-            if (num>6 || num<1)
-            {
-                printf("Your input is out of range! Try agian: ");
-                flag++;
-                continue;
-            }
-
-            return num;
-        }
-    } while (flag);
-
-}
-int menu_selection_1_7()
-{
-    char number[3];
-    int num,flag;
-    do
-    {
-        flag=num=0;
-        gets(number);
-        flag=check_str_was_int(number);
-        if (flag)
-        {
-            printf("Invalid input Try agian: ");
-            continue;
-        }
-        else
-        {
-            num=atoi(number) ;
-            if (num>7 || num<1)
-            {
-                printf("Your input is out of range! Try agian: ");
-                flag++;
-                continue;
-            }
-
-            return num;
-        }
-    } while (flag);
-
-}
-int menu_selection_1_8()
-{
-    char number[3];
-    int num,flag;
-    do
-    {
-        flag=num=0;
-        gets(number);
-        flag=check_str_was_int(number);
-        if (flag)
-        {
-            printf("Invalid input Try agian: ");
-            continue;
-        }
-        else
-        {
-            num=atoi(number) ;
-            if (num>8 || num<1)
-            {
-                printf("Your input is out of range! Try agian: ");
-                flag++;
-                continue;
-            }
-
-            return num;
-        }
-    } while (flag);
-
-}
-int menu_selection_1_9()
-{
-    char number[3];
-    int num,flag;
-    do
-    {
-        flag=num=0;
-        gets(number);
-        flag=check_str_was_int(number);
-        if (flag)
-        {
-            printf("Invalid input Try agian: ");
-            continue;
-        }
-        else
-        {
-            num=atoi(number) ;
-            if (num>9 || num<1)
-            {
-                printf("Your input is out of range! Try agian: ");
-                flag++;
-                continue;
-            }
-
-            return num;
-        }
-    } while (flag);
-
-}
 int menu_selection_1_num(int number_int)
 {
      char number[3];
@@ -1910,7 +1736,7 @@ void set_new_departemant()
         break;
     } while (1);
     question_print_forgot_pass();
-    question_type=menu_selection_1_8();
+    question_type=menu_selection_1_num(8);
     snprintf(question_type_str,sizeof(question_type_str),"%i",question_type);
     printf("Enter the answer of question that selected: ");
     do
@@ -2108,7 +1934,7 @@ void set_new_academic()
         break;
     } while (1);
     question_print_forgot_pass();
-    int question_type=menu_selection_1_8();
+    int question_type=menu_selection_1_num(8);
     snprintf(question_type_str,sizeof(question_type_str),"%i",question_type);
     printf("Enter the answer of question that selected: ");
     do
@@ -6194,7 +6020,7 @@ int log_departemant()
         case 1:
             do{
                 contorol_panle_print_log_departemant_panel(num_page);
-                num_menu=menu_selection_1_7();
+                num_menu=menu_selection_1_num(7);
                 switch (num_menu)
                 {
                     case 1:
@@ -6231,7 +6057,7 @@ int log_departemant()
         case 2:
             do{
                 contorol_panle_print_log_departemant_panel(num_page);
-                num_menu=menu_selection_1_8();
+                num_menu=menu_selection_1_num(8);
                 switch (num_menu)
                 {
                     case 1:
@@ -6274,7 +6100,7 @@ int log_departemant()
         case 3:
             do{
                 contorol_panle_print_log_departemant_panel(num_page);
-                num_menu=menu_selection_1_7();
+                num_menu=menu_selection_1_num(7);
                 switch (num_menu)
                 {
                     case 1:
@@ -6644,7 +6470,7 @@ void log_academic()
     do
     {
         log_academic_panel_print();
-        num_menu=menu_selection_1_5();
+        num_menu=menu_selection_1_num(5);
         switch (num_menu)
         {
         case 1:
@@ -6703,7 +6529,7 @@ void main()
     while(1)
     {
         menu_login_print();
-        menu_type=menu_selection_1_5();
+        menu_type=menu_selection_1_num(5);
         system("cls");
         // -------------------------------------------- rotation part
         switch (menu_type)
@@ -6719,7 +6545,7 @@ void main()
                     set_academic_as_link_list();
                     do{
                         menu_admin_page_print();
-                        menu_type=menu_selection_1_9();
+                        menu_type=menu_selection_1_num(9);
                         system("cls");
                         switch (menu_type)
                         {
@@ -6745,7 +6571,7 @@ void main()
                             //lsit of Log
                             do{
                                 list_of_log_print();
-                                type_list_log=menu_selection_1_4();
+                                type_list_log=menu_selection_1_num(4);
                                 system("cls");
                                 switch (type_list_log)
                                 {
@@ -6772,7 +6598,7 @@ void main()
                             do
                             {
                                 menu_ticket_admin_print();
-                                menu_type=menu_selection_1_4();
+                                menu_type=menu_selection_1_num(4);
                                 switch (menu_type)
                                 {
                                 case 1:
@@ -6836,7 +6662,7 @@ void main()
                     set_course_as_link_list();
                     do{
                         menu_departemant_print();
-                        menu_type=menu_selection_1_9();
+                        menu_type=menu_selection_1_num(9);
                         system("cls");
                         switch (menu_type)
                         {
@@ -6873,7 +6699,7 @@ void main()
                             do
                             {
                                 menu_ticket_user_print();
-                                menu_type=menu_selection_1_4();
+                                menu_type=menu_selection_1_num(4);
                                 switch (menu_type)
                                 {
                                 case 1:
@@ -6929,7 +6755,7 @@ void main()
                     set_score_student_as_link_list();
                     do{
                         menu_academic_print();
-                        menu_type=menu_selection_1_7();
+                        menu_type=menu_selection_1_num(7);
                         system("cls");
                         switch (menu_type)
                         {
@@ -6956,7 +6782,7 @@ void main()
                             do
                             {
                                 menu_ticket_user_print();
-                                menu_type=menu_selection_1_4();
+                                menu_type=menu_selection_1_num(4);
                                 switch (menu_type)
                                 {
                                 case 1:
