@@ -85,7 +85,7 @@ struct struct_ticket
     char massage[200];
     char date_ticket[20];
     char replay[200];
-    char status[3];//0 :=not replay yet 1:= get replay
+    char status[3];//0 :=not replay yet 1:= get replay 2:= get repley ande readed by user
     struct struct_ticket *link;
 };
 struct struct_ticket *start_struct_ticket, *end_struct_ticket, *temp_struct_ticket;
@@ -1184,7 +1184,7 @@ int check_domain_score(char score[])
     else 
         return 1;
 }
-int list_sent_ticket_by_user_name(char user[],int flag)
+int list_sent_ticket_by_user_name(char user[])
 {
     char temp[20],char_line='|';
     int i=1;
@@ -1210,7 +1210,7 @@ int list_sent_ticket_by_user_name(char user[],int flag)
                 printf("%s... %c",temp,char_line);
                 if (temp_struct_ticket->status[0]=='0')
                     printf("not seen yet           %c",char_line);
-                else if (temp_struct_ticket->status[0]=='1' && strlen(temp_struct_ticket->replay)==0)
+                else if (strlen(temp_struct_ticket->replay)==0)
                     printf("just seen your massage %c",char_line);
                 else 
                     printf("Answered ticket        %c",char_line);
@@ -1226,8 +1226,7 @@ int list_sent_ticket_by_user_name(char user[],int flag)
             press_enter_to_continue();
             return -1;
         }
-        if (flag==1)
-        {
+        
             int selection=0;
             printf("select a number of ticket from menu: ");
             do
@@ -1236,19 +1235,76 @@ int list_sent_ticket_by_user_name(char user[],int flag)
                 if (check_str_was_int(temp))
                     printf("Invalid input! Try again: ");
                 else
+                {
                     selection=atoi(temp);
-                if (selection<=0 || selection>=i)
-                    printf("out of range!! try another one: ");
-                else
-                    break;
+                    if (selection<=0 || selection>=i)
+                        printf("out of range!! try another one: ");
+                    else
+                        break;
+                }
             } while (1);
             return selection;
-        }
-        else
+}
+int list_unread_ticket_by_user_name(char user[])
+{
+    char temp[20],char_line='|';
+    int i=1;
+        printf("\t\t\t      List of Ticket\n--------------------------------------------------------------------------\n");
+        temp_struct_ticket=malloc(sizeof(struct struct_ticket));
+        temp_struct_ticket=start_struct_ticket;
+        if (temp_struct_ticket==NULL)
         {
+            printf("memory is not allowed!! Try later\n");
             printf("Press enter to continue\n");
             press_enter_to_continue();
+            return -1;
         }
+        printf("|row|time sent ticket    |massage ticket\t |status answer          |");
+        do
+        {
+            if (strcmp(temp_struct_ticket->user_name,user)==0 && strlen(temp_struct_ticket->user_name)==strlen(user) && (temp_struct_ticket->status[0]=='0' || temp_struct_ticket->status[0]=='1'))
+            {
+                printf("\n|---+--------------------+-----------------------+-----------------------|\n");
+                printf("%c%-3d%c",char_line,i++,char_line);
+                printf("%-20s%c",temp_struct_ticket->date_ticket,char_line);
+                strncpy(temp,temp_struct_ticket->massage,sizeof(temp)-1);
+                printf("%s... %c",temp,char_line);
+                if (temp_struct_ticket->status[0]=='0')
+                    printf("not seen yet           %c",char_line);
+                else if (temp_struct_ticket->status[0]=='1' && strlen(temp_struct_ticket->replay)==0)
+                    printf("just seen your massage %c",char_line);
+                else 
+                    printf("Answered ticket        %c",char_line);
+            }
+            temp_struct_ticket=temp_struct_ticket->link;
+        } while (temp_struct_ticket!=NULL);
+        free(temp_struct_ticket);
+        printf("\n--------------------------------------------------------------------------\n");
+        if (i==1)
+        {
+            printf("\t\t\t   not unread ticket exist!\n");
+            printf("Press Enter to contniue\n");
+            press_enter_to_continue();
+            return -1;
+        }
+        
+            int selection=0;
+            printf("select a number of ticket from menu: ");
+            do
+            {
+                gets(temp);
+                if (check_str_was_int(temp))
+                    printf("Invalid input! Try again: ");
+                else
+                {
+                    selection=atoi(temp);
+                    if (selection<=0 || selection>=i)
+                        printf("out of range!! try another one: ");
+                    else
+                        break;
+                }
+            } while (1);
+            return selection;
 }
 int answer_ticket_print(int num, char user[])
 {
@@ -1280,11 +1336,64 @@ int answer_ticket_print(int num, char user[])
             printf("Operator Massage: \n\t");
             if (temp_struct_ticket->status[0]=='0')
                 printf("not seen yet\n");
-            else if (temp_struct_ticket->status[0]=='1' && strlen(temp_struct_ticket->replay)==0)
+            else if (strlen(temp_struct_ticket->replay)==0)
                 printf("just seen your massage (whitout asnwer)\n");
             else 
                 printf("answer of Oprator:\n%s\n",temp_struct_ticket->replay);
+            if (temp_struct_ticket->status[0]!='0')
+            {
+                printf("Stutus ticket: Closed\n");
+                temp_struct_ticket->status[0]='2';
+            }
         }
+        free_ticket();
+        printf("--------------------------------------------------------------------------\n");
+        printf("Press Enter to contniue\n");
+        press_enter_to_continue();
+}
+int answer_panle_unread_ticket_print(int num,char user[])
+{
+    char temp[25],char_line='|';
+    int i=1;
+        printf("\t\t\t      Ticket massage\n--------------------------------------------------------------------------\n");
+        temp_struct_ticket=malloc(sizeof(struct struct_ticket));
+        temp_struct_ticket=start_struct_ticket;
+        if (temp_struct_ticket==NULL)
+        {
+            printf("memory is not allowed!! Try later\n");
+            printf("Press enter to continue\n");
+            press_enter_to_continue();
+            return -1;
+        }
+        do
+        {
+            if (strcmp(temp_struct_ticket->user_name,user)==0 && strlen(temp_struct_ticket->user_name)==strlen(user) && (temp_struct_ticket->status[0]=='0' || temp_struct_ticket->status[0]=='1'))
+            {
+                if (i==num)
+                    break;
+                i++;
+            }
+            temp_struct_ticket=temp_struct_ticket->link;
+        } while (temp_struct_ticket!=NULL);
+        {
+            printf("date create ticket: %s\n",temp_struct_ticket->date_ticket);
+            printf("your massage:\n%s\n",temp_struct_ticket->massage);
+            printf("Operator Massage: \n\t");
+            if (temp_struct_ticket->status[0]=='0')
+                printf("not seen yet\n");
+            else if (temp_struct_ticket->status[0]=='1' && strlen(temp_struct_ticket->replay)==0)
+                printf("just seen your massage (whitout asnwer)\n");
+            else if (temp_struct_ticket->status[0]=='1' && strlen(temp_struct_ticket->replay)!=0)
+                printf("answer of Oprator:\n%s\n",temp_struct_ticket->replay);
+            if (temp_struct_ticket->status[0]!='0')
+            {
+                printf("Stutus ticket: Closed\n");
+                temp_struct_ticket->status[0]='2';
+            }
+            else 
+                printf("Stutus ticket: Waiting for OP answer\n");
+        }
+
         free_ticket();
         printf("--------------------------------------------------------------------------\n");
         printf("Press Enter to contniue\n");
@@ -1295,30 +1404,30 @@ void menu_ticket_user_print()
     char temp[25],line_char='|';
     printf("Ticket page\n\n");
     printf("---------------------------\n");
-    for(int i=0; i<4; i++)
+    for(int i=0; i<5; i++)
     {
-    printf("%c%-2d%c",line_char,i+1,line_char);
-    switch (i)
-    {
-    case 0:
-        strcpy(temp,"New ticket");
-        break;
-    case 1:
-        strcpy(temp,"Sent tickets");
-        break;
-    case 2:
-        strcpy(temp,"Resieved ticket");
-        break;
-    case 3:
-        strcpy(temp,"Back to menu");
-        break;
-    default:
-        break;
-    }
+        printf("%c%-2d%c",line_char,i+1,line_char);
+        switch (i)
+        {
+            case 0:
+                strcpy(temp,"New ticket");
+                break;
+            case 1:
+                strcpy(temp,"Resieved ticket");
+                break;
+            case 2:
+                strcpy(temp,"Unread ticket");
+                break;
+            case 3:
+                strcpy(temp,"Back to menu");
+                break;
+            default:
+                break;
+        }
 
-    printf("%-22s%c\n",temp,line_char);
-    if (i!=3)
-        printf("|--+----------------------|\n");
+        printf("%-22s%c\n",temp,line_char);
+        if (i!=4)
+            printf("|--+----------------------|\n");
 
 
     }
@@ -6412,14 +6521,19 @@ void main()
                                     break;
                                 case 2:
                                     set_ticket_as_link_list();
-                                    menu_type=list_sent_ticket_by_user_name(User_Name_static, 1);
+                                    menu_type=list_sent_ticket_by_user_name(User_Name_static);
                                     if (menu_type==-1)
                                         break;
                                     answer_ticket_print(menu_type,User_Name_static);
+                                    add_linked_list_ticket_to_notpadd();
                                     break;
-                                case 3:
+                                case 3:// --------------------- unread
                                     set_ticket_as_link_list();
-                                    list_sent_ticket_by_user_name(User_Name_static, 0);
+                                    menu_type=list_unread_ticket_by_user_name(User_Name_static);
+                                    if (menu_type==-1)
+                                        break;
+                                    answer_panle_unread_ticket_print(menu_type,User_Name_static);
+                                    add_linked_list_ticket_to_notpadd();
                                     break;
                                 default:
                                     break;
@@ -6489,13 +6603,20 @@ void main()
                                     set_ticket_as_link_list();
                                     break;
                                 case 2:
-                                    menu_type=list_sent_ticket_by_user_name(User_Name_static, 1);
+                                    set_ticket_as_link_list();
+                                    menu_type=list_sent_ticket_by_user_name(User_Name_static);
                                     if (menu_type==-1)
                                         break;
                                     answer_ticket_print(menu_type,User_Name_static);
+                                    add_linked_list_ticket_to_notpadd();
                                     break;
-                                case 3:
-                                    list_sent_ticket_by_user_name(User_Name_static, 0);
+                                case 3:// --------------------- unread
+                                    set_ticket_as_link_list();
+                                    menu_type=list_unread_ticket_by_user_name(User_Name_static);
+                                    if (menu_type==-1)
+                                        break;
+                                    answer_panle_unread_ticket_print(menu_type,User_Name_static);
+                                    add_linked_list_ticket_to_notpadd();
                                     break;
                                 default:
                                     break;
@@ -6543,3 +6664,4 @@ void main()
 // fix from date      1234/4/4 --> 1234/04/04    mohem nist
 // fix zone score 0_20
 // add exit option for log departemnat and probebly academic        DONE
+// age ticket bedoon javab sace len moshken dash \r bezar be jaye len 0
