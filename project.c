@@ -4900,8 +4900,19 @@ void settings_departemant()
     search_user_name_departemant(User_Name_static);
     printf("if you want Exit from proses just perss enter\n");
 
-
-        printf("Enter Password: ");
+        printf("Enter now password: ");
+        do
+        {
+            password_to_star(str_temp);
+            if (strlen(str_temp)==0)
+                return ;
+            password_to_hash(str_temp);
+            if (strcmp(str_temp,temp_struct_departemant->pass1)==0 || strlen(temp_struct_departemant->pass1)==strlen(str_temp))
+                break;
+            printf("Password is Invalid!! Try again: ");
+        } while (1);
+        
+        printf("Enter new Password: ");
         do
         {
             password_to_star(str_temp);
@@ -4936,7 +4947,7 @@ void settings_departemant()
             }
             else
             {
-                printf("Repet password: ");
+                printf("Repet new password: ");
                 password_to_star(pass2);
                 if (strcmp(pass2,str_temp)!=0 || strlen(pass2)!=strlen(str_temp))
                 {
@@ -5010,8 +5021,19 @@ void settings_academic()
     search_user_name_academic(User_Name_static);
     printf("if you want Exit from proses just perss enter\n");
 
+        printf("Enter now password: ");
+        do
+        {
+            password_to_star(str_temp);
+            if (strlen(str_temp)==0)
+                return ;
+            password_to_hash(str_temp);
+            if (strcmp(str_temp,temp_struct_academic->pass1)==0 || strlen(temp_struct_academic->pass1)==strlen(str_temp))
+                break;
+            printf("Password is Invalid!! Try again: ");
+        } while (1);
 
-        printf("Enter Password: ");
+        printf("Enter new Password: ");
         do
         {
             password_to_star(str_temp);
@@ -5048,7 +5070,7 @@ void settings_academic()
             }
             else
             {
-                printf("Repet password: ");
+                printf("Repet new password: ");
                 password_to_star(pass2);
                 if (strcmp(pass2,str_temp)!=0 || strlen(pass2)!=strlen(str_temp))
                 {
@@ -6936,3 +6958,4 @@ void main()
 // age ticket bedoon javab sace len moshken dash \r bezar be jaye len 0
 //cls ticket
 // add ticket to backup file  Done
+// checke struct free beshe
