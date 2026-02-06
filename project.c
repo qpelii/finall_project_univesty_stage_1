@@ -1730,7 +1730,7 @@ void set_new_departemant()
     printf("Set Password for Departemant: ");
     do
     {
-        gets(pass1);
+        password_to_star(pass1);
         if (strlen(pass1)==0)
             return ;
         else if (check_str_whitout_space(pass1))
@@ -1763,7 +1763,7 @@ void set_new_departemant()
             continue;
 
         printf("Please repeat password: ");
-        gets(pass2);
+        password_to_star(pass2);
         if (strlen(pass2)==0)
             return ;
         if (strcmp(pass1,pass2)!=0 || strlen(pass1)!=strlen(pass2))
@@ -6809,21 +6809,26 @@ void main()
                                 case 1:
                                     set_new_ticket();
                                     set_ticket_as_link_list();
+                                    // system("cls");
                                     break;
                                 case 2:
                                     set_ticket_as_link_list();
                                     menu_type=list_sent_ticket_by_user_name(User_Name_static);
                                     if (menu_type==-1)
                                         break;
+                                    // system("cls");
                                     answer_ticket_print(menu_type,User_Name_static);
+                                    // system("cls");
                                     add_linked_list_ticket_to_notpadd();
                                     break;
                                 case 3:// --------------------- unread
                                     set_ticket_as_link_list();
                                     menu_type=list_unread_ticket_by_user_name(User_Name_static);
+                                    // system("cls");
                                     if (menu_type==-1)
                                         break;
                                     answer_panle_unread_ticket_print(menu_type,User_Name_static);
+                                    // system("cls");
                                     add_linked_list_ticket_to_notpadd();
                                     break;
                                 default:
@@ -6891,6 +6896,7 @@ void main()
                                 {
                                 case 1:
                                     set_new_ticket();
+                                    // system("cls");
                                     set_ticket_as_link_list();
                                     break;
                                 case 2:
@@ -6898,7 +6904,9 @@ void main()
                                     menu_type=list_sent_ticket_by_user_name(User_Name_static);
                                     if (menu_type==-1)
                                         break;
+                                    // system("cls");
                                     answer_ticket_print(menu_type,User_Name_static);
+                                    // system("cls");
                                     add_linked_list_ticket_to_notpadd();
                                     break;
                                 case 3:// --------------------- unread
@@ -6906,7 +6914,9 @@ void main()
                                     menu_type=list_unread_ticket_by_user_name(User_Name_static);
                                     if (menu_type==-1)
                                         break;
+                                    // system("cls");
                                     answer_panle_unread_ticket_print(menu_type,User_Name_static);
+                                    // system("cls");
                                     add_linked_list_ticket_to_notpadd();
                                     break;
                                 default:
@@ -6953,9 +6963,11 @@ void main()
 // dota nomre nabase   Done
 // dissbale able   Done
 // fix from date      1234/4/4 --> 1234/04/04    mohem nist
-// fix zone score 0_20
+// fix zone score 0_20  Done
 // add exit option for log departemnat and probebly academic        DONE
-// age ticket bedoon javab sace len moshken dash \r bezar be jaye len 0
-//cls ticket
+// age ticket bedoon javab sace len moshken dash \r bezar be jaye len 0   Ok bood
+//cls ticket     Done
 // add ticket to backup file  Done
 // checke struct free beshe
+// termanil bg blur add
+// colorize terminal
