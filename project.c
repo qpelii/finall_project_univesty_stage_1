@@ -4079,6 +4079,28 @@ void get_backup()
     }
     fclose(ticket_main);
     fclose(backup_ticket);
+
+    // ------------------------------------- backup limit
+
+    flag_file=0;
+    char location_limit[150];
+    strcpy(location_limit,file_location);
+    strcat(location_limit,"/file_limit.txt");
+    FILE *backup_limit;
+    FILE *limit_main;
+    limit_main=fopen("file_limit.txt","r");
+    if (limit_main==NULL)
+        flag_file++;
+    backup_limit=fopen(location_limit,"w");
+    while(flag_file==0)
+    {
+        fgets(read_line, 225, limit_main);
+        if (feof(limit_main)==1)
+            break;
+        fputs(read_line,backup_limit);
+    }
+    fclose(limit_main);
+    fclose(backup_limit);
     printf("Backup complit!\nPress Enter to continue\n");
     char temp;
     do
@@ -4160,6 +4182,7 @@ void load_backup()
     fclose(backup_academic);
     // ------------------------------------ course
 
+    flag_file=0;
     char location_course[150];
     strcpy(location_course,file_location);
     strcat(location_course,"/file_course.txt");
@@ -4180,6 +4203,7 @@ void load_backup()
     fclose(backup_course);
     // --------------------------------------------------- score
 
+    flag_file=0;
     char location_score_student[150];
     strcpy(location_score_student,file_location);
     strcat(location_score_student,"/file_score_student.txt");
@@ -4200,6 +4224,7 @@ void load_backup()
     fclose(backup_score_student);
     // ------------------------------------------------------- student
 
+    flag_file=0;
     char location_student[150];
     strcpy(location_student,file_location);
     strcat(location_student,"/file_student.txt");
@@ -4220,6 +4245,7 @@ void load_backup()
     fclose(backup_student);
     // ------------------------------------------------------- ticket
 
+    flag_file=0;
     char location_ticket[150];
     strcpy(location_ticket,file_location);
     strcat(location_ticket,"/file_ticket.txt");
@@ -4238,7 +4264,27 @@ void load_backup()
     }
     fclose(ticket_main);
     fclose(backup_ticket);
-    
+     // ------------------------------------------------------- limit
+
+    flag_file=0;
+    char location_limit[150];
+    strcpy(location_limit,file_location);
+    strcat(location_limit,"/file_limit.txt");
+    FILE *backup_limit;
+    FILE *limit_main;
+    backup_limit=fopen(location_limit,"r");
+    limit_main=fopen("file_limit.txt","w");
+    if (backup_limit==NULL)
+        flag_file++;
+    while(flag_file==0)
+    {
+        fgets(read_line, 225, backup_limit);
+        if (feof(backup_limit)==1)
+            break;
+        fputs(read_line,limit_main);
+    }
+    fclose(limit_main);
+    fclose(backup_limit);
     printf("Backup restor compllit!\npress Enter to continue\n");
     char temp;
     do
