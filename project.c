@@ -9,7 +9,6 @@
 static char user_admin[10]="admin";
 static char pass_admin[20]="5v8a6079zqn";// hashed
 char User_Name_static[20];
-static long int limit_admin=0;
 struct struct_departemant
 {
     char name[20];
@@ -23,7 +22,6 @@ struct struct_departemant
     char pass1[50];
     char question_type[5];
     char answer_forgot_pass[50];
-    char limit_time[10];
     struct struct_departemant *link;
 };
 struct struct_departemant *start_struct_departemant, *end_struct_departemant, *temp_struct_departemant;
@@ -39,7 +37,6 @@ struct struct_academic
     char pass1[50];
     char question_type[5];
     char answer_forgot_pass[50];
-    char limit_time[10];
     char ekhraj[20];
     struct struct_academic *link;
 };
@@ -89,7 +86,14 @@ struct struct_ticket
     struct struct_ticket *link;
 };
 struct struct_ticket *start_struct_ticket, *end_struct_ticket, *temp_struct_ticket;
-
+struct struct_limit
+{
+    char user_name[20];
+    char try[3];
+    char limit[15];
+    struct struct_limit *link;
+};
+struct struct_limit *start_struct_limit, *end_struct_limit, *temp_struct_limit;
 
 void menu_login_print()
 {
@@ -198,6 +202,81 @@ void password_to_star(char pass_pointer[])
     }while(pass[i]!=13);
     pass[i]='\0';
     strcpy(pass_pointer,pass);
+}
+void set_limit(char user[])
+{
+    FILE *file_limit;
+    file_limit=fopen("file_limit.txt","a");
+    if (file_limit==NULL)
+    {
+        printf("memory is not allowed!");
+        return ;
+    }
+    fputs(user,file_limit);
+    fputs(", ",file_limit);
+    fputs("5",file_limit);
+    fputs(", ",file_limit);
+    fputs("0",file_limit);
+    fputc('\n',file_limit);
+    fclose(file_limit);
+}
+void add_linked_list_limit_to_notpadd()
+{
+    FILE *limit;
+    limit=fopen("file_limit.txt","w");
+    temp_struct_limit=malloc(sizeof(struct struct_limit));
+    if (temp_struct_limit==NULL)
+    {
+        printf("memory is not Allow!! Try later.");
+        return ;
+    }
+    temp_struct_limit=start_struct_limit;
+    char final[50]={0},temp[25];
+    do
+    {
+        strcpy(temp,temp_struct_limit->user_name);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_limit->try);
+        strcat(final,temp);
+        strcat(final,", ");
+        strcpy(temp,temp_struct_limit->limit);
+        strcat(final,temp);
+        strcat(final,"\n");
+        fputs(final,limit);
+        strcpy(final,"\0");
+        temp_struct_limit=temp_struct_limit->link;
+
+    } while (temp_struct_limit!=NULL);
+    free(temp_struct_limit);
+    fclose(limit);
+}
+int search_limit_user(char user[])
+{
+    temp_struct_limit=malloc(sizeof(struct struct_limit));
+    temp_struct_limit=start_struct_limit;
+    do
+    {
+        if (strcmp(temp_struct_limit->user_name,user)==0 && strlen(temp_struct_limit->user_name)==strlen(user))
+            return 0;
+        temp_struct_limit=temp_struct_limit->link;
+    }while(temp_struct_limit!=NULL);
+    free(temp_struct_limit);
+    return 1;// 0:= fine | 1:=not found
+}
+void free_limit()
+{
+    if (temp_struct_limit==NULL)
+    {
+        free(temp_struct_limit);
+        return ;
+    }
+    do
+    {
+        temp_struct_limit=temp_struct_limit->link;
+        continue;
+    } while (temp_struct_limit!=NULL);
+    free(temp_struct_limit);
 }
 void question_print_forgot_pass()
 {
@@ -371,32 +450,44 @@ int get_im_not_robot()
             printf("__________________________________\n");
     }while(1);
 }
-int check_corect_pass_and_set_limit(char corect_pass[], int limit_time)
+int check_corect_pass_and_set_limit(char corect_pass[], char user[])
 {
     // note: if corect --> return 0;  ||  if invalid --> return 1;  ||  if have limit -->return 2; if want Exit -->return -1;
-    int i;
     char pass[50]={0};
     int flag_Im_not_Robot=0;
+    long int limit_time;
+    search_limit_user(user);
+    limit_time=atol(temp_struct_limit->limit);
     if (limit_time-time(NULL)>0)
         return 2;
-    for(i=0;i<3;i++)
+    int try=atoi(temp_struct_limit->try);
+    for(try;try!=0;try--)
     {
         printf("eneter your password:");
         password_to_star(pass);
         if (strlen(pass)==0)
+        {
+            snprintf(temp_struct_limit->try,sizeof(temp_struct_limit->try),"%i",try);
             return -1;
+        }
         flag_Im_not_Robot=get_im_not_robot();
         if (flag_Im_not_Robot==-1)
+        {
+            snprintf(temp_struct_limit->try,sizeof(temp_struct_limit->try),"%i",try);
             return -1;
+        }
 
         int len_get_pass=strlen(pass),len_corect_pass=strlen(corect_pass);
         if (strcmp(pass,corect_pass)==0 && len_corect_pass==len_get_pass)
+        {
+            temp_struct_limit->try[0]='5';
             return 0;
+        }   
         else
         {
-            if (i==2)
+            if (try==1)
                 return 1;
-            printf("\nInvalid password!! you have %d time's for enter password, carefull!\n",2-i);
+            printf("\nInvalid password!! you have %d time's for enter password, carefull!\n",try-1);
         }
     }
 }
@@ -502,11 +593,12 @@ void free_ticket()
     } while (temp_struct_ticket!=NULL);
     free(temp_struct_ticket);
 }
-int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_time)
+int get_check_user_pass(char user_corect[], char corect_pass[])
 {
     // -------------------- just user_name
     char user[30];
     int flag_user=0;
+    long int limit_time;
     if (strcmp(user_corect,user_admin)==0)//user is admin
     {
             printf("note: if you want Exit from Login page's, Just prsse enter\n");
@@ -528,20 +620,31 @@ int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_t
     }
     // -------------------- just password
     // ------------------------------ note: corect--> return 0 else 1,2 || cancel login -1;
-    int flag_pass=check_corect_pass_and_set_limit(corect_pass,*limit_time);
+    int flag_pass=check_corect_pass_and_set_limit(corect_pass,user_corect);
 
     if (flag_pass==-1)
+    {
+        free_limit();
+        add_linked_list_limit_to_notpadd();
         // ---------- cancel login OR cancel Im not robot
         return -1;
+    }
     if (flag_pass==0)
+    {
     // ------------- dont have limit and pass is corcet! *and Im not robot corect!
+        free_limit();
+        add_linked_list_limit_to_notpadd();
         return 0;
+    }
     // else
     if (flag_pass==1)
     {
         //now you give limit
-        *limit_time=make_limit_time();
-        int time=time_left_limt(*limit_time);
+        limit_time=make_limit_time();
+        snprintf(temp_struct_limit->limit,sizeof(temp_struct_limit->limit),"%li",limit_time);
+        free_limit();    
+        add_linked_list_limit_to_notpadd();
+        int time=time_left_limt(limit_time);
         printf("You have been limited for ");
         change_form_time(time);
         printf("\n");
@@ -556,7 +659,10 @@ int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_t
     {
         //you alraredy have limit
         long int time;
-        time=time_left_limt(*limit_time);
+        limit_time=atol(temp_struct_limit->limit);
+        free_limit();    
+        add_linked_list_limit_to_notpadd();
+        time=time_left_limt(limit_time);
         printf("You have been limited!! Try agian after ");
         change_form_time(time);
         printf(" later\n");
@@ -568,6 +674,7 @@ int get_check_user_pass(char user_corect[], char corect_pass[],long int *limit_t
         } while (temp!=13);
 
     }
+    
     return 1;
 }
 void menu_admin_page_print()
@@ -950,7 +1057,6 @@ int get_user_pass_user_academics()
     char user[20];
     int user_found_flag=0;
     char password[50],str_limit_time[10];
-    long int limit_time;
     // limit_time=malloc(sizeof(long int));
     printf("note: if you want Exit from Login page's, Just prsse enter\n");
     do{
@@ -975,10 +1081,8 @@ int get_user_pass_user_academics()
             }
             strcpy(password,temp_struct_academic->pass1);
             unti_hash_to_password(password);
-            limit_time=atol(temp_struct_academic->limit_time);
             strcpy(User_Name_static,temp_struct_academic->user_Name);
-            user_found_flag= get_check_user_pass(user,password,&limit_time);
-            ltoa(limit_time,temp_struct_academic->limit_time,10);
+            user_found_flag= get_check_user_pass(user,password);
             free_academic();
             break;
         }
@@ -996,7 +1100,6 @@ int get_user_pass_user_departemnts()
     char user[20];
     int user_found_flag=0;
     char password[50],str_limit_time[10];
-    long int limit_time;
     // limit_time=malloc(sizeof(long int));
     printf("note: if you want Exit from Login page's, Just prsse enter\n");
     do{
@@ -1010,10 +1113,8 @@ int get_user_pass_user_departemnts()
         {
             strcpy(password,temp_struct_departemant->pass1);
             unti_hash_to_password(password);
-            limit_time=atol(temp_struct_departemant->limit_time);
             strcpy(User_Name_static,temp_struct_departemant->user_Name);
-            user_found_flag= get_check_user_pass(user,password,&limit_time);
-            ltoa(limit_time,temp_struct_departemant->limit_time,10);
+            user_found_flag= get_check_user_pass(user,password);
             free_departemant();
             break;
         }
@@ -1814,9 +1915,8 @@ void set_new_departemant()
     fputs(question_type_str,file_departemant);
     fputs(", ",file_departemant);
     fputs(answer,file_departemant);
-    fputs(", ",file_departemant);
-    fputs("0",file_departemant);
     fputc('\n',file_departemant);
+    set_limit(user_Name);
     printf("Successfully added!\npress Enter to continue\n");
     fclose(file_departemant);
     char temp;
@@ -2009,10 +2109,9 @@ void set_new_academic()
     fputs(", ",file_academic);
     fputs(answer,file_academic);
     fputs(", ",file_academic);
-    fputs("0",file_academic);
-    fputs(", ",file_academic);
     fputc('N',file_academic);// date exit
     fputc('\n',file_academic);
+    set_limit(user_Name);
     printf("Successfully added!\npress Enter to continue\n");
     fclose(file_academic);
     char temp;
@@ -2366,9 +2465,6 @@ int set_departemants_as_link_list()
             case 11:
                 strcpy(start_struct_departemant->answer_forgot_pass,info);
                 break;
-            case 12:
-                strcpy(start_struct_departemant->limit_time,info);
-                break;
             default:
                 break;
             }
@@ -2392,7 +2488,7 @@ int set_departemants_as_link_list()
         if (strlen(temp)==0)
             break;
         flag_info=1,i=0,j=0;
-        while(flag_info!=13)
+        while(flag_info!=12)
         {
             if ((temp[i]==',' && temp[i+1]==' ') || temp[i]=='\n')
             {
@@ -2431,9 +2527,6 @@ int set_departemants_as_link_list()
                     break;
                 case 11:
                     strcpy(temp_struct_departemant->answer_forgot_pass,info);
-                    break;
-                case 12:
-                    strcpy(temp_struct_departemant->limit_time,info);
                     break;
                 default:
                     break;
@@ -2528,9 +2621,6 @@ int set_academic_as_link_list()
                 strcpy(start_struct_academic->answer_forgot_pass,info);
                 break;
             case 11:
-                strcpy(start_struct_academic->limit_time,info);
-                break;
-            case 12:
                 strcpy(start_struct_academic->ekhraj,info);
                 break;
             default:
@@ -2556,7 +2646,7 @@ int set_academic_as_link_list()
         if (strlen(temp)==0)
             break;
         flag_info=1,i=0,j=0;
-        while(flag_info!=13)
+        while(flag_info!=12)
         {
             if ((temp[i]==',' && temp[i+1]==' ') || temp[i]=='\n')
             {
@@ -2594,9 +2684,6 @@ int set_academic_as_link_list()
                     strcpy(temp_struct_academic->answer_forgot_pass,info);
                     break;
                 case 11:
-                    strcpy(temp_struct_academic->limit_time,info);
-                    break;
-                case 12:
                     strcpy(temp_struct_academic->ekhraj,info);
                     break;
                 default:
@@ -3019,6 +3106,102 @@ int set_ticket_as_link_list()
     free(temp_struct_ticket);
     return 0;
 }
+int set_limit_as_link_list()
+{
+    FILE *file_limit;
+    file_limit=fopen("file_limit.txt","r");
+    if (file_limit==NULL)
+        return 1;
+    start_struct_limit=malloc(sizeof(struct struct_limit));
+    if (start_struct_limit==NULL)
+    {
+        printf("memory is not allowed!");
+        return -1;
+    }
+    end_struct_limit=start_struct_limit;
+    char temp[225],info[50]={0};
+    int i=0,j=0,flag_info=1;
+    temp[0]='\0';
+    fgets(temp,225,file_limit);
+    int len=strlen(temp);
+    for(i=0;i<len;i++)
+    {
+        if ((temp[i]==',' && temp[i+1]==' ') || temp[i]=='\n')
+        {
+            info[j]='\0';
+            switch (flag_info)
+            { 
+                case 1:
+                    strcpy(start_struct_limit->user_name,info);
+                    break;
+                case 2:
+                    strcpy(start_struct_limit->try,info);
+                    break;
+                case 3:
+                    strcpy(start_struct_limit->limit,info);
+                    break;
+                default:
+                    break;
+            }
+            flag_info++;
+            j=0;
+            i++;
+        }
+        else
+        {
+            info[j]=temp[i];
+            j++;
+        }
+    }
+    start_struct_limit->link=NULL;
+
+    while (1)
+    {
+        temp_struct_limit=malloc(sizeof(struct struct_limit));
+        temp[0]='\0';
+        fgets(temp,225,file_limit);
+        if (strlen(temp)==0)
+            break;
+        flag_info=1,i=0,j=0;
+        while(flag_info!=4)
+        {
+            if ((temp[i]==',' && temp[i+1]==' ') || temp[i]=='\n')
+            {
+                info[j]='\0';
+                switch (flag_info)
+                {
+                    case 1:
+                        strcpy(temp_struct_limit->user_name,info);
+                        break;
+                    case 2:
+                        strcpy(temp_struct_limit->try,info);
+                        break;
+                    case 3:
+                        strcpy(temp_struct_limit->limit,info);
+                        break;
+                    default:
+                        break;
+                }
+                flag_info++;
+                j=0;
+                i++;
+            }
+            else
+            {
+                info[j]=temp[i];
+                j++;
+            }
+            i++;
+        }
+        temp_struct_limit->link=NULL;
+        end_struct_limit->link=temp_struct_limit;
+        end_struct_limit=temp_struct_limit;
+    }
+    fclose(file_limit);
+    free(temp_struct_limit);
+    return 0;
+    
+}
 void show_list_users(int status)
 {
     char temp[25];
@@ -3212,9 +3395,6 @@ void add_linked_list_academic_to_notpadd()
         strcpy(temp,temp_struct_academic->answer_forgot_pass);
         strcat(final,temp);
         strcat(final,", ");
-        strcpy(temp,temp_struct_academic->limit_time);
-        strcat(final,temp);
-        strcat(final,", ");
         strcpy(temp,temp_struct_academic->ekhraj);
         strcat(final,temp);
         strcat(final,"\n");
@@ -3277,9 +3457,6 @@ void add_linked_list_departemant_to_notpadd()
         strcat(final,temp);
         strcat(final,", ");
         strcpy(temp,temp_struct_departemant->answer_forgot_pass);
-        strcat(final,temp);
-        strcat(final,", ");
-        strcpy(temp,temp_struct_departemant->limit_time);
         strcat(final,temp);
         strcat(final,"\n");
         fputs(final,Departemant);
@@ -6597,34 +6774,18 @@ void log_academic()
 void main()
 {
     char *pointer_Uadmin;
-    pointer_Uadmin=malloc(sizeof(user_admin));
     pointer_Uadmin=user_admin;
-    if (pointer_Uadmin==NULL)
-    {
-        printf("memory is not allow! Try later");
-        return ;
-    }
     char *pointer_Padmin;
-    pointer_Padmin=malloc(sizeof(pass_admin));
     pointer_Padmin=pass_admin;
-    if (pointer_Padmin==NULL)
+    
+    int temp_flag,menu_type,type_list_log=0,login_flag;
+    temp_flag=set_limit_as_link_list();
+    if (temp_flag==1)// first det limit for admin(just once)
     {
-        printf("memory is not allow! Try later");
-        return ;
+        set_limit("admin");
+        set_limit_as_link_list();
     }
-    long int *pointer_Limit_admin;
-    pointer_Limit_admin=malloc(sizeof(limit_admin));
-    *pointer_Limit_admin=limit_admin;
-    if (pointer_Limit_admin==NULL)
-    {
-        printf("memory is not allow! Try later");
-        return ;
-    }
-    long int *limit;
-
-
-    char temp_user[20];
-    int temp_flag=0,menu_type,type_list_log=0,login_flag;
+    temp_flag=0;
     set_academic_as_link_list();
     set_departemants_as_link_list();
     srand(time(NULL));
@@ -6638,7 +6799,7 @@ void main()
         {
             case 1:// ------------------------------------------------------------------------------- Admin
                 unti_hash_to_password(pointer_Padmin);
-                login_flag=get_check_user_pass(pointer_Uadmin,pointer_Padmin,pointer_Limit_admin);// 0:= succces; 1,2:unsaccses; -1:cancel login;
+                login_flag=get_check_user_pass(pointer_Uadmin,pointer_Padmin);// 0:= succces; 1,2:unsaccses; -1:cancel login;
                 password_to_hash(pointer_Padmin);
                 if (login_flag==0)
                 {
