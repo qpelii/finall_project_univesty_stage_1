@@ -105,23 +105,23 @@ void menu_login_print()
     printf("%c%-2d%c",line_char,i+1,line_char);
     switch (i)
     {
-    case 0:
-        strcpy(temp,"Admin Login page");
-        break;
-    case 1:
-        strcpy(temp,"Department Login page");
-        break;
-    case 2:
-        strcpy(temp,"Academic Login page");
-        break;
-    case 3:
-        strcpy(temp,"Forgot Password");
-        break;
-    case 4:
-        strcpy(temp,"Exit Program");
-        break;
-    default:
-        break;
+        case 0:
+            strcpy(temp,"Admin Login page");
+            break;
+        case 1:
+            strcpy(temp,"Department Login page");
+            break;
+        case 2:
+            strcpy(temp,"Academic Login page");
+            break;
+        case 3:
+            strcpy(temp,"Forgot Password");
+            break;
+        case 4:
+            strcpy(temp,"Exit Program");
+            break;
+        default:
+            break;
     }
 
     printf("%-22s%c\n",temp,line_char);
@@ -182,22 +182,22 @@ void password_to_star(char pass_pointer[])
         pass[i]=getch();
         switch (pass[i])
         {
-        case 8:
-            if (i==0)
-                continue;
+            case 8:
+                if (i==0)
+                    continue;
 
-            printf("\b \b");
-            pass[i-1]='\0';
-            pass[i]='\0';
-            i=i-1;
-            break;
-        case 13:
-            printf("\n");
-            break;
-        default:
-            printf("*");
-            i++;
-            break;
+                printf("\b \b");
+                pass[i-1]='\0';
+                pass[i]='\0';
+                i=i-1;
+                break;
+            case 13:
+                printf("\n");
+                break;
+            default:
+                printf("*");
+                i++;
+                break;
         }
     }while(pass[i]!=13);
     pass[i]='\0';
@@ -288,32 +288,32 @@ void question_print_forgot_pass()
     printf("%c%-2d%c",line_char,i+1,line_char);
     switch (i)
     {
-    case 0:
-        strcpy(temp,"What is the name of your high school?");
-        break;
-    case 1:
-        strcpy(temp,"What is the name of your childhood best friend?");
-        break;
-    case 2:
-        strcpy(temp,"What was the name of the street where you lived as a child?");
-        break;
-    case 3:
-        strcpy(temp,"What is the name of your first teacher?");
-        break;
-    case 4:
-        strcpy(temp,"What is your favorite food?");
-        break;
-    case 5:
-        strcpy(temp,"What is your favorite color?");
-        break;
-    case 6:
-        strcpy(temp,"What was the name of your first school?");
-        break;
-    case 7:
-        strcpy(temp,"What is your father's name?");
-        break;
-    default:
-        break;
+        case 0:
+            strcpy(temp,"What is the name of your high school?");
+            break;
+        case 1:
+            strcpy(temp,"What is the name of your childhood best friend?");
+            break;
+        case 2:
+            strcpy(temp,"What was the name of the street where you lived as a child?");
+            break;
+        case 3:
+            strcpy(temp,"What is the name of your first teacher?");
+            break;
+        case 4:
+            strcpy(temp,"What is your favorite food?");
+            break;
+        case 5:
+            strcpy(temp,"What is your favorite color?");
+            break;
+        case 6:
+            strcpy(temp,"What was the name of your first school?");
+            break;
+        case 7:
+            strcpy(temp,"What is your father's name?");
+            break;
+        default:
+            break;
     }
 
     printf("%-65s%c\n",temp,line_char);
@@ -687,35 +687,35 @@ void menu_admin_page_print()
     printf("%c%-2d%c",line_char,i+1,line_char);
     switch (i)
     {
-    case 0:
-        strcpy(temp,"Add new Departemant");// modir goorooh:)
-        break;
-    case 1:
-        strcpy(temp,"Add new Academic");
-        break;
-    case 2:
-        strcpy(temp,"Show lsit of user");
-        break;
-    case 3:
-        strcpy(temp,"Keck user from system");
-        break;
-    case 4:
-        strcpy(temp,"Get Log");
-        break;
-    case 5:
-        strcpy(temp,"Tickets");
-        break;
-    case 6:
-        strcpy(temp,"Get backup from Files");
-        break;
-    case 7:
-        strcpy(temp,"Load Backup");
-        break;
-    case 8:
-        strcpy(temp,"Exit from Admin User");
-        break;
-    default:
-        break;
+        case 0:
+            strcpy(temp,"Add new Departemant");// modir goorooh:)
+            break;
+        case 1:
+            strcpy(temp,"Add new Academic");
+            break;
+        case 2:
+            strcpy(temp,"Show lsit of user");
+            break;
+        case 3:
+            strcpy(temp,"Keck user from system");
+            break;
+        case 4:
+            strcpy(temp,"Get Log");
+            break;
+        case 5:
+            strcpy(temp,"Tickets");
+            break;
+        case 6:
+            strcpy(temp,"Get backup from Files");
+            break;
+        case 7:
+            strcpy(temp,"Load Backup");
+            break;
+        case 8:
+            strcpy(temp,"Exit from Admin User");
+            break;
+        default:
+            break;
     }
 
     printf("%-25s%c\n",temp,line_char);
@@ -1842,23 +1842,23 @@ void set_new_departemant()
         // ----- show why eror
         switch (check_strong_password(pass1))
         {
-        case 1:
-            printf("too few character!(minimum character is 8) Try again: ");
-            break;
-        case 2:
-            printf("Your password for security must have number! Try again: ");
-            break;
-        case 3:
-            printf("Your password must have Capital and Small letters! Try again: ");
-            break;
-        case 4:
-            printf("Your password must have punct(!@#$%^) character! Try again: ");
-            break;
-        case 5:
-            printf("Your password must have Capital and Small letters! Try again: ");
-            break;
-        default:
-            break;
+            case 1:
+                printf("too few character!(minimum character is 8) Try again: ");
+                break;
+            case 2:
+                printf("Your password for security must have number! Try again: ");
+                break;
+            case 3:
+                printf("Your password must have Capital and Small letters! Try again: ");
+                break;
+            case 4:
+                printf("Your password must have punct(!@#$%^) character! Try again: ");
+                break;
+            case 5:
+                printf("Your password must have Capital and Small letters! Try again: ");
+                break;
+            default:
+                break;
         }
         if (check_strong_password(pass1))
             continue;
@@ -2039,23 +2039,23 @@ void set_new_academic()
         // ----- show why eror
         switch (check_strong_password(pass1))
         {
-        case 1:
-            printf("too few character!(minimum character is 8)! Try again: ");
-            break;
-        case 2:
-            printf("Your password for security must have number! Try again: ");
-            break;
-        case 3:
-            printf("Your password must have Capital and Small letters! Try again: ");
-            break;
-        case 4:
-            printf("Your password must have punct(!@#$%^) character! Try again: ");
-            break;
-        case 5:
-            printf("Your password must have Capital and Small letters! Try again: ");
-            break;
-        default:
-            break;
+            case 1:
+                printf("too few character!(minimum character is 8)! Try again: ");
+                break;
+            case 2:
+                printf("Your password for security must have number! Try again: ");
+                break;
+            case 3:
+                printf("Your password must have Capital and Small letters! Try again: ");
+                break;
+            case 4:
+                printf("Your password must have punct(!@#$%^) character! Try again: ");
+                break;
+            case 5:
+                printf("Your password must have Capital and Small letters! Try again: ");
+                break;
+            default:
+                break;
         }
         if (check_strong_password(pass1))
             continue;
@@ -2432,41 +2432,41 @@ int set_departemants_as_link_list()
             info[j]='\0';
             switch (flag_info)
             {
-            case 1:
-                strcpy(start_struct_departemant->name,info);
-                break;
-            case 2:
-                strcpy(start_struct_departemant->family,info);
-                break;
-            case 3:
-                strcpy(start_struct_departemant->date_start,info);
-                break;
-            case 4:
-                strcpy(start_struct_departemant->name_of_group,info);
-                break;
-            case 5:
-                strcpy(start_struct_departemant->ID_code,info);
-                break;
-            case 6:
-                strcpy(start_struct_departemant->phone_num,info);
-                break;
-            case 7:
-                strcpy(start_struct_departemant->email,info);
-                break;
-            case 8:
-                strcpy(start_struct_departemant->user_Name,info);
-                break;
-            case 9:
-                strcpy(start_struct_departemant->pass1,info);
-                break;
-            case 10:
-                strcpy(start_struct_departemant->question_type,info);
-                break;
-            case 11:
-                strcpy(start_struct_departemant->answer_forgot_pass,info);
-                break;
-            default:
-                break;
+                case 1:
+                    strcpy(start_struct_departemant->name,info);
+                    break;
+                case 2:
+                    strcpy(start_struct_departemant->family,info);
+                    break;
+                case 3:
+                    strcpy(start_struct_departemant->date_start,info);
+                    break;
+                case 4:
+                    strcpy(start_struct_departemant->name_of_group,info);
+                    break;
+                case 5:
+                    strcpy(start_struct_departemant->ID_code,info);
+                    break;
+                case 6:
+                    strcpy(start_struct_departemant->phone_num,info);
+                    break;
+                case 7:
+                    strcpy(start_struct_departemant->email,info);
+                    break;
+                case 8:
+                    strcpy(start_struct_departemant->user_Name,info);
+                    break;
+                case 9:
+                    strcpy(start_struct_departemant->pass1,info);
+                    break;
+                case 10:
+                    strcpy(start_struct_departemant->question_type,info);
+                    break;
+                case 11:
+                    strcpy(start_struct_departemant->answer_forgot_pass,info);
+                    break;
+                default:
+                    break;
             }
             flag_info++;
             j=0;
@@ -2495,41 +2495,41 @@ int set_departemants_as_link_list()
                 info[j]='\0';
                 switch (flag_info)
                 {
-                case 1:
-                    strcpy(temp_struct_departemant->name,info);
-                    break;
-                case 2:
-                    strcpy(temp_struct_departemant->family,info);
-                    break;
-                case 3:
-                    strcpy(temp_struct_departemant->date_start,info);
-                    break;
-                case 4:
-                    strcpy(temp_struct_departemant->name_of_group,info);
-                    break;
-                case 5:
-                    strcpy(temp_struct_departemant->ID_code,info);
-                    break;
-                case 6:
-                    strcpy(temp_struct_departemant->phone_num,info);
-                    break;
-                case 7:
-                    strcpy(temp_struct_departemant->email,info);
-                    break;
-                case 8:
-                    strcpy(temp_struct_departemant->user_Name,info);
-                    break;
-                case 9:
-                    strcpy(temp_struct_departemant->pass1,info);
-                    break;
-                case 10:
-                    strcpy(temp_struct_departemant->question_type,info);
-                    break;
-                case 11:
-                    strcpy(temp_struct_departemant->answer_forgot_pass,info);
-                    break;
-                default:
-                    break;
+                    case 1:
+                        strcpy(temp_struct_departemant->name,info);
+                        break;
+                    case 2:
+                        strcpy(temp_struct_departemant->family,info);
+                        break;
+                    case 3:
+                        strcpy(temp_struct_departemant->date_start,info);
+                        break;
+                    case 4:
+                        strcpy(temp_struct_departemant->name_of_group,info);
+                        break;
+                    case 5:
+                        strcpy(temp_struct_departemant->ID_code,info);
+                        break;
+                    case 6:
+                        strcpy(temp_struct_departemant->phone_num,info);
+                        break;
+                    case 7:
+                        strcpy(temp_struct_departemant->email,info);
+                        break;
+                    case 8:
+                        strcpy(temp_struct_departemant->user_Name,info);
+                        break;
+                    case 9:
+                        strcpy(temp_struct_departemant->pass1,info);
+                        break;
+                    case 10:
+                        strcpy(temp_struct_departemant->question_type,info);
+                        break;
+                    case 11:
+                        strcpy(temp_struct_departemant->answer_forgot_pass,info);
+                        break;
+                    default:
+                        break;
                 }
                 flag_info++;
                 j=0;
@@ -2590,41 +2590,41 @@ int set_academic_as_link_list()
             info[j]='\0';
             switch (flag_info)
             {
-            case 1:
-                strcpy(start_struct_academic->name,info);
-                break;
-            case 2:
-                strcpy(start_struct_academic->family,info);
-                break;
-            case 3:
-                strcpy(start_struct_academic->date_start,info);
-                break;
-            case 4:
-                strcpy(start_struct_academic->rate,info);
-                break;
-            case 5:
-                strcpy(start_struct_academic->phone_num,info);
-                break;
-            case 6:
-                strcpy(start_struct_academic->email,info);
-                break;
-            case 7:
-                strcpy(start_struct_academic->user_Name,info);
-                break;
-            case 8:
-                strcpy(start_struct_academic->pass1,info);
-                break;
-            case 9:
-                strcpy(start_struct_academic->question_type,info);
-                break;
-            case 10:
-                strcpy(start_struct_academic->answer_forgot_pass,info);
-                break;
-            case 11:
-                strcpy(start_struct_academic->ekhraj,info);
-                break;
-            default:
-                break;
+                case 1:
+                    strcpy(start_struct_academic->name,info);
+                    break;
+                case 2:
+                    strcpy(start_struct_academic->family,info);
+                    break;
+                case 3:
+                    strcpy(start_struct_academic->date_start,info);
+                    break;
+                case 4:
+                    strcpy(start_struct_academic->rate,info);
+                    break;
+                case 5:
+                    strcpy(start_struct_academic->phone_num,info);
+                    break;
+                case 6:
+                    strcpy(start_struct_academic->email,info);
+                    break;
+                case 7:
+                    strcpy(start_struct_academic->user_Name,info);
+                    break;
+                case 8:
+                    strcpy(start_struct_academic->pass1,info);
+                    break;
+                case 9:
+                    strcpy(start_struct_academic->question_type,info);
+                    break;
+                case 10:
+                    strcpy(start_struct_academic->answer_forgot_pass,info);
+                    break;
+                case 11:
+                    strcpy(start_struct_academic->ekhraj,info);
+                    break;
+                default:
+                    break;
             }
             flag_info++;
             j=0;
@@ -2653,41 +2653,41 @@ int set_academic_as_link_list()
                 info[j]='\0';
                 switch (flag_info)
                 {
-                case 1:
-                    strcpy(temp_struct_academic->name,info);
-                    break;
-                case 2:
-                    strcpy(temp_struct_academic->family,info);
-                    break;
-                case 3:
-                    strcpy(temp_struct_academic->date_start,info);
-                    break;
-                case 4:
-                    strcpy(temp_struct_academic->rate,info);
-                    break;
-                case 5:
-                    strcpy(temp_struct_academic->phone_num,info);
-                    break;
-                case 6:
-                    strcpy(temp_struct_academic->email,info);
-                    break;
-                case 7:
-                    strcpy(temp_struct_academic->user_Name,info);
-                    break;
-                case 8:
-                    strcpy(temp_struct_academic->pass1,info);
-                    break;
-                case 9:
-                    strcpy(temp_struct_academic->question_type,info);
-                    break;
-                case 10:
-                    strcpy(temp_struct_academic->answer_forgot_pass,info);
-                    break;
-                case 11:
-                    strcpy(temp_struct_academic->ekhraj,info);
-                    break;
-                default:
-                    break;
+                    case 1:
+                        strcpy(temp_struct_academic->name,info);
+                        break;
+                    case 2:
+                        strcpy(temp_struct_academic->family,info);
+                        break;
+                    case 3:
+                        strcpy(temp_struct_academic->date_start,info);
+                        break;
+                    case 4:
+                        strcpy(temp_struct_academic->rate,info);
+                        break;
+                    case 5:
+                        strcpy(temp_struct_academic->phone_num,info);
+                        break;
+                    case 6:
+                        strcpy(temp_struct_academic->email,info);
+                        break;
+                    case 7:
+                        strcpy(temp_struct_academic->user_Name,info);
+                        break;
+                    case 8:
+                        strcpy(temp_struct_academic->pass1,info);
+                        break;
+                    case 9:
+                        strcpy(temp_struct_academic->question_type,info);
+                        break;
+                    case 10:
+                        strcpy(temp_struct_academic->answer_forgot_pass,info);
+                        break;
+                    case 11:
+                        strcpy(temp_struct_academic->ekhraj,info);
+                        break;
+                    default:
+                        break;
                 }
                 flag_info++;
                 j=0;
@@ -3778,20 +3778,20 @@ void list_of_log_print()
     printf("%c%-2d%c",line_char,i+1,line_char);
     switch (i)
     {
-    case 0:
-        strcpy(temp,"List info Academic");
-        break;
-    case 1:
-        strcpy(temp,"List Departemant");
-        break;
-    case 2:
-        strcpy(temp,"List User Dismissed");
-        break;
-    case 3:
-        strcpy(temp,"Back to Menu");
-        break;
-    default:
-        break;
+        case 0:
+            strcpy(temp,"List info Academic");
+            break;
+        case 1:
+            strcpy(temp,"List Departemant");
+            break;
+        case 2:
+            strcpy(temp,"List User Dismissed");
+            break;
+        case 3:
+            strcpy(temp,"Back to Menu");
+            break;
+        default:
+            break;
     }
 
     printf("%-22s%c\n",temp,line_char);
@@ -4346,32 +4346,32 @@ void forgot_password()
 
     switch (i)
     {
-    case 1:
-        strcpy(temp,"What is the name of your high school?");
-        break;
-    case 2:
-        strcpy(temp,"What is the name of your childhood best friend?");
-        break;
-    case 3:
-        strcpy(temp,"What was the name of the street where you lived as a child?");
-        break;
-    case 4:
-        strcpy(temp,"What is the name of your first teacher?");
-        break;
-    case 5:
-        strcpy(temp,"What is your favorite food?");
-        break;
-    case 6:
-        strcpy(temp,"What is your favorite color?");
-        break;
-    case 7:
-        strcpy(temp,"What was the name of your first school?");
-        break;
-    case 8:
-        strcpy(temp,"What is your father's name? ");
-        break;
-    default:
-        break;
+        case 1:
+            strcpy(temp,"What is the name of your high school?");
+            break;
+        case 2:
+            strcpy(temp,"What is the name of your childhood best friend?");
+            break;
+        case 3:
+            strcpy(temp,"What was the name of the street where you lived as a child?");
+            break;
+        case 4:
+            strcpy(temp,"What is the name of your first teacher?");
+            break;
+        case 5:
+            strcpy(temp,"What is your favorite food?");
+            break;
+        case 6:
+            strcpy(temp,"What is your favorite color?");
+            break;
+        case 7:
+            strcpy(temp,"What was the name of your first school?");
+            break;
+        case 8:
+            strcpy(temp,"What is your father's name? ");
+            break;
+        default:
+            break;
     }
     printf("%s ",temp);
     do
@@ -4424,23 +4424,23 @@ void forgot_password()
         {
             switch (i)
             {
-            case 1:
-                printf("too few character!(minimum character is 8)! Try again: ");
-                break;
-            case 2:
-                printf("Your password for security must have number! Try again: ");
-                break;
-            case 3:
-                printf("Your password must have Capital and Small letters! Try again: ");
-                break;
-            case 4:
-                printf("Your password must have punct(!@#$%^) character! Try again: ");
-                break;
-            case 5:
-                printf("Your password must have Capital and Small letters! Try again: ");
-                break;
-            default:
-                break;
+                case 1:
+                    printf("too few character!(minimum character is 8)! Try again: ");
+                    break;
+                case 2:
+                    printf("Your password for security must have number! Try again: ");
+                    break;
+                case 3:
+                    printf("Your password must have Capital and Small letters! Try again: ");
+                    break;
+                case 4:
+                    printf("Your password must have punct(!@#$%^) character! Try again: ");
+                    break;
+                case 5:
+                    printf("Your password must have Capital and Small letters! Try again: ");
+                    break;
+                default:
+                    break;
             }
             continue;
         }
@@ -4498,35 +4498,35 @@ void menu_departemant_print()
     printf("%c%-2d%c",line_char,i+1,line_char);
     switch (i)
     {
-    case 0:
-        strcpy(temp,"Add new Course");
-        break;
-    case 1:
-        strcpy(temp,"Set Student score");
-        break;
-    case 2:
-        strcpy(temp,"Edit Student score");
-        break;
-    case 3:
-        strcpy(temp,"Edit Information about Course");
-        break;
-    case 4:
-        strcpy(temp,"Delete Course Information's");
-        break;
-    case 5:
-        strcpy(temp,"Get Log");
-        break;
-    case 6:
-        strcpy(temp,"Ticket panel");
-        break;
-    case 7:
-        strcpy(temp,"Settings");
-        break;
-    case 8:
-        strcpy(temp,"Exit from Panle");
-        break;
-    default:
-        break;
+        case 0:
+            strcpy(temp,"Add new Course");
+            break;
+        case 1:
+            strcpy(temp,"Set Student score");
+            break;
+        case 2:
+            strcpy(temp,"Edit Student score");
+            break;
+        case 3:
+            strcpy(temp,"Edit Information about Course");
+            break;
+        case 4:
+            strcpy(temp,"Delete Course Information's");
+            break;
+        case 5:
+            strcpy(temp,"Get Log");
+            break;
+        case 6:
+            strcpy(temp,"Ticket panel");
+            break;
+        case 7:
+            strcpy(temp,"Settings");
+            break;
+        case 8:
+            strcpy(temp,"Exit from Panle");
+            break;
+        default:
+            break;
     }
 
     printf("%-30s%c\n",temp,line_char);
@@ -4547,20 +4547,20 @@ void list_type_of_course()
     printf("%c%-2d%c",line_char,i+1,line_char);
     switch (i)
     {
-    case 0:
-        strcpy(temp,"teori");
-        break;
-    case 1:
-        strcpy(temp,"Amali");
-        break;
-    case 2:
-        strcpy(temp,"Azmayeshgahi");
-        break;
-    case 3:
-        strcpy(temp,"kargahi");
-        break;
-    default:
-        break;
+        case 0:
+            strcpy(temp,"teori");
+            break;
+        case 1:
+            strcpy(temp,"Amali");
+            break;
+        case 2:
+            strcpy(temp,"Azmayeshgahi");
+            break;
+        case 3:
+            strcpy(temp,"kargahi");
+            break;
+        default:
+            break;
     }
 
     printf("%-15s%c\n",temp,line_char);
@@ -4682,23 +4682,23 @@ int set_course_as_link_list()
             info[j]='\0';
             switch (flag_info)
             {
-            case 1:
-                strcpy(start_struct_course->name_course,info);
-                break;
-            case 2:
-                strcpy(start_struct_course->vahed,info);
-                break;
-            case 3:
-                strcpy(start_struct_course->type_course,info);
-                break;
-            case 4:
-                strcpy(start_struct_course->code_course,info);
-                break;
-            case 5:
-                strcpy(start_struct_course->status,info);
-                break;
-            default:
-                break;
+                case 1:
+                    strcpy(start_struct_course->name_course,info);
+                    break;
+                case 2:
+                    strcpy(start_struct_course->vahed,info);
+                    break;
+                case 3:
+                    strcpy(start_struct_course->type_course,info);
+                    break;
+                case 4:
+                    strcpy(start_struct_course->code_course,info);
+                    break;
+                case 5:
+                    strcpy(start_struct_course->status,info);
+                    break;
+                default:
+                    break;
             }
             flag_info++;
             j=0;
@@ -4727,23 +4727,23 @@ int set_course_as_link_list()
                 info[j]='\0';
                 switch (flag_info)
                 {
-                case 1:
-                    strcpy(temp_struct_course->name_course,info);
-                    break;
-                case 2:
-                    strcpy(temp_struct_course->vahed,info);
-                    break;
-                case 3:
-                    strcpy(temp_struct_course->type_course,info);
-                    break;
-                case 4:
-                    strcpy(temp_struct_course->code_course,info);
-                    break;
-                case 5:
-                    strcpy(temp_struct_course->status,info);
-                    break;
-                default:
-                    break;
+                    case 1:
+                        strcpy(temp_struct_course->name_course,info);
+                        break;
+                    case 2:
+                        strcpy(temp_struct_course->vahed,info);
+                        break;
+                    case 3:
+                        strcpy(temp_struct_course->type_course,info);
+                        break;
+                    case 4:
+                        strcpy(temp_struct_course->code_course,info);
+                        break;
+                    case 5:
+                        strcpy(temp_struct_course->status,info);
+                        break;
+                    default:
+                        break;
                 }
                 flag_info++;
                 j=0;
@@ -4773,29 +4773,29 @@ void menu_academic_print()
     printf("%c%-2d%c",line_char,i+1,line_char);
     switch (i)
     {
-    case 0:
-        strcpy(temp,"Add new Student");
-        break;
-    case 1:
-        strcpy(temp,"Edit information Student");
-        break;
-    case 2:
-        strcpy(temp,"Set score");
-        break;
-    case 3:
-        strcpy(temp,"Get Log");
-        break;
-    case 4:
-        strcpy(temp,"Ticket panel");
-        break;
-    case 5:
-        strcpy(temp,"Settings");
-        break;
-    case 6:
-        strcpy(temp,"Exit from Panel");
-        break;
-    default:
-        break;
+        case 0:
+            strcpy(temp,"Add new Student");
+            break;
+        case 1:
+            strcpy(temp,"Edit information Student");
+            break;
+        case 2:
+            strcpy(temp,"Set score");
+            break;
+        case 3:
+            strcpy(temp,"Get Log");
+            break;
+        case 4:
+            strcpy(temp,"Ticket panel");
+            break;
+        case 5:
+            strcpy(temp,"Settings");
+            break;
+        case 6:
+            strcpy(temp,"Exit from Panel");
+            break;
+        default:
+            break;
     }
 
     printf("%-30s%c\n",temp,line_char);
@@ -5102,23 +5102,23 @@ void settings_departemant()
             {
                 switch (flag)
                 {
-                case 1:
-                    printf("too few character!(minimum character is 8)! Try again: ");
-                    break;
-                case 2:
-                    printf("Your password for security must have number! Try again: ");
-                    break;
-                case 3:
-                    printf("Your password must have Capital and Small letters! Try again: ");
-                    break;
-                case 4:
-                    printf("Your password must have punct(!@#$%^) character! Try again: ");
-                    break;
-                case 5:
-                    printf("Your password must have Capital and Small letters! Try again: ");
-                    break;
-                default:
-                    break;
+                    case 1:
+                        printf("too few character!(minimum character is 8)! Try again: ");
+                        break;
+                    case 2:
+                        printf("Your password for security must have number! Try again: ");
+                        break;
+                    case 3:
+                        printf("Your password must have Capital and Small letters! Try again: ");
+                        break;
+                    case 4:
+                        printf("Your password must have punct(!@#$%^) character! Try again: ");
+                        break;
+                    case 5:
+                        printf("Your password must have Capital and Small letters! Try again: ");
+                        break;
+                    default:
+                        break;
                 }
                 continue;
             }
@@ -5225,23 +5225,23 @@ void settings_academic()
             {
                 switch (flag)
                 {
-                case 1:
-                    printf("too few character!(minimum character is 8)! Try again: ");
-                    break;
-                case 2:
-                    printf("Your password for security must have number! Try again: ");
-                    break;
-                case 3:
-                    printf("Your password must have Capital and Small letters! Try again: ");
-                    break;
-                case 4:
-                    printf("Your password must have punct(!@#$%^) character! Try again: ");
-                    break;
-                case 5:
-                    printf("Your password must have Capital and Small letters! Try again: ");
-                    break;
-                default:
-                    break;
+                    case 1:
+                        printf("too few character!(minimum character is 8)! Try again: ");
+                        break;
+                    case 2:
+                        printf("Your password for security must have number! Try again: ");
+                        break;
+                    case 3:
+                        printf("Your password must have Capital and Small letters! Try again: ");
+                        break;
+                    case 4:
+                        printf("Your password must have punct(!@#$%^) character! Try again: ");
+                        break;
+                    case 5:
+                        printf("Your password must have Capital and Small letters! Try again: ");
+                        break;
+                    default:
+                        break;
                 }
                 continue;
             }
@@ -5432,20 +5432,20 @@ void list_course_print()
             strcpy(temp,"Type of Course: ");
             switch (atoi(temp_struct_course->type_course))
             {
-             case 1:
-                strcpy(type,"teori");
-                break;
-            case 2:
-                strcpy(type,"Amali");
-                break;
-            case 3:
-                strcpy(type,"Azmayeshgahi");
-                break;
-            case 4:
-                strcpy(type,"kargahi");
-                break;
-            default:
-                break;
+                case 1:
+                    strcpy(type,"teori");
+                    break;
+                case 2:
+                    strcpy(type,"Amali");
+                    break;
+                case 3:
+                    strcpy(type,"Azmayeshgahi");
+                    break;
+                case 4:
+                    strcpy(type,"kargahi");
+                    break;
+                default:
+                    break;
             }
             printf("%s%s |",temp,type);
             strcpy(temp,"\"tedede vahed\": ");
@@ -5496,20 +5496,20 @@ void list_course_special_print(int status)// status1 := D and 0:= E
                 strcpy(temp,"Type of Course");
                 switch (atoi(temp_struct_course->type_course))
                 {
-                case 1:
-                    strcpy(type,"teori");
-                    break;
-                case 2:
-                    strcpy(type,"Amali");
-                    break;
-                case 3:
-                    strcpy(type,"Azmayeshgahi");
-                    break;
-                case 4:
-                    strcpy(type,"kargahi");
-                    break;
-                default:
-                    break;
+                    case 1:
+                        strcpy(type,"teori");
+                        break;
+                    case 2:
+                        strcpy(type,"Amali");
+                        break;
+                    case 3:
+                        strcpy(type,"Azmayeshgahi");
+                        break;
+                    case 4:
+                        strcpy(type,"kargahi");
+                        break;
+                    default:
+                        break;
                 }
                 printf("%-20s%s\n",temp,type);
                 strcpy(temp,"\"tedede vahed\"");
@@ -5532,20 +5532,20 @@ void list_course_special_print(int status)// status1 := D and 0:= E
                 strcpy(temp,"Type of Course");
                 switch (atoi(temp_struct_course->type_course))
                 {
-                case 1:
-                    strcpy(type,"teori");
-                    break;
-                case 2:
-                    strcpy(type,"Amali");
-                    break;
-                case 3:
-                    strcpy(type,"Azmayeshgahi");
-                    break;
-                case 4:
-                    strcpy(type,"kargahi");
-                    break;
-                default:
-                    break;
+                    case 1:
+                        strcpy(type,"teori");
+                        break;
+                    case 2:
+                        strcpy(type,"Amali");
+                        break;
+                    case 3:
+                        strcpy(type,"Azmayeshgahi");
+                        break;
+                    case 4:
+                        strcpy(type,"kargahi");
+                        break;
+                    default:
+                        break;
                 }
                 printf("%-20s%s\n",temp,type);
                 strcpy(temp,"\"tedede vahed\"");
@@ -6144,29 +6144,29 @@ void panle_log_print_page3()
     printf("%c%-2d%c",line_char,i+1,line_char);
     switch (i)
     {
-    case 0:
-        strcpy(temp,"Show list of Sudent (Sorted by Avrage)");
-        break;
-    case 1:
-        strcpy(temp,"Show list of Students \"ghabool shode\" in Spicail Course");
-        break;
-    case 2:
-        strcpy(temp,"Show list of Sudent that not pass in Specail Course");
-        break;
-    case 3:
-        strcpy(temp,"Show \"mashroot\" Student");
-        break;
-    case 4:
-        strcpy(temp,"Show \"mashroot\" Student and pass one Specil course");
-        break;
-    case 5:
-        strcpy(temp,"Previous Page");
-        break;
-    case 6:
-        strcpy(temp,"Exit");
-        break;
-    default:
-        break;
+        case 0:
+            strcpy(temp,"Show list of Sudent (Sorted by Avrage)");
+            break;
+        case 1:
+            strcpy(temp,"Show list of Students \"ghabool shode\" in Spicail Course");
+            break;
+        case 2:
+            strcpy(temp,"Show list of Sudent that not pass in Specail Course");
+            break;
+        case 3:
+            strcpy(temp,"Show \"mashroot\" Student");
+            break;
+        case 4:
+            strcpy(temp,"Show \"mashroot\" Student and pass one Specil course");
+            break;
+        case 5:
+            strcpy(temp,"Previous Page");
+            break;
+        case 6:
+            strcpy(temp,"Exit");
+            break;
+        default:
+            break;
     }
 
     printf("%-55s%c\n",temp,line_char);
@@ -6188,32 +6188,32 @@ void panle_log_print_page2()
     printf("%c%-2d%c",line_char,i+1,line_char);
     switch (i)
     {
-    case 0:
-        strcpy(temp,"Scores student report whit ID Uuiversity");
-        break;
-    case 1:
-        strcpy(temp,"Scores student report whit Code course");
-        break;
-    case 2:
-        strcpy(temp,"Scores student report whit ID Uuiversity(sorted by name)");
-        break;
-    case 3:
-        strcpy(temp,"Avrege score of Student");
-        break;
-    case 4:
-        strcpy(temp,"Avrege score of Course");
-        break;
-    case 5:
-        strcpy(temp,"Next page");
-        break;
-    case 6:
-        strcpy(temp,"Previous Page");
-        break;
-    case 7:
-        strcpy(temp,"Exit");
-        break;
-    default:
-        break;
+        case 0:
+            strcpy(temp,"Scores student report whit ID Uuiversity");
+            break;
+        case 1:
+            strcpy(temp,"Scores student report whit Code course");
+            break;
+        case 2:
+            strcpy(temp,"Scores student report whit ID Uuiversity(sorted by name)");
+            break;
+        case 3:
+            strcpy(temp,"Avrege score of Student");
+            break;
+        case 4:
+            strcpy(temp,"Avrege score of Course");
+            break;
+        case 5:
+            strcpy(temp,"Next page");
+            break;
+        case 6:
+            strcpy(temp,"Previous Page");
+            break;
+        case 7:
+            strcpy(temp,"Exit");
+            break;
+        default:
+            break;
     }
 
     printf("%-56s%c\n",temp,line_char);
@@ -6235,29 +6235,29 @@ void panle_log_print_page1()
     printf("%c%-2d%c",line_char,i+1,line_char);
     switch (i)
     {
-    case 0:
-        strcpy(temp,"Found student with ID university");
-        break;
-    case 1:
-        strcpy(temp,"Show list of Student");
-        break;
-    case 2:
-        strcpy(temp,"Show list of Course");
-        break;
-    case 3:
-        strcpy(temp,"Show list of Course Desable");
-        break;
-    case 4:
-        strcpy(temp,"Show list of Course Ensable");
-        break;
-    case 5:
-        strcpy(temp,"Next Page");
-        break;
-    case 6:
-        strcpy(temp,"Exit");
-        break;
-    default:
-        break;
+        case 0:
+            strcpy(temp,"Found student with ID university");
+            break;
+        case 1:
+            strcpy(temp,"Show list of Student");
+            break;
+        case 2:
+            strcpy(temp,"Show list of Course");
+            break;
+        case 3:
+            strcpy(temp,"Show list of Course Desable");
+            break;
+        case 4:
+            strcpy(temp,"Show list of Course Ensable");
+            break;
+        case 5:
+            strcpy(temp,"Next Page");
+            break;
+        case 6:
+            strcpy(temp,"Exit");
+            break;
+        default:
+            break;
     }
 
     printf("%-35s%c\n",temp,line_char);
@@ -6273,17 +6273,17 @@ void contorol_panle_print_log_departemant_panel(int num_page)
 {
     switch (num_page)
     {
-    case 1:
-        panle_log_print_page1();
-        break;
-    case 2:
-        panle_log_print_page2();
-        break;
-    case 3:
-        panle_log_print_page3();
-        break;
-    default:
-        break;
+        case 1:
+            panle_log_print_page1();
+            break;
+        case 2:
+            panle_log_print_page2();
+            break;
+        case 3:
+            panle_log_print_page3();
+            break;
+        default:
+            break;
     }
 }
 int log_departemant()
@@ -6295,127 +6295,127 @@ int log_departemant()
     while (1)
         switch (num_page)
         {
-        // ------------------------------------------------------------------page 1
-        case 1:
-            do{
-                contorol_panle_print_log_departemant_panel(num_page);
-                num_menu=menu_selection_1_num(7);
-                switch (num_menu)
-                {
-                    case 1:
-                        info_student_sync_with_id_print();
+            // ------------------------------------------------------------------page 1
+            case 1:
+                do{
+                    contorol_panle_print_log_departemant_panel(num_page);
+                    num_menu=menu_selection_1_num(7);
+                    switch (num_menu)
+                    {
+                        case 1:
+                            info_student_sync_with_id_print();
+                            break;
+                        case 2:
+                            list_student_print();
+                            break;
+                        case 3:
+                            list_course_print();
+                            break;
+                        case 4:
+                            list_course_special_print(1);
+                            break;
+                        case 5:
+                            list_course_special_print(0);
+                            break;
+                        case 6:
+                            num_page=2;
+                            break;
+                        case 7:
+                            return 1;
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                    if (num_menu==6)
                         break;
-                    case 2:
-                        list_student_print();
-                        break;
-                    case 3:
-                        list_course_print();
-                        break;
-                    case 4:
-                        list_course_special_print(1);
-                        break;
-                    case 5:
-                        list_course_special_print(0);
-                        break;
-                    case 6:
-                        num_page=2;
-                        break;
-                    case 7:
-                        return 1;
-                        break;
-                    default:
-                        break;
-                }
-                break;
+                }while(1);
+                    break;
+            // ----------------------------------------------------------------- page 2
+
+            case 2:
+                do{
+                    contorol_panle_print_log_departemant_panel(num_page);
+                    num_menu=menu_selection_1_num(8);
+                    switch (num_menu)
+                    {
+                        case 1:
+                            search_scores_of_student_by_ID();
+                            break;
+                        case 2:
+                            search_scores_of_student_by_code_course();
+                            break;
+                        case 3:
+                            temp_flag=sort_linked_list_by_name_student();
+                            if (temp_flag==1)
+                                break;
+                            search_scores_of_student_by_code_course();
+                            break;
+                        case 4:
+                            show_avg_score_with_student_id();
+                            break;
+                        case 5:
+                            show_avg_score_with_code_course();
+                            break;
+                        case 6:
+                            num_page=3;
+                            break;
+                        case 7:
+                            num_page=1;
+                            break;
+                        case 8:
+                            return 1;
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                if (num_menu==6 || num_menu==7 || num_menu==8)
+                    break;
+                }while(1);
+                    break;
+            // ------------------------------------------------------------------ page 3
+
+            case 3:
+                do{
+                    contorol_panle_print_log_departemant_panel(num_page);
+                    num_menu=menu_selection_1_num(7);
+                    switch (num_menu)
+                    {
+                        case 1:
+                            sorte_student_bg_avg();
+                            sorte_student_bg_avg_print();
+                            set_student_as_link_list();
+                            calcurat_avrage_score_student();
+                            break;
+                        case 2:
+                            student_passed_search_by_code_cours_print();
+                            break;
+                        case 3:
+                            student_dont_passed_search_by_code_cours_print();
+                            break;
+                        case 4:
+                            show_list_student_mashroot();
+                            break;
+                        case 5:
+                            show_list_student_mashroot_and_get_score_in_one_cours();
+                            break;
+                        case 6:
+                            num_page=2;
+                            break;
+                        case 7:
+                            return 1;
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
                 if (num_menu==6)
                     break;
-            }while(1);
+                }while(1);
+                    break;
+            default:
                 break;
-        // ----------------------------------------------------------------- page 2
-
-        case 2:
-            do{
-                contorol_panle_print_log_departemant_panel(num_page);
-                num_menu=menu_selection_1_num(8);
-                switch (num_menu)
-                {
-                    case 1:
-                        search_scores_of_student_by_ID();
-                        break;
-                    case 2:
-                        search_scores_of_student_by_code_course();
-                        break;
-                    case 3:
-                        temp_flag=sort_linked_list_by_name_student();
-                        if (temp_flag==1)
-                            break;
-                        search_scores_of_student_by_code_course();
-                        break;
-                    case 4:
-                        show_avg_score_with_student_id();
-                        break;
-                    case 5:
-                        show_avg_score_with_code_course();
-                        break;
-                    case 6:
-                        num_page=3;
-                        break;
-                    case 7:
-                        num_page=1;
-                        break;
-                    case 8:
-                        return 1;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            if (num_menu==6 || num_menu==7 || num_menu==8)
-                break;
-            }while(1);
-                break;
-        // ------------------------------------------------------------------ page 3
-
-        case 3:
-            do{
-                contorol_panle_print_log_departemant_panel(num_page);
-                num_menu=menu_selection_1_num(7);
-                switch (num_menu)
-                {
-                    case 1:
-                        sorte_student_bg_avg();
-                        sorte_student_bg_avg_print();
-                        set_student_as_link_list();
-                        calcurat_avrage_score_student();
-                        break;
-                    case 2:
-                        student_passed_search_by_code_cours_print();
-                        break;
-                    case 3:
-                        student_dont_passed_search_by_code_cours_print();
-                        break;
-                    case 4:
-                        show_list_student_mashroot();
-                        break;
-                    case 5:
-                        show_list_student_mashroot_and_get_score_in_one_cours();
-                        break;
-                    case 6:
-                        num_page=2;
-                        break;
-                    case 7:
-                        return 1;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            if (num_menu==6)
-                break;
-            }while(1);
-                break;
-        default:
-            break;
         }
 }
 //                                                           end repurt departemant
@@ -6715,23 +6715,23 @@ void log_academic_panel_print()
     printf("%c%-2d%c",line_char,i+1,line_char);
     switch (i)
     {
-    case 0:
-        strcpy(temp,"Search info student by ID university");
-        break;
-    case 1:
-        strcpy(temp,"Search info student since date to date");
-        break;
-    case 2:
-        strcpy(temp,"Search info student by Major");
-        break;
-    case 3:
-        strcpy(temp,"Search info student by location Born");
-        break;
-    case 4:
-        strcpy(temp,"Back to Academic Panel");
-        break;
-    default:
-        break;
+        case 0:
+            strcpy(temp,"Search info student by ID university");
+            break;
+        case 1:
+            strcpy(temp,"Search info student since date to date");
+            break;
+        case 2:
+            strcpy(temp,"Search info student by Major");
+            break;
+        case 3:
+            strcpy(temp,"Search info student by location Born");
+            break;
+        case 4:
+            strcpy(temp,"Back to Academic Panel");
+            break;
+        default:
+            break;
     }
 
     printf("%-40s%c\n",temp,line_char);
@@ -6752,20 +6752,20 @@ void log_academic()
         num_menu=menu_selection_1_num(5);
         switch (num_menu)
         {
-        case 1:
-            info_student_sync_with_id_print();
-            break;
-        case 2:
-            list_student_born_since_date_to_date();
-            break;
-        case 3:
-            list_student_search_major_print();
-            break;
-        case 4:
-            list_student_search_city_print();
-            break;
-        default:
-            break;
+            case 1:
+                info_student_sync_with_id_print();
+                break;
+            case 2:
+                list_student_born_since_date_to_date();
+                break;
+            case 3:
+                list_student_search_major_print();
+                break;
+            case 4:
+                list_student_search_city_print();
+                break;
+            default:
+                break;
         }
     } while (num_menu!=5);
 
@@ -6931,82 +6931,82 @@ void main()
                         // system("cls");
                         switch (menu_type)
                         {
-                        case 1:
-                            add_new_course();
-                            set_course_as_link_list();
-                            // system("cls");
-                            break;
-                        case 2:
-                            set_new_score();
-                            set_score_student_as_link_list();
-                            // system("cls");
-                            break;
-                        case 3:
-                            edit_score_student();
-                            add_linked_list_score_to_notpadd();
-                            // system("cls");
-                            break;
-                        case 4:
-                            edit_info_course();
-                            add_linked_list_course_to_notpadd();
-                            // system("cls");
-                            break;
-                        case 5:
-                            remove_course();
-                            add_linked_list_course_to_notpadd();
-                            // system("cls");
-                            break;
-                        case 6:
-                            log_departemant();
-                            // system("cls");
-                            break;
-                        case 7:
-                            do
-                            {
-                                menu_ticket_user_print();
-                                menu_type=menu_selection_1_num(4);
-                                switch (menu_type)
+                            case 1:
+                                add_new_course();
+                                set_course_as_link_list();
+                                // system("cls");
+                                break;
+                            case 2:
+                                set_new_score();
+                                set_score_student_as_link_list();
+                                // system("cls");
+                                break;
+                            case 3:
+                                edit_score_student();
+                                add_linked_list_score_to_notpadd();
+                                // system("cls");
+                                break;
+                            case 4:
+                                edit_info_course();
+                                add_linked_list_course_to_notpadd();
+                                // system("cls");
+                                break;
+                            case 5:
+                                remove_course();
+                                add_linked_list_course_to_notpadd();
+                                // system("cls");
+                                break;
+                            case 6:
+                                log_departemant();
+                                // system("cls");
+                                break;
+                            case 7:
+                                do
                                 {
-                                case 1:
-                                    set_new_ticket();
-                                    set_ticket_as_link_list();
-                                    // system("cls");
-                                    break;
-                                case 2:
-                                    set_ticket_as_link_list();
-                                    menu_type=list_sent_ticket_by_user_name(User_Name_static);
-                                    if (menu_type==-1)
-                                        break;
-                                    // system("cls");
-                                    answer_ticket_print(menu_type,User_Name_static);
-                                    // system("cls");
-                                    add_linked_list_ticket_to_notpadd();
-                                    break;
-                                case 3:// --------------------- unread
-                                    set_ticket_as_link_list();
-                                    menu_type=list_unread_ticket_by_user_name(User_Name_static);
-                                    // system("cls");
-                                    if (menu_type==-1)
-                                        break;
-                                    answer_panle_unread_ticket_print(menu_type,User_Name_static);
-                                    // system("cls");
-                                    add_linked_list_ticket_to_notpadd();
-                                    break;
-                                default:
-                                    break;
-                                }
-                            } while (menu_type!=4);
-                            // system("cls");
-                            break;
-                        case 8:
-                            settings_departemant();
-                            add_linked_list_departemant_to_notpadd();
-                            // system("cls");
-                            break;
-                        case 9:
-                            break;
-                        default:
-                            break;
+                                    menu_ticket_user_print();
+                                    menu_type=menu_selection_1_num(4);
+                                    switch (menu_type)
+                                    {
+                                        case 1:
+                                            set_new_ticket();
+                                            set_ticket_as_link_list();
+                                            // system("cls");
+                                            break;
+                                        case 2:
+                                            set_ticket_as_link_list();
+                                            menu_type=list_sent_ticket_by_user_name(User_Name_static);
+                                            if (menu_type==-1)
+                                                break;
+                                            // system("cls");
+                                            answer_ticket_print(menu_type,User_Name_static);
+                                            // system("cls");
+                                            add_linked_list_ticket_to_notpadd();
+                                            break;
+                                        case 3:// --------------------- unread
+                                            set_ticket_as_link_list();
+                                            menu_type=list_unread_ticket_by_user_name(User_Name_static);
+                                            // system("cls");
+                                            if (menu_type==-1)
+                                                break;
+                                            answer_panle_unread_ticket_print(menu_type,User_Name_static);
+                                            // system("cls");
+                                            add_linked_list_ticket_to_notpadd();
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                } while (menu_type!=4);
+                                // system("cls");
+                                break;
+                            case 8:
+                                settings_departemant();
+                                add_linked_list_departemant_to_notpadd();
+                                // system("cls");
+                                break;
+                            case 9:
+                                break;
+                            default:
+                                break;
                         }
                     }while(menu_type!=9);
                 }
@@ -7029,72 +7029,72 @@ void main()
                         // system("cls");
                         switch (menu_type)
                         {
-                        case 1:
-                            set_new_student();
-                            set_student_as_link_list();
-                            // system("cls");
-                            break;
-                        case 2:
-                            edit_info_student();
-                            add_linked_list_student_to_notpadd();
-                            // system("cls");
-                            break;
-                        case 3:
-                            set_new_score();
-                            set_score_student_as_link_list();
-                            // system("cls");
-                            break;
-                        case 4:
-                            log_academic();
-                            // system("cls");
-                            break;
-                        case 5:
-                            do
-                            {
-                                menu_ticket_user_print();
-                                menu_type=menu_selection_1_num(4);
-                                switch (menu_type)
+                            case 1:
+                                set_new_student();
+                                set_student_as_link_list();
+                                // system("cls");
+                                break;
+                            case 2:
+                                edit_info_student();
+                                add_linked_list_student_to_notpadd();
+                                // system("cls");
+                                break;
+                            case 3:
+                                set_new_score();
+                                set_score_student_as_link_list();
+                                // system("cls");
+                                break;
+                            case 4:
+                                log_academic();
+                                // system("cls");
+                                break;
+                            case 5:
+                                do
                                 {
-                                case 1:
-                                    set_new_ticket();
-                                    // system("cls");
-                                    set_ticket_as_link_list();
-                                    break;
-                                case 2:
-                                    set_ticket_as_link_list();
-                                    menu_type=list_sent_ticket_by_user_name(User_Name_static);
-                                    if (menu_type==-1)
-                                        break;
-                                    // system("cls");
-                                    answer_ticket_print(menu_type,User_Name_static);
-                                    // system("cls");
-                                    add_linked_list_ticket_to_notpadd();
-                                    break;
-                                case 3:// --------------------- unread
-                                    set_ticket_as_link_list();
-                                    menu_type=list_unread_ticket_by_user_name(User_Name_static);
-                                    if (menu_type==-1)
-                                        break;
-                                    // system("cls");
-                                    answer_panle_unread_ticket_print(menu_type,User_Name_static);
-                                    // system("cls");
-                                    add_linked_list_ticket_to_notpadd();
-                                    break;
-                                default:
-                                    break;
-                                }
-                            } while (menu_type!=4);
-                            // system("cls");
-                            break;
-                        case 6:
-                            settings_academic();
-                            add_linked_list_academic_to_notpadd();
-                            // system("cls");
-                            break;
-                        case 7:
-                            break;
-                        default:
-                            break;
+                                    menu_ticket_user_print();
+                                    menu_type=menu_selection_1_num(4);
+                                    switch (menu_type)
+                                    {
+                                        case 1:
+                                            set_new_ticket();
+                                            // system("cls");
+                                            set_ticket_as_link_list();
+                                            break;
+                                        case 2:
+                                            set_ticket_as_link_list();
+                                            menu_type=list_sent_ticket_by_user_name(User_Name_static);
+                                            if (menu_type==-1)
+                                                break;
+                                            // system("cls");
+                                            answer_ticket_print(menu_type,User_Name_static);
+                                            // system("cls");
+                                            add_linked_list_ticket_to_notpadd();
+                                            break;
+                                        case 3:// --------------------- unread
+                                            set_ticket_as_link_list();
+                                            menu_type=list_unread_ticket_by_user_name(User_Name_static);
+                                            if (menu_type==-1)
+                                                break;
+                                            // system("cls");
+                                            answer_panle_unread_ticket_print(menu_type,User_Name_static);
+                                            // system("cls");
+                                            add_linked_list_ticket_to_notpadd();
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                } while (menu_type!=4);
+                                // system("cls");
+                                break;
+                            case 6:
+                                settings_academic();
+                                add_linked_list_academic_to_notpadd();
+                                // system("cls");
+                                break;
+                            case 7:
+                                break;
+                            default:
+                                break;
                         }
                     }while(menu_type!=7);
                 }
