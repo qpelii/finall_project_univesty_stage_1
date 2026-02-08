@@ -876,7 +876,7 @@ void menu_admin_page_print()
 }
 int menu_selection_1_num(int number_int)
 {
-     char number[3];
+    char number[3];
     int num,flag;
     do
     {
@@ -4191,6 +4191,8 @@ void get_backup()
         gets(file_location);
         //---------- checkt addres
         len=strlen(file_location);
+        if (len==0)
+            return ;
         for (i=0; i<len; i++)
             if (file_location[i]=='\\' || (file_location[i]==':' && i!=1)|| file_location[i]=='*' || file_location[i]=='?' || file_location[i]=='\"'
             || file_location[i]=='>' || file_location[i]=='<' || file_location[i]=='|' || (file_location[i]=='/' && file_location[i+1]=='/'))
@@ -4418,6 +4420,8 @@ void load_backup()
         gets(file_location);
         //---------- checkt addres
         len=strlen(file_location);
+        if (len==0)
+            return ;
         for (i=0; i<len; i++)
             if (file_location[i]=='\\' || (file_location[i]==':' && i!=1)|| file_location[i]=='*' || file_location[i]=='?' || file_location[i]=='\"'
             || file_location[i]=='>' || file_location[i]=='<' || file_location[i]=='|' || (file_location[i]=='/' && file_location[i+1]=='/'))
@@ -7255,31 +7259,31 @@ void main()
                                     switch (menu_type)
                                     {
                                         case 1:
-                                            menu_type=list_pending_ticket_admin();
+                                            temp_flag=list_pending_ticket_admin();
                                             system("cls");
-                                            if (menu_type==-1)
+                                            if (temp_flag==-1)
                                                 break;
-                                            answer_pending_ticket_by_admin(menu_type);
+                                            answer_pending_ticket_by_admin(temp_flag);
                                             system("cls");
                                             add_linked_list_ticket_to_notpadd();
                                             break;
                                         case 2:
-                                            menu_type=hestory_of_ticket_list_print_for_admin();
-                                            if (menu_type==-1)
+                                            temp_flag=hestory_of_ticket_list_print_for_admin();
+                                            if (temp_flag==-1)
                                                 break;
                                             printf("\nPress Enter to continue\n");
                                             press_enter_to_continue();
                                             system("cls");
                                             break;
                                         case 3:
-                                            menu_type=hestory_of_ticket_list_print_for_admin();
-                                            if (menu_type==-1)
+                                            temp_flag=hestory_of_ticket_list_print_for_admin();
+                                            if (temp_flag==-1)
                                                 break;
                                             printf("enter a optaion from menu: ");
-                                            menu_type=menu_selection_1_num(menu_type);
+                                            temp_flag=menu_selection_1_num(temp_flag);
                                             system("cls");
-                                            menu_type=delete_ticket_from_admin(menu_type);
-                                            if (menu_type==-1)
+                                            temp_flag=delete_ticket_from_admin(temp_flag);
+                                            if (temp_flag==-1)
                                                 break;
                                             system("cls");
                                             add_linked_list_ticket_to_notpadd();
@@ -7511,17 +7515,3 @@ void main()
     }
 
 }
-
-//set file back up for score-student   Done
-// dota nomre nabase   Done
-// dissbale able   Done
-// fix from date      1234/4/4 --> 1234/04/04    mohem nist
-// fix zone score 0_20  Done
-// add exit option for log departemnat and probebly academic        DONE
-// age ticket bedoon javab sace len moshken dash \r bezar be jaye len 0   Ok bood
-//cls ticket     Done
-// add ticket to backup file  Done
-// checke struct free beshe
-// termanil bg blur add
-// colorize terminal
-// dorosht karan loading page mesl watch dogs tor  Done
