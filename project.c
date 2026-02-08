@@ -3975,6 +3975,29 @@ int sort_linked_list_by_name_student()
     free(temp2_struct_score);
     free_score();
 }
+void log_admin_print()
+{
+    FILE *log;
+    char temp[100];
+    char time[25];
+    log=fopen("file_log.txt","r");
+    if (log==NULL)
+    {
+        printf("NO result for show!!\n");
+        printf("Press Enter to continue\n");
+        press_enter_to_continue();
+        return ;
+    }
+    do{
+        fgets(temp,100,log);
+        if (feof(log)==1 || strlen(temp)==0)
+            break;
+        printf("%s",temp);
+    }while(1);
+    printf("\n------------------------------------------\n");
+    printf("Press Enter to continue\n");
+    press_enter_to_continue();
+}
 void kick_user()
 {
     char user_name[20];
@@ -4023,7 +4046,7 @@ void list_of_log_print()
 {
     char temp[25],line_char='|';
     printf("\n---------------------------\n");
-    for(int i=0; i<4; i++)
+    for(int i=0; i<5; i++)
     {
     printf("%c%-2d%c",line_char,i+1,line_char);
     switch (i)
@@ -4038,6 +4061,9 @@ void list_of_log_print()
             strcpy(temp,"List User Dismissed");
             break;
         case 3:
+            strcpy(temp,"Log of Program");
+            break;
+        case 4:
             strcpy(temp,"Back to Menu");
             break;
         default:
@@ -4045,7 +4071,7 @@ void list_of_log_print()
     }
 
     printf("%-22s%c\n",temp,line_char);
-    if (i!=3)
+    if (i!=4)
         printf("|--+----------------------|\n");
 
 
@@ -7129,106 +7155,110 @@ void main()
                         system("cls");
                         switch (menu_type)
                         {
-                        case 1:
-                            set_new_departemant();
-                            set_departemants_as_link_list();
-                            system("cls");
-                            break;
-                        case 2:
-                            set_new_academic();
-                            set_academic_as_link_list();
-                            system("cls");
-                            break;
-                        case 3:
-                            show_list_users(0);
-                            system("cls");
-                            break;
-                        case 4:
-                            kick_user();
-                            system("cls");
-                            break;
-                        case 5:
-                            //lsit of Log
-                            do{
-                                list_of_log_print();
-                                type_list_log=menu_selection_1_num(4);
+                            case 1:
+                                set_new_departemant();
+                                set_departemants_as_link_list();
                                 system("cls");
-                                switch (type_list_log)
+                                break;
+                            case 2:
+                                set_new_academic();
+                                set_academic_as_link_list();
+                                system("cls");
+                                break;
+                            case 3:
+                                show_list_users(0);
+                                system("cls");
+                                break;
+                            case 4:
+                                kick_user();
+                                system("cls");
+                                break;
+                            case 5:
+                                //lsit of Log
+                                do{
+                                    list_of_log_print();
+                                    type_list_log=menu_selection_1_num(5);
+                                    system("cls");
+                                    switch (type_list_log)
+                                    {
+                                        case 1:
+                                            list_of_log_academic();
+                                            system("cls");
+                                            break;
+                                        case 2:
+                                            show_list_users(1);
+                                            system("cls");
+                                            break;
+                                        case 3:
+                                            list_of_log_dismissed();
+                                            system("cls");
+                                            break;
+                                        case 4:
+                                            log_admin_print();
+                                            system("cls");
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }while(type_list_log!=4);
+                                break;
+                            case 6:// -------------------------------------------- ticket
+                                set_ticket_as_link_list();
+                                system("cls");
+                                do
                                 {
-                                case 1:
-                                    list_of_log_academic();
-                                    system("cls");
-                                    break;
-                                case 2:
-                                    show_list_users(1);
-                                    system("cls");
-                                    break;
-                                case 3:
-                                    list_of_log_dismissed();
-                                    system("cls");
-                                    break;
-                                default:
-                                    break;
-                                }
-                            }while(type_list_log!=4);
-                            break;
-                        case 6:// -------------------------------------------- ticket
-                            set_ticket_as_link_list();
-                            system("cls");
-                            do
-                            {
-                                menu_ticket_admin_print();
-                                menu_type=menu_selection_1_num(4);
-                                switch (menu_type)
-                                {
-                                    case 1:
-                                        menu_type=list_pending_ticket_admin();
-                                        system("cls");
-                                        if (menu_type==-1)
+                                    menu_ticket_admin_print();
+                                    menu_type=menu_selection_1_num(4);
+                                    switch (menu_type)
+                                    {
+                                        case 1:
+                                            menu_type=list_pending_ticket_admin();
+                                            system("cls");
+                                            if (menu_type==-1)
+                                                break;
+                                            answer_pending_ticket_by_admin(menu_type);
+                                            system("cls");
+                                            add_linked_list_ticket_to_notpadd();
                                             break;
-                                        answer_pending_ticket_by_admin(menu_type);
-                                        system("cls");
-                                        add_linked_list_ticket_to_notpadd();
-                                        break;
-                                    case 2:
-                                        menu_type=hestory_of_ticket_list_print_for_admin();
-                                        if (menu_type==-1)
+                                        case 2:
+                                            menu_type=hestory_of_ticket_list_print_for_admin();
+                                            if (menu_type==-1)
+                                                break;
+                                            printf("\nPress Enter to continue\n");
+                                            press_enter_to_continue();
+                                            system("cls");
                                             break;
-                                        printf("\nPress Enter to continue\n");
-                                        press_enter_to_continue();
-                                        system("cls");
-                                        break;
-                                    case 3:
-                                        menu_type=hestory_of_ticket_list_print_for_admin();
-                                        if (menu_type==-1)
+                                        case 3:
+                                            menu_type=hestory_of_ticket_list_print_for_admin();
+                                            if (menu_type==-1)
+                                                break;
+                                            printf("enter a optaion from menu: ");
+                                            menu_type=menu_selection_1_num(menu_type);
+                                            system("cls");
+                                            menu_type=delete_ticket_from_admin(menu_type);
+                                            if (menu_type==-1)
+                                                break;
+                                            system("cls");
+                                            add_linked_list_ticket_to_notpadd();
                                             break;
-                                        printf("enter a optaion from menu: ");
-                                        menu_type=menu_selection_1_num(menu_type);
-                                        system("cls");
-                                        menu_type=delete_ticket_from_admin(menu_type);
-                                        if (menu_type==-1)
+                                        default:
                                             break;
-                                        system("cls");
-                                        add_linked_list_ticket_to_notpadd();
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            } while (menu_type!=4);
-                            
-                            break;
-                        case 7:
-                            get_backup();
-                            system("cls");
-                            break;
-                        case 8:
-                            load_backup();
-                            system("cls");
-                            break;
-                        case 9:
-                            break;
-                        default:
-                            break;
+                                    }
+                                } while (menu_type!=4);
+                                
+                                break;
+                            case 7:
+                                get_backup();
+                                system("cls");
+                                break;
+                            case 8:
+                                load_backup();
+                                system("cls");
+                                break;
+                            case 9:
+                                break;
+                            default:
+                                break;
                         }
                     }while(menu_type!=9);
                 }
