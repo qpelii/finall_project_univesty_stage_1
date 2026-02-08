@@ -133,8 +133,9 @@ void def_loading()
     for (i=0;i<20;i++)
     {
         printf("%c",254);
-        Sleep(200);
+        Sleep(100);
     }
+    Sleep(700);
 }
 void menu_login_print()
 {
@@ -206,6 +207,110 @@ void str_to_lower(char text[])
     int len=strlen(text),i;
     for (i=0; i<len; i++)
         text[i]=tolower(text[i]);
+}
+void get_now_time(char result[])
+{
+    time_t now = time(NULL);
+    struct tm *time = localtime(&now);
+    strftime(result, 20, "%Y/%m/%d|%H:%M:%S", time);
+}
+void log_admin(char status[],char user[])
+{
+    FILE *log;
+    char temp[100];
+    char time[25];
+    log=fopen("file_log.txt","a");
+    if (log==NULL)
+        return ;
+    get_now_time(time);
+
+    if (strcmp(status,"set user")==0 && strlen(status)==strlen("set user"))
+    {
+        strcpy(temp,"add user by admin (user name: ");
+        strcat(temp,user);
+        strcat(temp,") | ");
+        strcat(temp,time);
+        strcat(temp,"\n");
+        fputs(temp,log);
+    }
+    else if (strcmp(status,"kick user")==0 && strlen(status)==strlen("kick user"))
+    {
+        strcpy(temp,"user kicked by admin (user name: ");
+        strcat(temp,user);
+        strcat(temp,") | ");
+        strcat(temp,time);
+        strcat(temp,"\n");
+        fputs(temp,log);
+    }
+    else if (strcmp(status,"get backup")==0 && strlen(status)==strlen("get backup"))
+    {
+        strcpy(temp,"backup create by admin | ");
+        strcat(temp,time);
+        strcat(temp,"\n");
+        fputs(temp,log);
+    }
+    else if (strcmp(status,"load backup")==0 && strlen(status)==strlen("load backup"))
+    {
+        strcpy(temp,"backup uploaded by admin | ");
+        strcat(temp,time);
+        strcat(temp,"\n");
+        fputs(temp,log);
+    }
+    else if (strcmp(status,"change password")==0 && strlen(status)==strlen("change password"))
+    {
+        strcpy(temp,"password changed by user (user name: ");
+        strcat(temp,user);
+        strcat(temp,") | ");
+        strcat(temp,time);
+        strcat(temp,"\n");
+        fputs(temp,log);
+    }
+    else if (strcmp(status,"change email")==0 && strlen(status)==strlen("change email"))
+    {
+        strcpy(temp,"email changed by user (user name: ");
+        strcat(temp,user);
+        strcat(temp,") | ");
+        strcat(temp,time);
+        strcat(temp,"\n");
+        fputs(temp,log);
+    }
+    else if (strcmp(status,"change phone")==0 && strlen(status)==strlen("change phone"))
+    {
+        strcpy(temp,"phone number changed by user (user name: ");
+        strcat(temp,user);
+        strcat(temp,") | ");
+        strcat(temp,time);
+        strcat(temp,"\n");
+        fputs(temp,log);
+    }
+    else if (strcmp(status,"forgot password")==0 && strlen(status)==strlen("forgot password"))
+    {
+        strcpy(temp,"password changed (forgot) user (user name: ");
+        strcat(temp,user);
+        strcat(temp,") | ");
+        strcat(temp,time);
+        strcat(temp,"\n");
+        fputs(temp,log);
+    }
+    else if (strcmp(status,"succes login")==0 && strlen(status)==strlen("succes login"))
+    {
+        strcpy(temp,"login succesfully user (user name: ");
+        strcat(temp,user);
+        strcat(temp,") | ");
+        strcat(temp,time);
+        strcat(temp,"\n");
+        fputs(temp,log);
+    }
+    else if (strcmp(status,"unsucces login")==0 && strlen(status)==strlen("unsucces login"))
+    {
+        strcpy(temp,"login unsuccesfully user (user name: ");
+        strcat(temp,user);
+        strcat(temp,") | ");
+        strcat(temp,time);
+        strcat(temp,"\n");
+        fputs(temp,log);
+    }
+    fclose(log);
 }
 void press_enter_to_continue()
 {
@@ -526,6 +631,7 @@ int check_corect_pass_and_set_limit(char corect_pass[], char user[])
         }   
         else
         {
+            log_admin("unsucces login",user);
             if (try==1)
                 return 1;
             printf("\nInvalid password!! you have %d time's for enter password, carefull!\n",try-1);
@@ -1093,6 +1199,110 @@ int search_user_name_student_sync_with_code_sourse(char ID_uni[], char code[])
     free(temp_struct_score);
     return 1;// 0:= fine | 1:=not found
 }
+void log_admin_spcial(char status[],char user[],char ID[])
+{
+    FILE *log;
+    char temp[100];
+    char time[25];
+    log=fopen("file_log.txt","a");
+    if (log==NULL)
+        return ;
+    get_now_time(time);
+
+    
+    if (strcmp(status,"set course")==0 && strlen(status)==strlen("set course"))
+    {
+        strcpy(temp,"add course by user ");
+        strcat(temp,user);
+        if (search_user_name_academic(user)==0)
+        {
+            strcpy(temp," (Academic) |");
+            free_academic();
+        }
+        else
+            strcpy(temp," (Departemant) |");
+        strcat(temp," | ID of course : ");
+        strcat(temp,ID);
+        strcat(temp," | ");
+        strcat(temp,time);
+        strcat(temp,"\n");
+        fputs(temp,log);
+    }
+    else if (strcmp(status,"set student")==0 && strlen(status)==strlen("set student"))
+    {
+        strcpy(temp,"add student by user ");
+        strcat(temp,user);
+        strcat(temp," | ID of student : ");
+        strcat(temp,ID);
+        strcat(temp," | ");
+        strcat(temp,time);
+        strcat(temp,"\n");
+        fputs(temp,log);
+    }
+    else if (strcmp(status,"set score")==0 && strlen(status)==strlen("set score"))
+    {
+        strcpy(temp,"set score by user ");
+        strcat(temp,user);
+        strcat(temp," | ID of course : ");
+        strcat(temp,ID);
+        strcat(temp," | ");
+        strcat(temp,time);
+        strcat(temp,"\n");
+        fputs(temp,log);
+    }
+    else if (strcmp(status,"remove course")==0 && strlen(status)==strlen("remove course"))
+    {
+        strcpy(temp,"remove course by user ");
+        strcat(temp,user);
+        strcat(temp," | ID of course : ");
+        strcat(temp,ID);
+        strcat(temp," | ");
+        strcat(temp,time);
+        strcat(temp,"\n");
+        fputs(temp,log);
+    }
+    else if (strcmp(status,"edit course")==0 && strlen(status)==strlen("edit course"))
+    {
+        strcpy(temp,"course information edited by user ");
+        strcat(temp,user);
+        if (search_user_name_academic(user)==0)
+        {
+            strcpy(temp," (Academic) |");
+            free_academic();
+        }
+        else
+            strcpy(temp," (Departemant) |");
+        strcat(temp," | ID of course : ");
+        strcat(temp,ID);
+        strcat(temp," | ");
+        strcat(temp,time);
+        strcat(temp,"\n");
+        fputs(temp,log);
+    }
+    else if (strcmp(status,"edit score")==0 && strlen(status)==strlen("edit score"))
+    {
+        strcpy(temp,"edit score by user ");
+        strcat(temp,user);
+        strcat(temp," | ID of student : ");
+        strcat(temp,ID);
+        strcat(temp," | ");
+        strcat(temp,time);
+        strcat(temp,"\n");
+        fputs(temp,log);
+    }
+    else if (strcmp(status,"edit student")==0 && strlen(status)==strlen("edit student"))
+    {
+        strcpy(temp,"edit student information by user ");
+        strcat(temp,user);
+        strcat(temp," | ID of student : ");
+        strcat(temp,ID);
+        strcat(temp," | ");
+        strcat(temp,time);
+        strcat(temp,"\n");
+        fputs(temp,log);
+    }
+    fclose(log);
+}
 int get_user_pass_user_academics()
 {
     char user[20];
@@ -1167,12 +1377,6 @@ int get_user_pass_user_departemnts()
     }while(1);
         return user_found_flag;
 
-}
-void get_now_time(char result[])
-{
-    time_t now = time(NULL);
-    struct tm *time = localtime(&now);
-    strftime(result, 20, "%Y/%m/%d|%H:%M:%S", time);
 }
 int check_domain_score(char score[])
 {
@@ -1958,6 +2162,7 @@ void set_new_departemant()
     fputs(answer,file_departemant);
     fputc('\n',file_departemant);
     set_limit(user_Name);
+    log_admin("set user",user_Name);
     printf("Successfully added!\npress Enter to continue\n");
     fclose(file_departemant);
     char temp;
@@ -2153,6 +2358,7 @@ void set_new_academic()
     fputc('N',file_academic);// date exit
     fputc('\n',file_academic);
     set_limit(user_Name);
+    log_admin("set user",user_Name);
     printf("Successfully added!\npress Enter to continue\n");
     fclose(file_academic);
     char temp;
@@ -2302,6 +2508,7 @@ void set_new_student()
     fputs(", ",file_student);
     fputc('0',file_student);// avg score
     fputc('\n',file_student);
+    log_admin_spcial("set student",User_Name_static,ID_uni);
     printf("Successfully added!\npress Enter to continue\n");
     fclose(file_student);
     char temp;
@@ -2390,6 +2597,7 @@ void set_new_score()
     fputs(", ",file_score_student);
     fputs(User_Name_static,file_score_student);
     fputc('\n',file_score_student);
+    log_admin_spcial("set score",User_Name_static,code_course);
     printf("Successfully added!\npress Enter to continue\n");
     fclose(file_score_student);
     do
@@ -3802,6 +4010,7 @@ void kick_user()
         strcpy(temp_struct_academic->ekhraj,date);
         free_academic();
         add_linked_list_academic_to_notpadd();
+        log_admin("kick user",user_name);
         printf("Successfully! press Enter to continue\n");
         char temp;
         do
@@ -4142,6 +4351,7 @@ void get_backup()
     }
     fclose(limit_main);
     fclose(backup_limit);
+    log_admin("get backup",User_Name_static);
     printf("Backup complit!\nPress Enter to continue\n");
     char temp;
     do
@@ -4326,6 +4536,7 @@ void load_backup()
     }
     fclose(limit_main);
     fclose(backup_limit);
+    log_admin("load backup",User_Name_static);
     printf("Backup restor compllit!\npress Enter to continue\n");
     char temp;
     do
@@ -4573,7 +4784,8 @@ void forgot_password()
         add_linked_list_departemant_to_notpadd();
         free_departemant();
     }
-    printf("successfull proses! Press Enter to continue\n");
+    log_admin("forgot password",User_Name_static);
+    printf("successfull restore! Press Enter to continue\n");
     press_enter_to_continue();
 }
 void menu_departemant_print()
@@ -4724,6 +4936,7 @@ void add_new_course()
     fputc('E',file_course);//E :=enable D:=desable
     fputc('\n',file_course);
     fclose(file_course);
+    log_admin_spcial("set course",User_Name_static,code_course);
     printf("Successfully added!\npress Enter to continue\n");
     char temp;
     do
@@ -4982,6 +5195,7 @@ void edit_info_student()
     }while(1);
 
     free_student();
+    log_admin_spcial("edit student",User_Name_static,ID_uni);
     printf("Process compelit! Press Enter to continue\n");
     do
     {
@@ -5044,6 +5258,7 @@ void edit_score_student()
         } while (1);
         strcpy(ID_uni,temp_struct_score->score);
         free_score();
+        log_admin_spcial("edit score",User_Name_static,ID_uni);
         printf("edited whit Successfully! Press Enter for back to menu\n");
         do
         {
@@ -5120,6 +5335,7 @@ void edit_info_course()
         }
     } while (1);
     free_course();
+    log_admin_spcial("edit course",User_Name_static,code_course);
     printf("Process compelit! Press Enter to continue\n");
     do
     {
@@ -5149,6 +5365,7 @@ void remove_course()
     else
         strcpy(temp_struct_course->status,"D");
     free_course();
+    log_admin("remove course",User_Name_static),code_course;
     printf("Process compelit! Press Enter to continue\n");
     do
     {
@@ -5225,6 +5442,7 @@ void settings_departemant()
                     continue;
                 }
                 strcpy(temp_struct_departemant->pass1,str_temp);
+                log_admin("change password",User_Name_static);
                 break;
             }
         } while (1);
@@ -5245,6 +5463,8 @@ void settings_departemant()
                     continue;
                 }
                 strcpy(temp_struct_departemant->phone_num,str_temp);
+                log_admin("change email",User_Name_static);
+                
                 break;
             }
         } while (1);
@@ -5267,6 +5487,7 @@ void settings_departemant()
                     continue;
                 }
                 strcpy(temp_struct_departemant->email,str_temp);
+                log_admin("change phone",User_Name_static);
                 break;
             }
         } while (1);
@@ -5348,6 +5569,7 @@ void settings_academic()
                     continue;
                 }
                 strcpy(temp_struct_academic->pass1,str_temp);
+                log_admin("change password",User_Name_static);
                 break;
             }
         } while (1);
@@ -5368,6 +5590,8 @@ void settings_academic()
                     continue;
                 }
                 strcpy(temp_struct_academic->email,str_temp);
+                log_admin("change email",User_Name_static);
+
                 break;
             }
         } while (1);
@@ -5390,6 +5614,8 @@ void settings_academic()
                     continue;
                 }
                 strcpy(temp_struct_academic->phone_num,str_temp);
+                log_admin("change phone",User_Name_static);
+
                 break;
             }
         } while (1);
@@ -6894,6 +7120,7 @@ void main()
                 if (login_flag==0)
                 {
                     system("cls");
+                    log_admin("succes login","admin");
                     set_departemants_as_link_list();
                     set_academic_as_link_list();
                     do{
@@ -7012,6 +7239,7 @@ void main()
                 system("cls");
                 if (login_flag==0)
                 {
+                    log_admin("succes login",User_Name_static);
                     set_score_student_as_link_list();
                     set_student_as_link_list();
                     set_course_as_link_list();
@@ -7110,6 +7338,7 @@ void main()
 
                 if (login_flag==0)
                 {
+                    log_admin("succes login",User_Name_static);
                     set_student_as_link_list();
                     set_course_as_link_list();
                     set_score_student_as_link_list();
@@ -7222,4 +7451,4 @@ void main()
 // checke struct free beshe
 // termanil bg blur add
 // colorize terminal
-// dorosht karan loading page mesl watch dogs tor
+// dorosht karan loading page mesl watch dogs tor  Done
