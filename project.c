@@ -4377,6 +4377,28 @@ void get_backup()
     }
     fclose(limit_main);
     fclose(backup_limit);
+
+    // ------------------------------------ backup log
+    flag_file=0;
+    char location_log[150];
+    strcpy(location_log,file_location);
+    strcat(location_log,"/file_log.txt");
+    FILE *backup_log;
+    FILE *log_main;
+    log_main=fopen("file_log.txt","r");
+    if (log_main==NULL)
+        flag_file++;
+    backup_log=fopen(location_log,"w");
+    while(flag_file==0)
+    {
+        fgets(read_line, 225, log_main);
+        if (feof(log_main)==1)
+            break;
+        fputs(read_line,backup_log);
+    }
+    fclose(log_main);
+    fclose(backup_log);
+    
     log_admin("get backup",User_Name_static);
     printf("Backup complit!\nPress Enter to continue\n");
     char temp;
@@ -4562,6 +4584,27 @@ void load_backup()
     }
     fclose(limit_main);
     fclose(backup_limit);
+    // ------------------------------------------------------- log
+
+    flag_file=0;
+    char location_log[150];
+    strcpy(location_log,file_location);
+    strcat(location_log,"/file_log.txt");
+    FILE *backup_log;
+    FILE *log_main;
+    backup_log=fopen(location_log,"r");
+    log_main=fopen("file_log.txt","w");
+    if (backup_log==NULL)
+        flag_file++;
+    while(flag_file==0)
+    {
+        fgets(read_line, 225, backup_log);
+        if (feof(backup_log)==1)
+            break;
+        fputs(read_line,log_main);
+    }
+    fclose(log_main);
+    fclose(backup_log);
     log_admin("load backup",User_Name_static);
     printf("Backup restor compllit!\npress Enter to continue\n");
     char temp;
