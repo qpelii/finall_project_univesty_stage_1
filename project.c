@@ -95,6 +95,47 @@ struct struct_limit
 };
 struct struct_limit *start_struct_limit, *end_struct_limit, *temp_struct_limit;
 
+void def_print_ikiu_logo()
+{
+    
+    printf("\t\t\t\t    %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n",220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220);
+    printf("\t\t\t\t    %c                                      %c\n",219,219);
+    printf("\t\t\t\t    %c    %c%c%c%c%c%c%c%c%c%c%c%c%c %c%c %c%c%c%c%c%c%c%c%c%c%c%c%c    %c\n",219,219,219,219,219,219,219,219,219,219,219,219,219,223,219,219,223,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219);
+    printf("\t\t\t\t    %c    %c%c           %c%c%c%c           %c%c    %c\n",219,219,219,219,219,219,219,219,219,219);
+    printf("\t\t\t\t    %c    %c%c          %c%c%c%c%c%c          %c%c    %c\n",219,219,219,219,219,219,219,219,219,219,219,219);
+    printf("\t\t\t\t    %c    %c%c        %c%c %c%c%c%c %c%c        %c%c    %c\n",219,219,219,219,219,219,219,219,219,219,219,219,219,219);
+    printf("\t\t\t\t    %c    %c%c      %c%c%c%c%c %c%c %c%c%c%c%c      %c%c    %c\n",219,219,219,219,219,223,220,219,219,219,219,220,223,219,219,219,219,219);
+    printf("\t\t\t\t    %c    %c%c    %c%c   %c  %c%c  %c   %c%c    %c%c    %c\n",219,219,219,219,219,219,219,219,219,219,219,219,219,219);
+    printf("\t\t\t\t    %c    %c   %c%c    %c   %c%c   %c    %c%c   %c    %c\n",219,219,219,219,219,219,219,219,219,219,219,219,219,219);
+    printf("\t\t\t\t    %c      %c%c     %c    %c%c    %c     %c%c      %c\n",219,219,219,219,219,219,219,219,219,219);
+    printf("\t\t\t\t    %c    %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c    %c\n",219,219,219,219,219,220,220,220,220,219,220,220,220,220,220,219,219,220,220,220,220,220,219,220,220,220,220,219,219,219,219,219);
+    printf("\t\t\t\t    %c      %c%c     %c    %c%c    %c     %c%c      %c\n",219,219,219,219,219,219,219,219,219,219);
+    printf("\t\t\t\t    %c    %c   %c%c    %c   %c%c   %c    %c%c   %c    %c\n",219,219,219,219,219,219,219,219,219,219,219,219,219,219);
+    printf("\t\t\t\t    %c    %c%c    %c%c   %c  %c%c  %c   %c%c    %c%c    %c\n",219,219,219,219,219,219,219,219,219,219,219,219,219,219);
+    printf("\t\t\t\t    %c    %c%c      %c%c  %c %c%c %c   %c      %c%c    %c\n",219,219,219,219,219,219,219,219,219,219,219,219,219,219);
+    printf("\t\t\t\t    %c    %c%c        %c%c%c%c%c%c%c%c%c%c        %c%c    %c\n",219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219);
+    printf("\t\t\t\t    %c    %c%c          %c    %c          %c%c    %c\n",219,219,219,219,219,219,219,219,219,219);
+    printf("\t\t\t\t    %c    %c%c           %c%c%c%c           %c%c    %c\n",219,219,219,219,220,220,219,219,219,219);
+    printf("\t\t\t\t    %c    %c%c%c%c%c%c%c%c%c%c%c%c%c %c%c %c%c%c%c%c%c%c%c%c%c%c%c%c    %c\n",219,219,219,219,219,219,219,219,219,219,219,219,219,220,219,219,220,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219);
+    printf("\t\t\t\t    %c                                      %c\n",219,219);
+    printf("\t\t\t\t    %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n",223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223,223);
+    printf("\t\t\t\t\t\t    IKIU UNI       \n");
+    printf("\t\t\t\t\tUNIVERSITY MANAGEMENT SYSTEM v1.0 \n");
+    
+}
+void def_loading()
+{
+    
+    printf("\n\t\t\t\t\t\t   LOADING...");
+    printf("\n\t\t\t\t\t\t                  ");
+    printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+    int i;
+    for (i=0;i<20;i++)
+    {
+        printf("%c",254);
+        Sleep(200);
+    }
+}
 void menu_login_print()
 {
     char temp[25],line_char='|';
@@ -6819,6 +6860,9 @@ void log_academic()
 
 void main()
 {
+    def_print_ikiu_logo();
+    def_loading();
+    system("cls");
     char *pointer_Uadmin;
     pointer_Uadmin=user_admin;
     char *pointer_Padmin;
@@ -6839,7 +6883,7 @@ void main()
     {
         menu_login_print();
         menu_type=menu_selection_1_num(5);
-        // system("cls");
+        system("cls");
         // -------------------------------------------- rotation part
         switch (menu_type)
         {
@@ -6849,52 +6893,52 @@ void main()
                 password_to_hash(pointer_Padmin);
                 if (login_flag==0)
                 {
-                    // system("cls");
+                    system("cls");
                     set_departemants_as_link_list();
                     set_academic_as_link_list();
                     do{
                         menu_admin_page_print();
                         menu_type=menu_selection_1_num(9);
-                        // system("cls");
+                        system("cls");
                         switch (menu_type)
                         {
                         case 1:
                             set_new_departemant();
                             set_departemants_as_link_list();
-                            // system("cls");
+                            system("cls");
                             break;
                         case 2:
                             set_new_academic();
                             set_academic_as_link_list();
-                            // system("cls");
+                            system("cls");
                             break;
                         case 3:
                             show_list_users(0);
-                            // system("cls");
+                            system("cls");
                             break;
                         case 4:
                             kick_user();
-                            // system("cls");
+                            system("cls");
                             break;
                         case 5:
                             //lsit of Log
                             do{
                                 list_of_log_print();
                                 type_list_log=menu_selection_1_num(4);
-                                // system("cls");
+                                system("cls");
                                 switch (type_list_log)
                                 {
                                 case 1:
                                     list_of_log_academic();
-                                    // system("cls");
+                                    system("cls");
                                     break;
                                 case 2:
                                     show_list_users(1);
-                                    // system("cls");
+                                    system("cls");
                                     break;
                                 case 3:
                                     list_of_log_dismissed();
-                                    // system("cls");
+                                    system("cls");
                                     break;
                                 default:
                                     break;
@@ -6903,7 +6947,7 @@ void main()
                             break;
                         case 6:// -------------------------------------------- ticket
                             set_ticket_as_link_list();
-                            // system("cls");
+                            system("cls");
                             do
                             {
                                 menu_ticket_admin_print();
@@ -6912,11 +6956,11 @@ void main()
                                 {
                                     case 1:
                                         menu_type=list_pending_ticket_admin();
-                                        // system("cls");
+                                        system("cls");
                                         if (menu_type==-1)
                                             break;
                                         answer_pending_ticket_by_admin(menu_type);
-                                        // system("cls");
+                                        system("cls");
                                         add_linked_list_ticket_to_notpadd();
                                         break;
                                     case 2:
@@ -6925,7 +6969,7 @@ void main()
                                             break;
                                         printf("\nPress Enter to continue\n");
                                         press_enter_to_continue();
-                                        // system("cls");
+                                        system("cls");
                                         break;
                                     case 3:
                                         menu_type=hestory_of_ticket_list_print_for_admin();
@@ -6933,11 +6977,11 @@ void main()
                                             break;
                                         printf("enter a optaion from menu: ");
                                         menu_type=menu_selection_1_num(menu_type);
-                                        // system("cls");
+                                        system("cls");
                                         menu_type=delete_ticket_from_admin(menu_type);
                                         if (menu_type==-1)
                                             break;
-                                        // system("cls");
+                                        system("cls");
                                         add_linked_list_ticket_to_notpadd();
                                         break;
                                     default:
@@ -6948,11 +6992,11 @@ void main()
                             break;
                         case 7:
                             get_backup();
-                            // system("cls");
+                            system("cls");
                             break;
                         case 8:
                             load_backup();
-                            // system("cls");
+                            system("cls");
                             break;
                         case 9:
                             break;
@@ -6965,7 +7009,7 @@ void main()
             case 2:// ------------------------------------------------------------------------------- Departemant
 
                 login_flag=get_user_pass_user_departemnts();
-                // system("cls");
+                system("cls");
                 if (login_flag==0)
                 {
                     set_score_student_as_link_list();
@@ -6974,37 +7018,37 @@ void main()
                     do{
                         menu_departemant_print();
                         menu_type=menu_selection_1_num(9);
-                        // system("cls");
+                        system("cls");
                         switch (menu_type)
                         {
                             case 1:
                                 add_new_course();
                                 set_course_as_link_list();
-                                // system("cls");
+                                system("cls");
                                 break;
                             case 2:
                                 set_new_score();
                                 set_score_student_as_link_list();
-                                // system("cls");
+                                system("cls");
                                 break;
                             case 3:
                                 edit_score_student();
                                 add_linked_list_score_to_notpadd();
-                                // system("cls");
+                                system("cls");
                                 break;
                             case 4:
                                 edit_info_course();
                                 add_linked_list_course_to_notpadd();
-                                // system("cls");
+                                system("cls");
                                 break;
                             case 5:
                                 remove_course();
                                 add_linked_list_course_to_notpadd();
-                                // system("cls");
+                                system("cls");
                                 break;
                             case 6:
                                 log_departemant();
-                                // system("cls");
+                                system("cls");
                                 break;
                             case 7:
                                 do
@@ -7016,38 +7060,38 @@ void main()
                                         case 1:
                                             set_new_ticket();
                                             set_ticket_as_link_list();
-                                            // system("cls");
+                                            system("cls");
                                             break;
                                         case 2:
                                             set_ticket_as_link_list();
                                             menu_type=list_sent_ticket_by_user_name(User_Name_static);
                                             if (menu_type==-1)
                                                 break;
-                                            // system("cls");
+                                            system("cls");
                                             answer_ticket_print(menu_type,User_Name_static);
-                                            // system("cls");
+                                            system("cls");
                                             add_linked_list_ticket_to_notpadd();
                                             break;
                                         case 3:// --------------------- unread
                                             set_ticket_as_link_list();
                                             menu_type=list_unread_ticket_by_user_name(User_Name_static);
-                                            // system("cls");
+                                            system("cls");
                                             if (menu_type==-1)
                                                 break;
                                             answer_panle_unread_ticket_print(menu_type,User_Name_static);
-                                            // system("cls");
+                                            system("cls");
                                             add_linked_list_ticket_to_notpadd();
                                             break;
                                         default:
                                             break;
                                     }
                                 } while (menu_type!=4);
-                                // system("cls");
+                                system("cls");
                                 break;
                             case 8:
                                 settings_departemant();
                                 add_linked_list_departemant_to_notpadd();
-                                // system("cls");
+                                system("cls");
                                 break;
                             case 9:
                                 break;
@@ -7062,7 +7106,7 @@ void main()
 
             case 3:// --------------------------------------------------------------------------------- Academic
                 login_flag=get_user_pass_user_academics();
-                // system("cls");
+                system("cls");
 
                 if (login_flag==0)
                 {
@@ -7072,27 +7116,27 @@ void main()
                     do{
                         menu_academic_print();
                         menu_type=menu_selection_1_num(7);
-                        // system("cls");
+                        system("cls");
                         switch (menu_type)
                         {
                             case 1:
                                 set_new_student();
                                 set_student_as_link_list();
-                                // system("cls");
+                                system("cls");
                                 break;
                             case 2:
                                 edit_info_student();
                                 add_linked_list_student_to_notpadd();
-                                // system("cls");
+                                system("cls");
                                 break;
                             case 3:
                                 set_new_score();
                                 set_score_student_as_link_list();
-                                // system("cls");
+                                system("cls");
                                 break;
                             case 4:
                                 log_academic();
-                                // system("cls");
+                                system("cls");
                                 break;
                             case 5:
                                 do
@@ -7103,7 +7147,7 @@ void main()
                                     {
                                         case 1:
                                             set_new_ticket();
-                                            // system("cls");
+                                            system("cls");
                                             set_ticket_as_link_list();
                                             break;
                                         case 2:
@@ -7111,9 +7155,9 @@ void main()
                                             menu_type=list_sent_ticket_by_user_name(User_Name_static);
                                             if (menu_type==-1)
                                                 break;
-                                            // system("cls");
+                                            system("cls");
                                             answer_ticket_print(menu_type,User_Name_static);
-                                            // system("cls");
+                                            system("cls");
                                             add_linked_list_ticket_to_notpadd();
                                             break;
                                         case 3:// --------------------- unread
@@ -7121,21 +7165,21 @@ void main()
                                             menu_type=list_unread_ticket_by_user_name(User_Name_static);
                                             if (menu_type==-1)
                                                 break;
-                                            // system("cls");
+                                            system("cls");
                                             answer_panle_unread_ticket_print(menu_type,User_Name_static);
-                                            // system("cls");
+                                            system("cls");
                                             add_linked_list_ticket_to_notpadd();
                                             break;
                                         default:
                                             break;
                                     }
                                 } while (menu_type!=4);
-                                // system("cls");
+                                system("cls");
                                 break;
                             case 6:
                                 settings_academic();
                                 add_linked_list_academic_to_notpadd();
-                                // system("cls");
+                                system("cls");
                                 break;
                             case 7:
                                 break;
@@ -7149,7 +7193,7 @@ void main()
                 break;
             case 4:
                 forgot_password();
-                // system("cls");
+                system("cls");
                 break;
             case 5:
                 printf("enjoy life ;)");
@@ -7178,3 +7222,4 @@ void main()
 // checke struct free beshe
 // termanil bg blur add
 // colorize terminal
+// dorosht karan loading page mesl watch dogs tor
